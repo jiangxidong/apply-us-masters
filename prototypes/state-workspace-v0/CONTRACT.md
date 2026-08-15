@@ -147,9 +147,13 @@
 ✅ **`programs.md` 的 13 列已在样例里落全**（[#31](https://github.com/jiangxidong/EduApplication/issues/31)）。逐列 schema 见 **§4.6**。
 
 > 本处旧版写着两条**错的**断言，读到引用它的地方请以此为准：
-> ① 「样例里一条 `✓` 事实都没有」——不成立，三个 `channels/` 文件共 **40 条 `✓ <url>` 事实行**。
+> ① 「样例里一条 `✓` 事实都没有」——不成立，三个 `channels/` 文件共 **40 条 `✓ <url>` 事实行**（#31 落盘时的数）。
 > 真实约束窄得多：**承载分档的 `✓` 只有 UIUC 一条**（研究生院对中国申请人的 B Average / 80%），
 > 于是 [ADR 0005](../../docs/adr/0005-basis-points-at-an-existing-checked-fact.md) 的准入测试对 UIUC 行当场就过，Columbia / Cornell 两行过不了。
+> ⚠️ **上面这句「只有 UIUC 一条」已被 [#45](https://github.com/jiangxidong/EduApplication/issues/45) 推翻**（2026-08-15）：
+> 两次真取回后 Columbia 也有了承载分档的 `✓`（`no minimum GPA … typically 3.5 or higher`），准入测试对它同样过了，
+> 该行 `undecided → reach`；`✓` 事实行总数也从 40 涨到 **50**。**这一格记的是当时的取证，数字会随取证增长——
+> 别把它当现行断言引用**（同 `log.md` 历史观察值的豁免形状）。
 > ② 「`derive-demo.sh` 的列数完整性检查断言 9 列」——不成立。它是**自相对**的（`if(!n) n=NF`，表头定基准），
 > 9 是**打印出来的**不是断言的；判断层四列**追加在末尾**后它自动打印 13，**脚本一行都没改**。
 
