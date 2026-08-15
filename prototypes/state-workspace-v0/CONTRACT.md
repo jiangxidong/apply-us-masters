@@ -58,10 +58,10 @@
 |---|---|---|---|---|
 | 1 | `apply.md` | frontmatter + 正文 | **工作区标识 + 申请季** | **冷启动**（创建）；此后**只有换季时**改 `season`。⚠️ 不放完成度、不放待核实计数——那些是派生视图 |
 | 2 | `profile.md` | frontmatter + 正文 | **申请人 canonical 事实**；学历条目是 `institution_id` 的**定义处** | **冷启动 / 画像**；其他阶段只读 |
-| 3 | `programs.md` | Markdown 表，**13 列**（🔴 样例只有 9 列，见下） | **项目池**（选校决策面） | **选校** ⚠️ `status` 列的写入权见 §1.5 注 ① |
-| 4 | `claims.md` | Markdown 表，4 列 | **主张集**（全局唯一，文书与推荐信共用） | 🔴 **两阶段写**：**冷启动 / 画像**落初稿，**文书**打磨 |
+| 3 | `programs.md` | Markdown 表，**13 列**（🔴 样例只有 9 列，见下） | **项目池**（选校决策面） | **选校**（**全部 13 列，含 `status`，无例外**——见 §1.5 注 ①） |
+| 4 | `claims.md` | Markdown 表，4 列 | **主张集**（全局唯一，文书与推荐信共用） | 🔴 **按行单向移交**：**冷启动 / 画像**只 append 新行，**文书**此后全权（见下） |
 | 5 | `channels/<channel_key>.md` | Markdown，**分节** | **约束层**（逐申请渠道的 rendering rules） | 🔴 **按节归属，见 §1.2**（5 个阶段 owner） |
-| 6 | `materials/*.md` | Markdown，字段名单见下（**不计数**） | **文书素材**（素材门槛在此判定）；推荐信线是第二个消费方 | **文书**（+ 推荐信？见 §1.5 注 ②） |
+| 6 | `materials/*.md` | Markdown，字段名单见下（**不计数**） | **文书素材**（素材门槛在此判定）；推荐信线是第二个消费方，**只读** | **文书**（见 §1.5 注 ②） |
 | 7 | `essays/canonical/*.md` | Markdown + frontmatter | **文书 canonical 渲染物**（当前版） | **文书** |
 | 8 | `essays/canonical/per-program/<program_key>.md` | frontmatter + 散文 | **逐项目 why-this-program 内容**（不可再生） | **文书**（按 §1.4 前缀继承） |
 | 9 | `essays/canonical/_versions/*.md` | Markdown | 历史版本，只增不改 | **文书** |
@@ -69,7 +69,7 @@
 | 11 | `recommenders.md` | Markdown | **推荐人身份五块**（候选 / 逐校机制 / 分配 / 起草授权 / 提交事实，红线区） | **推荐信** |
 | 12 | `recommenders/drafts/<recommender_id>.md` | Markdown | **C 档推荐信草稿**（🔴 受起草授权声明门控） | **准备包**（新增顶层路径，按 §1.4 显式指派） |
 | 13 | `packets/<program_key>/**` | 由 [#8](https://github.com/jiangxidong/EduApplication/issues/8) 定 | **可再生产物**，删了能重建 | **准备包** |
-| 14 | `log.md` | Markdown，append-only | **跨会话交接** | 每个阶段结束时追加（见 §1.5 注 ③） |
+| 14 | `log.md` | Markdown，append-only | **跨会话交接** | `append-only` —— **不在 owner 辖区**（[ADR 0008](../../docs/adr/0008-the-owner-binds-to-a-section-not-a-file.md) 限定 3，见 §1.5 注 ③） |
 
 **五个主键**，全部 ASCII（遵 §4.5）：`program_key` / `channel_key` / `recommender_id`（`r1`…）/
 `institution_id`（定义权在 `profile.md`，`documents/` 只引用）/ `claim_id`（`c01`…）。
@@ -81,6 +81,11 @@
 已确定在名单内的：`敏感`（[#17](https://github.com/jiangxidong/EduApplication/issues/17)，**ASCII 二元 `yes` / `no`**，遵 §4.5）。
 敏感素材**默认不进给第三方的包**——这是 #12 的 pack 门槛两条合取里的第二条（第一条是「这个人能证实它」）。
 已确定**不在**名单内的：`已用于`（#30 裁决，见下）。
+
+🔴 **推荐信阶段对 `materials/` 只读，不写**（[#25](https://github.com/jiangxidong/EduApplication/issues/25)）。「谁能证实 / 可验证性」这个字段由**文书阶段在素材采集时**填
+（样例 `materials/01-*.md` 正文里就有，`README.md` 明写它是「素材的**独立属性**，供 `recommenders.md` 选人用」）；
+推荐信阶段**读**它去选人，产出的「主张 → 推荐人分配」落 `recommenders.md`，**不回写这里**。
+`敏感` 同理：文书阶段采集时判定，推荐信阶段读它决定进不进 pack。**消费不产生写入权**（§1.4 的归属判据原话是「后到者只读」）。
 
 ⚠️ **完整名单尚未裁决** → [#38](https://github.com/jiangxidong/EduApplication/issues/38)：#10 的六个语义字段与样例
 frontmatter 的 `material_id` / `type` / `usable_for` / `concrete` 是**两套互不相交的词汇**，本文件与样例都没把两者对应起来。
@@ -95,6 +100,18 @@ frontmatter 的 `material_id` / `type` / `usable_for` / `concrete` 是**两套�
 **空 = 缺素材缺口**）/ `voice`（`self` / `referee` / `both`）。
 「哪篇文书用了哪些主张」这条边**只存在消费端**：`essays/canonical/*.md` 的 frontmatter 写 `claims: [c01, c03]`，
 `claims.md` **不设 `used_in` 列**（两端都存必漂移）。见 [ADR 0006](../../docs/adr/0006-claims-are-one-shared-truth-source.md)。
+
+🔴 **写入权按「行」单向移交**（[#25](https://github.com/jiangxidong/EduApplication/issues/25)，[ADR 0008](../../docs/adr/0008-the-owner-binds-to-a-section-not-a-file.md) 限定 2）——
+**冷启动 / 画像**：只 append 新行，写 `claim_id` / `断言` / `voice`，`materials` 留空
+（[#21](https://github.com/jiangxidong/EduApplication/issues/21) 已定「全局集里允许零素材主张，那正是缺口本身」）；**从不改已有行**。
+**文书**：此后这一行的全部写入权归它（改措辞、填 `materials`、调 `voice`）；**从不 append**
+（#21 已定「文书从『发明主张』改为『从主张清单里选』」）。
+
+移交发生在**行诞生的那一刻**，方向不可逆，因此任一时刻每行仍只有一个写入者。
+🔴 #23 说它「与 `channels/` 完全同构」是**错的**——`channels/` 按节切（封闭词表），它按**生命周期两端**切，
+那正是 ADR 0008 §3 否决掉的**时序判据**；救它的是限定 2 的移交闸门，不是那句同构。
+⚠️ 这条**不进孤儿检查脚本**：验它要 commit range，而工作区不是 git 仓库，没有 diff 可跑，
+也没有「这次写入属于哪个阶段」这项元数据。它是**写给 skill 的行为规则**，靠本段措辞约束，不靠脚本。
 
 🔴 **`已用于` 已删**（[#30](https://github.com/jiangxidong/EduApplication/issues/30) 裁决，[ADR 0006](../../docs/adr/0006-claims-are-one-shared-truth-source.md) 补充节）。
 通则：**一条关系边只存在它那个已经落盘的消费端，两端都不存。** 素材侧因此不设 `已用于`，同 `claims.md` 不设 `used_in`。
@@ -250,21 +267,33 @@ Cornell 的 SSN 涂黑要求因此落成「**落槽位时**提醒」，不是「
 纯「每次都显式指派」不够：它把责任全押在写票的人身上，而 #12 与 #18 各漏过一次。所以规则配机械执法——
 孤儿检查脚本的第 1 条就是「契约里出现的每个路径都能解析到一个 owner 阶段（自身或祖先目录）」。
 
-### 1.5 待裁决（本次合并**不就地拍板**）
+### 1.5 §1 合并时转出的四处裁决（**全部已结**）
 
-[#24](https://github.com/jiangxidong/EduApplication/issues/24) 的边界是**只合并、不做新决策**。合并现场查出四处需要裁决，
-原样保留并转票：①②③ → [#25](https://github.com/jiangxidong/EduApplication/issues/25)，④ → [#26](https://github.com/jiangxidong/EduApplication/issues/26)。
+[#24](https://github.com/jiangxidong/EduApplication/issues/24) 的边界是**只合并、不做新决策**。合并现场查出四处需要裁决，原样保留并转票：
+①②③ → [#25](https://github.com/jiangxidong/EduApplication/issues/25)，④ → [#26](https://github.com/jiangxidong/EduApplication/issues/26)。四处现已全部裁完——**本节只留审计线索，答案住在它指的地方，不在这里。**
 
-前三处的共性：分支上的原表写于 ADR 0008 之前，与「节粒度 + 七阶段」对不上。
+① **`programs.md` 的 `status` 列** → 归**选校**，全部 13 列无例外（#25）。
+🔴 **「投递」不是一个阶段，也不需要是**：`applying → submitted` 这一跳**产品一个动作都没有**——「点提交」在停手线上、
+「提交及其之后」在地图 Out of scope 里。`submitted` 是**用户报告的一件已发生的事**，产品只负责记账。
+`status` 是池子的状态轴（[ADR 0002](../../docs/adr/0002-one-program-pool-one-status-axis.md)），而池子是**选校的决策面**。
+代价是一次 skill 跳转：用户在 `assemble-packet` 里说「我投了 Columbia」时，agent **不得就地写**，须转到 `pick-programs`。
+**否决行级移交**（拍板那刻把该行交给准备包）——它在**反悔**上破：`applying` 退回 `shortlist` / `dropped` 之后，
+按「不可回流」这一行永远归准备包，池子里会出现一个「`shortlist` 但选校阶段不能动」的行。→ §1.1 第 3 行
 
-① **`programs.md` 的 `status` 列**：原表写「投递阶段只改 `status` 列」，但**「投递」不是七个阶段之一**
-（`CONTEXT.md` 里「投递名单」是不落盘的派生视图）。而 `applying → submitted` 这一跳物理上发生在准备包阶段之后。
+② **`materials/*.md` 的 owner** → **单 owner = 文书**，推荐信阶段**只读**（#25）。
+按 §1.4 的消费方判据这里根本没有分叉——「多个阶段消费时归**最早**的，**后到者只读**」，**消费从来不产生写入权**。
+#12 的「推荐信线是第二个消费方」是**对的事实、错的推论**：它只支撑「`materials/` 不该住在 `essays/` 下」，不支撑写入权。
+实地核查过，`materials/` 里没有任何一条只有推荐信阶段才能产出的事实。→ §1.1 第 6 行与其下的说明
 
-② **`materials/*.md` 的 owner**：#12 的回填写的是「文书阶段 **+** 推荐信阶段」两个 owner，
-但 #23 只审查并认可了两个多写入者文件（`channels/` 与 `claims.md`），`materials/` 是**未经审查的第三个**。
-
-③ **`log.md` 由每个阶段追加**：字面上撞「一个不含节结构的文件有且只有一个阶段可以写它」。
-它 append-only、从不被改写，大概率是正当豁免——但豁免没被写下来过。
+③ **`log.md` 由每个阶段追加** → **不是破例，规则管不到它**（#25，[ADR 0008](../../docs/adr/0008-the-owner-binds-to-a-section-not-a-file.md) 限定 3）。
+owner 只管**会被改写**的内容：ADR 0008 防的是**责任漂移**，而漂移必须**经由改写**发生；
+append-only 且从不被改写的内容里没有「保持为真」这项责任，也就没有可漂移的对象。
+这条推理本文早就在用（见下方镜像豁免：「`log.md` 从不被改写，所以它记的是历史观察值不是镜像」）。
+附带解释了样例里明摆着的一件事：**它的分段单位是「会话」不是「阶段」**，而一个会话可以跨多个阶段——
+按原规则这当场违规，按限定 3 **分段单位根本不参与判定**。
+owner 列因此填封闭标记 **`append-only`**，**不能留空**（留空正是孤儿检查第 1 条要抓的形态）。
+**否决 `所有阶段` 这个 owner 值**：它把「无 owner」改写成「owner = 全体」，字面过检查，
+但这个值一旦存在就是**没有判据的万能出口**。→ §1.1 第 14 行
 
 ④ ~~**§1.2 这张十节表本身存了两份**~~ — **已结**（[#26](https://github.com/jiangxidong/EduApplication/issues/26) /
 [ADR 0011](../../docs/adr/0011-the-glossary-defines-words-the-contract-holds-the-values.md)）。
@@ -498,7 +527,7 @@ points.md        ─────────────────────
 | [#11 选校推荐的输出契约](https://github.com/jiangxidong/EduApplication/issues/11) | `programs.md` 的**列清单**、分档措辞、假保底标注、匹配理由怎么写。⚠️ 加的列一律不被 `evidence` 担保（§4） | 文件路径、主键形态、`evidence` 只担保 deadline、换季语义 |
 | [#8 网申准备包的交付形态](https://github.com/jiangxidong/EduApplication/issues/8) | `packets/<program_key>/` 里**装什么**、怎么用、完成度怎么自检 | 它落在哪、它是**可再生**的（删了能从 canonical + rules 重建） |
 | [#10 文书双模式](https://github.com/jiangxidong/EduApplication/issues/10) | 何时开新版本、多版本怎么对比、素材门槛怎么判 | 三个渲染物文件名 + `_versions/` 命名约定 |
-| [#9 skill 拆几个](https://github.com/jiangxidong/EduApplication/issues/9) | **阶段 → skill** 的映射（#23 修订后：#9 的表里**不再出现任何路径字面量**） | **路径 / 节 → 阶段**（§1.1 与 §1.2）——归属表，这就是阶段之间的交接面。⚠️ #23 定它「唯一」，但现状是两份，见 §1.5 ④ |
+| [#9 skill 拆几个](https://github.com/jiangxidong/EduApplication/issues/9) | **阶段 → skill** 的映射（#23 修订后：#9 的表里**不再出现任何路径字面量**） | **路径 / 节 → 阶段**（§1.1 与 §1.2）——归属表，这就是阶段之间的交接面。🔒 #23 定它「唯一」，[#26](https://github.com/jiangxidong/EduApplication/issues/26) 之后**现状也是唯一**（`CONTEXT.md` 那份已删），见 §1.5 ④ |
 | [#13 领域词汇表](https://github.com/jiangxidong/EduApplication/issues/13) | 「项目池」「待核实」「申请季」的精确定义 | 它们在文件里长什么样 |
 
 ---
