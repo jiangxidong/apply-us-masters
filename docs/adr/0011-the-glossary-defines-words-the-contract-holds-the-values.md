@@ -1,5 +1,7 @@
 # 词汇表定义词，契约持有取值
 
+> ⚠️ **找《准备包整包重生成，绝不就地改》的读者请走这边**：那一条也曾叫 ADR 0011，已改号为 [ADR 0013](0013-a-packet-is-regenerated-whole-never-patched.md)（详见该文件的「原编号」一行）。[#8](https://github.com/jiangxidong/EduApplication/issues/8) 票面与评论里的「ADR 0011」指的是**它**，不是本条——两条讲的是完全不同的决策，照号找到本条是**静默的走错门**，不会报错。
+
 [#23](https://github.com/jiangxidong/EduApplication/issues/23) §7 锁定「归属表是状态层契约里**唯一一张**『路径 / 节 → 阶段』表，`CONTEXT.md` 只定义词、不承载表」。而 #23 落盘时，把整张十节归属表连同 owner 列写进了 `CONTEXT.md` 的「节」词条——**决议与它自己的落盘不一致**，正是 [#18](https://github.com/jiangxidong/EduApplication/issues/18) 点名、#23 立规矩要防的那件事，发生在立规矩的同一次提交里。
 
 这不是执行失误。`CONTEXT.md` 的开篇**在 #23 之前**就写着「本文件只定义词……实现细节一律不进这里」，#23 是照着这句话写的表。病灶是那句话本身：**「实现细节」不可判定**。一张表算不算实现细节，取决于谁在什么心情下读它，所以它拦不住任何东西——一条没有判据的边界，等于没有边界。
