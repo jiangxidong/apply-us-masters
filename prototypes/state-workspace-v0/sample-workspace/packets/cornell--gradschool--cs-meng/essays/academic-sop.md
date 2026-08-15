@@ -11,7 +11,7 @@ claims: [c01, c02]
 > 🔴 **这是渲染物，不是真相源。** 要改内容改 `essays/canonical/long.md`，然后重新生成本文件。
 > 在这里直接改，下次重建就丢。
 
-**渲染规则**（← `channels/cornell--gradschool.md § 文书规格`，`✓`）：一到两页；
+**渲染规则**（← `channels/cornell--gradschool.md § 文书规格`）：一到两页；
 **去掉个人动机段**（那段进 Personal Statement，本校要两篇且分工不同）。
 
 I spent the first two months of my job watching a dashboard I did not understand. …
