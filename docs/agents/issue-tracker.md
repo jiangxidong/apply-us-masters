@@ -13,12 +13,6 @@ Issues and specs for this repo live as GitHub issues. Use the `gh` CLI for all o
 
 Infer the repo from `git remote -v` — `gh` does this automatically when run inside a clone.
 
-> **Setup note:** at the time this file was written, this directory was not yet a git
-> repository and had no GitHub remote. `gh` cannot resolve a repo without one, so every
-> command above will fail until you run `git init` and add a GitHub remote (e.g.
-> `gh repo create <name> --private --source=. --remote=origin`). Delete this note once
-> the remote exists.
-
 ## Pull requests as a triage surface
 
 **PRs as a request surface: no.** _(Set to `yes` if this repo treats external PRs as feature requests; `/triage` reads this flag.)_
