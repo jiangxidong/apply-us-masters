@@ -4,6 +4,7 @@ version: 1
 supersedes: null
 target: 需要 250 词硬上限的场合
 word_count: 248
+claims: [c02, c03]
 ---
 
 # Canonical 250 词版 v1（虚构）

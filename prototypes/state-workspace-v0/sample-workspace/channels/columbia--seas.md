@@ -24,7 +24,6 @@ season: 2027fall
 - `✓ 同上` **明文禁止本人以外任何人代交**（仅 Fulbright / IIE / LASPAU / AMIDEAST / DAF / DAAD / VEF 例外）
   → 中介路径在此校完全关闭
 - `✓ 同上` **强制录像面试**（video interview）
-- `待核实` 申请费金额与减免条件
 
 ## 文书规格
 
@@ -70,5 +69,7 @@ season: 2027fall
 ## 项目级差异
 
 ### `columbia--seas--cs-ms`
+
+#### 学历门槛
+
 - `待核实` GRE 是否要求
-- `待核实` 本项目的 deadline（**不得凭记忆**）

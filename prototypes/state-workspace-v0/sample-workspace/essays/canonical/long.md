@@ -4,6 +4,7 @@ version: 1
 supersedes: null
 target: Columbia SEAS personal statement (250–1000 词) / Cornell Academic SOP (1–2 页)
 word_count: 约 980
+claims: [c01, c02, c03]
 ---
 
 # Canonical 长文 v1（虚构内容，仅演示文件契约）

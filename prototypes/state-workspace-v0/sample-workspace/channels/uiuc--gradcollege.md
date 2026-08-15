@@ -75,7 +75,12 @@ season: 2027fall
 ## 项目级差异
 
 ### `uiuc--gradcollege--cs-msc`
+
+#### 文书规格
+
 - `待核实` Academic Statement 的**本项目**具体字数（Graduate College 给的是 500–1000 词区间，由项目收窄）
 - `待核实` 4 道短答题中哪 2 道是必答
-- `待核实` deadline（**不得凭记忆**）
+
+#### 学历门槛
+
 - `待核实` GRE 是否要求
