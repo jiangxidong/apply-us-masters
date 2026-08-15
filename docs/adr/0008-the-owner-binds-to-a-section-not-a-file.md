@@ -31,3 +31,13 @@ owner 绑**阶段**而非 skill：阶段是内容的自然切分，skill 是分�
 ## 后续
 
 - [ADR 0011](0011-the-glossary-defines-words-the-contract-holds-the-values.md)（[#26](https://github.com/jiangxidong/EduApplication/issues/26)）——本决定产出的十节归属表一度在 `CONTEXT.md` 与状态层契约各存一份。0011 定下词汇表与契约的边界判据，把词表与 owner 列整个归到契约。**本文正文一字未改**，此处只补指针。
+
+## 后续
+
+[#28](https://github.com/jiangxidong/EduApplication/issues/28) 在样例上**实测**本 ADR 的机械判据，两处不成立，**收紧了规则、正文一字未改**：
+
+- **前缀匹配之前多一步剥离。** 上面写的「封闭词表 + 前缀匹配 + 禁止互为前缀」在样例上**六个节 FAIL**——坏的不是后缀，是**前缀**：`## 🔴 推荐信机制 —— 风险 A：冒名发信` 的 `🔴 ` 顶在节名之前，`index() == 3` 不是 `1`。规则改为**先剥掉标题行首所有不是汉字 / 拉丁字母 / 数字的字符，再做前缀匹配**。这不是第二次取舍，是本 ADR 那次取舍再走一步——选前缀匹配而不是「标题逐字相等」的理由正是**容纳人写的东西**，而 `🔴` 前置是全 repo 的书写习惯（`git grep '^#\+ *[🔴⚠️🔒]'` 命中 9 处，`CONTRACT.md` 自己占 3 处）。🔴 它**绑 locale**：`LC_ALL=C` 下静默失效，检查脚本必须显式设 `LC_ALL=en_US.UTF-8`（`CONTRACT.md` §4.5）。
+- **孤儿检查六条换了一条，仍是六条。** 删掉第 4 条「**节按词表顺序排列**」——它不定任何 owner，只买 diff 稳定，却要求 owner **插入**而不是追加（后到的 `## 项目内容` 得插进别人的两个节中间，而追加只碰文件尾）。新增一条：**`### <program_key>` 之下的每一行必须落在某个 `#### <法定节名>` 内，裸行非法**。样例覆盖层的 9 行裸行没有违反任何**已写下来的**规则（原第 6 条只约束 `####` 的位置，不要求 `###` 之下必须有 `####`，零个 `####` 时空过），但在**规则层面**它们恰恰是本 ADR 两条禁止里的第二条——**一条事实找不到写入者**（覆盖层不带 owner，owner 由 `####` 递归决定）。
+- **检查判结构，不判「谁写的」。** 新增那条是**结构**规则；**谁有权写那个 `####`** 仍归唯一写入者规则，两条不耦合。这是必要的分开：覆盖层里 `Academic Statement 字数` 归 `#### 文书规格`（owner = 文书），而它是**选校**期发现的——「发现缺口的人」与「有权记下缺口的人」本就不是同一个。真实运行时认下这一点（选校发现了也不落盘，缺席即「没查」）；`sample-workspace/` 是 [ADR 0010](0010-personas-ignite-assertions-they-are-not-examples.md) 的点火器、人手搭的夹具，**只需过结构那一关**。
+
+⚠️ **本 ADR 的判据此前从未被跑过。** 「样例节标题全部过得了前缀匹配」这句在 [#23](https://github.com/jiangxidong/EduApplication/issues/23) 结论 / [#24](https://github.com/jiangxidong/EduApplication/issues/24) 票面 / `CONTRACT.md` §1.2 验收注 / [#27](https://github.com/jiangxidong/EduApplication/issues/27) 末段**四处被转述，四处都错**。**转述过 ≠ 核过**——写下「已核过」的那一步，必须附上跑过的命令。
