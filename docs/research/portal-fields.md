@@ -457,6 +457,72 @@ UQ 的 `Submit your application` 页在「提交后可在 portal 做什么」列
 
 ---
 
+### B.3 University of Leeds（Microsoft Power Apps Portal / Dynamics 365）
+
+**平台取证（本次亲自 GET）**
+
+| 项 | 字面取证串 | 出处 |
+|---|---|---|
+| Power Pages 运行时 | `Microsoft.PowerPages.onPagesClientApiReady`、`Microsoft.Dynamic365.Portal.onPagesClientApiReady` | `https://myleedsportal.leeds.ac.uk/signin-landing/?courseId=MSC-ACS-FT&year=2026%2F27` |
+| 资源域 | `content.powerapps.com/resource/powerappsportal/dist/pwa-style.bundle-*.css` | 同上 |
+| 分析组件 | `Dynamics365PortalAnalytics`（3 次） | 同上 |
+| 登录 | `b2clogin.com`（Azure AD B2C） | 同上 |
+| 登录墙形态 | 页面为 SPA 外壳，**无任何可见 text/password 输入框** | 同上 |
+
+**一个 AU/US 都没有的结构细节**：Leeds 的登录前 deep link 已经带上 `courseId=MSC-ACS-FT&year=2026/27`。即**课程选择发生在进入表单之前，由入口链接决定**，不是表单内的一个下拉。澳洲那种"一张表里填 1–3 个志愿"的结构在 Leeds 不成立。
+
+**⚠️ 推荐信机制 —— 第三种，与前两校都不同**
+
+> `If you are required to supply referee details, the admissions team will only contact your referees if they need to see a reference in order to make a decision on your application.`
+
+**填了推荐人信息也不必然发信**：只有招生团队认为需要看推荐信才**人工**联系推荐人。至此三所英国学校三种机制：
+
+| 学校 | 谁发信 | 何时发 | 学生能否自己交推荐信 |
+|---|---|---|---|
+| **UCL** | 系统 → **推荐人** | **提交申请那一刻自动发** | ❌ 明文禁止 |
+| **Manchester (AMBS)** | 校方 → **申请人** | 初审之后，视需要 | ✅（学生收到请求后自行取得） |
+| **Manchester (CS 系)** | — | — | ✅ `references can be emailed separately if preferred` |
+| **Leeds** | 招生团队 → **推荐人**，**人工** | 仅当需要看推荐信才联系 | 未确认 |
+
+> 🔴 **红线的正确表述**：不是"凡填推荐人邮箱都危险"，而是**只有 UCL 这类 on-submit 自动发信的系统，才会把「AI 代填 + 代提交」变成「AI 以申请人名义给第三方发信」**。产品必须**逐校记录 `referee_invite_trigger`**，把 UCL 型的学校标成需要人工确认闸口；对 Leeds/曼大型的学校，风险点则落在别处（学生自己转交推荐信时的真实性）。
+
+**其他 Leeds 细节**
+- 推荐人可用 professional 的门槛是**离开教育满 5 年**（UCL 是 4 年）——同一个概念，不同数字，典型的"约束层不可复用"。
+- 是否接受某份推荐信由**相关 academic school 自行裁量**。
+
+**🌟 文件上传：本次八校中最细的扫描规格（来自 EPS 学部）**
+
+- `All academic documentation should be scans of the originals, not photographs.` —— **不接受拍照**。
+- `The scans should be complete and of a good quality, showing the 4 corners of all pages of the original document.` —— **必须拍到每页四个角**。
+- `Please do not merge separate qualifications together.` —— 不同学历不得合并成一个文件。
+- `Please do not upload academic documents to the funding section as we cannot access these.` —— **传错上传区等于没交**（portal 内不同区权限不同）。
+- 补件必须走 portal 内的 **enquiry 或 condition response** 通道，系统才会自动挂到对应申请。
+- 警告：`incomplete applications may not be continued if we feel that ... insufficient effort was made in submitting the application` —— 材料质量本身会影响是否继续审理。
+- **单文件大小与允许格式：公开页未给**（英国三校只有 UCL 给了 5MB / .pdf .docx .jpeg .jpg）。
+
+**🌟 草稿存活期 200 天**
+
+> `You can save your application at any point. However, your application will be deleted after 200 days if it is not submitted.`
+
+本次八校中**唯一**公开草稿存活期的学校。对「AI 帮学生长期托管未提交草稿」是一条硬约束。
+
+**Leeds 校内两级口径也不一致**（同曼大）
+- 大学层面：CV 属"may also need to provide"（按课程）；EPS 学部把 CV/Resume 列入 **MUST include** 必交清单。
+- 大学层面：references 按课程可能要 2 位；EPS 把 References 归入 **Documents which are not required**，只在边缘案例与 **MSc Mathematics** 才要。
+- 个人陈述：EPS 明写 **not required as standard**，但给了上限 **no more than one side of A4**。
+
+**英国特有件：previous immigration documents**
+需 Student visa 且**此前持英国学签就读过**者，须交 Visa / **Share code** / BRP / CAS。澳美两国都没有这一类字段。
+
+**中国学历会命中的一条**：`details of the qualification used to gain entry into that later year` —— 非从第 1 年入读现学位者（专升本、3+1 等），须另附当初入读所凭资格的成绩单与证书。
+
+**其他**
+- 未提交草稿外，另一条时点差异：**unspent criminal conviction 通常在接受 offer 时才申报，少数课程在申请时即须申报**——同一字段在不同课程落在不同流程阶段。
+- 申请费：公开的五步流程中**未出现**申请费环节，记为未确认（不等于不收）。
+- 国际申请人：Leeds **主动建议**使用 overseas representatives（中介），并另设 agent 专页，但未见按国籍强制。
+
+---
+
 ---
 
 ## Part C — US 美国
