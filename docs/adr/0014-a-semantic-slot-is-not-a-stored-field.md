@@ -22,13 +22,19 @@
 
 ## Consequences
 
-**v1 的 frontmatter 是三个键**：`material_id` / `sensitive` / `verifiable_by`。名单本身归状态层契约（ADR 0011），这里只记判据。三个键各自的消费方都是已落盘的：
+**v1 的 frontmatter 是三个键**：`material_id` / `sensitive` / `verifiable_by`。名单本身归状态层契约（ADR 0011），这里只记判据。
 
-| 键 | 消费方 |
-|---|---|
-| `material_id` | `claims.md` 的 `materials` 列（跨文件 id 引用），`derive-demo.sh` 的两个派生视图 |
-| `sensitive` | #12 pack 门槛两条合取的第二条 |
-| `verifiable_by` | #12 pack 门槛两条合取的第一条；`recommenders.md` 的「主张 → 推荐人分配」据它选人 |
+🔴 **「消费方」含两种，两种都算数——不写清楚，这条判据会当场杀掉 `sensitive`。**
+
+| 键 | 消费方 | 哪一种 |
+|---|---|---|
+| `material_id` | `claims.md` 的 `materials` 列（跨文件 id 引用）、`derive-demo.sh` 的两个派生视图 | **已实现**：现在就有代码在读 |
+| `sensitive` | #12 pack 门槛两条合取的第二条 | **契约已定、尚未实现**：pack 本身是 #12 的派生视图，v1 还没写 |
+| `verifiable_by` | #12 pack 门槛两条合取的第一条；`recommenders.md` 据它选人 | 同上 |
+
+判据要的是**「有一个已落盘的东西在读它」**，其中「已落盘」修饰的是**消费方本身**（那条门槛写在契约里、是可执行的规则），不是「已经有跑起来的代码」。按后一种读法，`sensitive` 与 `verifiable_by` 当场出局——而它们恰恰是 #12 门槛两条合取的判定本体。**没有消费方**（`type`）与**消费方尚未实现**（`sensitive`）是两回事。
+
+⚠️ 但这条放宽有它自己的滑坡：「将来会有人读」不是消费方。分界是**那个消费方已经被某张票判定下来、写进了契约**——`usable_for` 过不了这一关，没有任何一条已定的规则读它。
 
 **三个键被删掉，理由各不相同——这是判据在切真关节的证据。**
 
@@ -49,3 +55,9 @@
 **反悔代价中等偏低。** 名单本身可逆（加回一个键是一次编辑），难回头的是判据——它一旦成为判「该不该有键」的机器，别处的 frontmatter（`essays/canonical/*.md`、`apply.md`、`profile.md`）都该按它重扫一遍。**这次没有重扫**，只裁了 `materials/`。
 
 **顺带修掉一处抄错的已锁决策。** `materials/README.md` 写着「素材门槛（地图已锁定的质量硬约束）：**3–5 个具体素材**」，而 #10 早就判了「单位是**主张**不是篇数；3–5 个是参考值，不是闸门」。样例把被降级的参考值当成硬约束写了进去，`derive-demo.sh` 的篇数计数照着它来——真正的闸门（进了成稿的主张是否都有素材支撑）#27 已经加在脚本里了，所以这是把假闸门降级，不是补新闸门。
+
+## 后续
+
+🔴 **`verifiable_by` 让一条两端都存的边显形了。** 样例 `recommenders.md` 的「能证实什么」列写的是「素材 01 的三问全过程与结果数字」「素材 02 的学术表现」——**那和 `verifiable_by` 是同一条边的两端**，撞 [#30](https://github.com/jiangxidong/EduApplication/issues/30) 的通则「一条关系边只存在它那个已经落盘的消费端，两端都不存」。
+
+这条边在本 ADR 之前就是两端都有的（素材那端只是散文：`谁能证实：直属 leader（也是推荐人候选 R2）`），**把它变成字段不是病因，是显影剂**。哪一端留、`CONTEXT.md` 那句「『这个人能证实什么』是推荐人的属性，与素材的可验证性**配对使用**」要不要改，归 [#49](https://github.com/jiangxidong/EduApplication/issues/49)——本 ADR 不就地拍板。
