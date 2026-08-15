@@ -119,15 +119,18 @@ _Avoid_: 个人资料、背景、简历
 
 「这个人能证实什么」是推荐人的属性，与素材的**可验证性**配对使用。⚠️ 可验证性**在文书线是独立属性、不参与充分度判定，在推荐信线是判定本体**——一条无人可证的自学项目素材是合格的文书素材，**同时不是**合格的 support pack 素材。两条判据各自成立，不互相覆盖（[#12](https://github.com/jiangxidong/EduApplication/issues/12) 结案后修正 §3）。
 
-**文书素材** — `material`
+**文书素材** — `material` / 主键 `material_id`（形如 `m01`）
 一段可被文书引用的真实经历，是**主张的支撑物**。素材库是状态层的一等公民，不是文书的草稿纸。
-每条素材带**敏感**标记（`敏感` / ASCII 二元，[#17](https://github.com/jiangxidong/EduApplication/issues/17)）：由 agent 提议、**用户可下调**。标 `yes` 的素材，其**原文永不直接进任何产物**——引用时须逐条确认「原文 → 拟用表述」。向用户本人复述不受此限。
+`material_id` 是主键，因为 `claims.md` 的 `materials` 列按它做**跨文件引用**；它同时进文件名（`m01-<中文短名>.md`），好让引用能靠 glob 解析而不必打开每个文件读 frontmatter。
+每条素材带**敏感**标记（`sensitive` / ASCII 二元，[#17](https://github.com/jiangxidong/EduApplication/issues/17)）：由 agent 提议、**用户可下调**。标 `yes` 的素材，其**原文永不直接进任何产物**——引用时须逐条确认「原文 → 拟用表述」。向用户本人复述不受此限。
+每条素材的**可验证性**落成 `verifiable_by`（`recommender_id` 列表，[#38](https://github.com/jiangxidong/EduApplication/issues/38)）：**空列表 = 缺人缺口**，与 `claims.md` 的 `materials` 空 = 缺素材同构。「谁能证实」因此被限制成必须先是一个推荐人候选——联系不上属于推荐人的状态，不是素材的属性。
 🔴 **素材的字段一律列名，不写「N 字段」**（[#30](https://github.com/jiangxidong/EduApplication/issues/30)）。「六字段 / 七字段」曾在三处票面上并存三种计数，删掉 `已用于` 会立刻产生第四种——同 [#24](https://github.com/jiangxidong/EduApplication/issues/24) 在文件上杀掉的病（「表的行数就是文件数，任何文件都不带序号」）。**v1 的字段名单归状态层契约**（[ADR 0011](docs/adr/0011-the-glossary-defines-words-the-contract-holds-the-values.md)：词汇表定义词，契约持有取值）。
-⚠️ **素材的字段名单眼下有两套互不相交的词汇**，repo 里没有任何一处把它们对应起来（#10 的六个语义字段 vs 样例 frontmatter 的 `material_id` / `type` / `usable_for` / `concrete`）。**哪一套是 schema 尚未裁决** → [#38](https://github.com/jiangxidong/EduApplication/issues/38)。
+🔴 **语义槽位不是落盘字段**（[ADR 0014](docs/adr/0014-a-semantic-slot-is-not-a-stored-field.md)）。#10 的六个是「一条素材必须答什么」的判据，**不是 frontmatter 键名**；frontmatter 只放**有落盘消费方**的键，其余留正文。此前两套词汇被当成同一件事的两个版本，于是 #27 把 frontmatter 现有的键读成了「通往 #10 名单的进度」。
 
 **具体素材** — `—`
 能答**三问**的素材：**什么时候** / **你做了什么动作** / **结果是什么**。三问答不全的是感想，不是素材。
 ⚠️ **「谁能证实」不在判据里**——可验证性是素材的独立属性（供推荐信选人用）。自学项目、个人作品无人可证，**照样是合格素材**。
+⚠️ **「具体」没有落盘形态**（[ADR 0014](docs/adr/0014-a-semantic-slot-is-not-a-stored-field.md)）：三问住在正文，不设字段——一个 `concrete: true` 为保持为真必须跟着正文改，源就在同一个文件里。**判「具体」的是采集现场的 agent，不是 CI**；契约那条固定小标题的形状规则只判形状，三个标题齐全而底下写的是感想，脚本一样放行。
 
 **素材门槛** — `—`
 「不许有无素材支撑的主张」这条**质量硬约束**。单位是**主张**不是篇数；3–5 个是参考值，不是闸门。
@@ -544,4 +547,6 @@ _Avoid_: 骨架 / 补全（用时序冒充责任——「什么时候被填」�
 | 联网档位（作为回归模式名） | 离线模式 / 预取证模式 | 产品里不存在「档位」这个实体（[ADR 0007](docs/adr/0007-a-checkmark-is-earned-by-a-fetch-not-by-a-capability.md)）；模式是**回归套件**的属性，不是产品的属性 |
 | 起步清单 / 推荐方向（作为首屏产出） | 缺口清单 / 第 0 问 | 首屏给不出可取证的方向建议——硬编码院校库在 Out of scope，凭记忆给撞停手线取证类（[ADR 0012](docs/adr/0012-the-first-reply-is-a-mirror-not-a-list.md)） |
 | 已用于（作为素材的一个字段） | （不存，现推） | 它是镜像——文书侧由 canonical 跨校共用决定「跨校开头雷同」不是缺陷，推荐信侧的差异化轴是**主张**不是素材（[ADR 0006](docs/adr/0006-claims-are-one-shared-truth-source.md)、[#30](https://github.com/jiangxidong/EduApplication/issues/30)） |
+| `usable_for`（作为素材的一个字段） | （不存）正文的「不能用在哪」 | 两条判据各判一次：选材路径是「主张 → 素材」，它不在任何决策链上；且文书类型清单逐渠道住在 `channels/` 的「文书规格」，**源在别处** = 镜像（[ADR 0014](docs/adr/0014-a-semantic-slot-is-not-a-stored-field.md)） |
+| `concrete`（作为素材的一个字段） | （不存）正文三问 | 它是同一个文件正文的镜像，也是「零可再生缓存」禁的那样东西（[ADR 0014](docs/adr/0014-a-semantic-slot-is-not-a-stored-field.md)、[#30](https://github.com/jiangxidong/EduApplication/issues/30)） |
 | 毕业目标（作为第 0 问） | 毕业去向意向 / `post_grad_intent` | 它是画像的一个字段，不是第 0 问——「回国」支不可取证（[#16](https://github.com/jiangxidong/EduApplication/issues/16) 排除），「留美」支能取证但取不全（[#34](https://github.com/jiangxidong/EduApplication/issues/34)：三所样例 1/3） |
