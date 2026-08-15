@@ -72,4 +72,22 @@ season: 2027fall
 
 #### 学历门槛
 
-- `待核实` GRE 是否要求
+- `待核实` GRE 是否**要求** —— 该 FAQ 只回答「有没有最低分」，「要不要考」转指 SEAS 的 application requirements 页，**本次未取回该页**，故这一条不借势填掉
+- 🔴 `✓ https://www.cs.columbia.edu/education/ms/appfaq/` `While there is no minimum GPA requirement to apply for admission consideration, the program is highly selective. Successful applicants typically have a GPA of 3.5 or higher.`
+- `✓ https://www.cs.columbia.edu/education/ms/appfaq/` GRE 最低分：`No. Most admitted applicants, however, have scores of 750 or higher on the Quantitative section of the test.`
+- `待核实` 上面那条 GRE 数字的**口径**：`750` 属 2011-08 之前的 200–800 量表（现行 GRE 数学是 130–170），该页此处疑为陈旧未更新。**未向学校核实**，故不据此做任何判断
+
+> **这一句同时是伪保底的两半**（`CONTEXT.md`「伪保底」要求两半各自有 `✓` 事实行，此处两半住在**同一条**）：
+> `no minimum GPA requirement` = 名义门槛低，`highly selective` = 方向极挤 ⇒ `pseudo_safer = yes`。
+> ⚠️ 分档侧：类型 **B**（`typically` + `Successful applicants` = 录取结果），且**只给单个下界、无区间** ⇒ 天花板就是 `match`。
+> 而样例画像加权 84.6 / 校内换算 3.4，**低于** 3.5 这条下界 ⇒ 连 `match` 也够不着，落 **`reach`**——
+> 「落在录取群体中段」的公开信号不存在，反而有一条公开信号说明它在中段**以下**。
+> 机械判别式 `pseudo_safer = yes ⇒ tier ≠ safer` 在本行成立。
+
+#### 英语门槛
+
+- `✓ https://www.cs.columbia.edu/education/ms/appfaq/` `For Internet-based TOEFL test, we recommend a total score of 101.` 与 `For IELTS, 7 is the recommended score for admission.`（样例托福 102，**跨过** 101）
+
+> ⚠️ **`recommend` 在这里不构成第二条线。** 它是类型 A 的触发措辞，但 Columbia 在英语这个维度上**没有另一条更低的最低线**——
+> 101 是该项目唯一的线。按 `CONTEXT.md`「第二条线」的 ⚠️ 第一条（UT Dallas `3.0 or better is expected` 那个先例），
+> **无第二条线可跨** ⇒ 这一条**不能**用来给本行立 `safer`，也不构成擦线（只有一条线的维度不存在擦线）。

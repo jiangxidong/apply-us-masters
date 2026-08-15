@@ -28,6 +28,29 @@ season: 2027fall
 - `待核实` 是否卡本科院校层级、卡到什么程度（五所样本**无一公开院校分级名单**，见 #5）
 - `✓ 同上` 明确**不需要 WES 等外部学历评估**（对照：UT Dallas 明确不接受外部评估；Northeastern 明确不需要 WES）
 - `✓ 同上` CHESICC / 学信网：**录取后**才要，不是申请时
+- `✓ https://grad.illinois.edu/admissions/country/china` 中国申请人最低线的**精确端点**（上面那条 `…/international` 带省略号，取不回来）：`Minimum GPA Requirements` = **B Average / 80%**
+- `✓ https://grad.illinois.edu/admissions/country/china` 换算口径由校方裁量：`When institutions provide a different grading scale or a different degree format, academic credentials will be reviewed on an individual basis to determine acceptable degrees and GPAs.`
+- `✓ https://siebelschool.illinois.edu/admissions/graduate/applications-process-requirements` 校级最低线：`The University of Illinois Urbana-Champaign policy requires applicants to hold at least a 3.0/4.0 or higher GPA in the last two years of their undergraduate study`
+- `✓ https://siebelschool.illinois.edu/admissions/graduate/faqs` 国际成绩单由**校方自己换算**：`School staff will calculate and convert international transcripts`，结果取决于原院校的评分制
+
+> ⚠️ 本节前三条里，那条省略号 URL 与挂在它上面的两条 `同上`（WES / CHESICC）本次（2026-08-15）**没有重新取证**。
+> 上面新加的 china 端点正文里**既没有 WES 也没有 CHESICC**，所以**不能**把省略号换成它了事——那会让两条事实静默地开始断言它们来自一个没有它们的页。→ #62
+
+## 英语门槛 —— 🔴 两档，且 2026-01-20 起换了量表
+
+- `✓ https://grad.illinois.edu/admissions/instructions/04c` 研究生院英语线分 **Limited Status / Full Status 两档**（下表为该页原值）
+
+| 考试 | Limited Status Admission Minimum | Full Status Admission Minimum |
+|---|---|---|
+| TOEFL iBT / Home Edition | **4.0**（成绩日期 2026-01-20 之后）／**79**（2026-01-21 之前） | **5.0**（2026-01-20 之后）／**103**（2026-01-21 之前） |
+| IELTS Academic | 6.5 | 7.5 |
+| Duolingo | 115 | 135 |
+
+> 🔴 **两档 = 这个维度有第二条线**：Limited 是最低线，Full 是第二条线。没跨过 Full 就是该维度**擦线**（见 `CONTEXT.md`），
+> 而 `safer` 的合取第 ③ 项要求**没有任何维度擦线**——所以这一栏不只是资格门槛，它能单独挡掉 `safer`。
+> ⚠️ 量表在 **2026-01-20** 换过。样例画像的托福考期是 2026-05-16（在换表**之后**）却记着旧制 102，两格打架 → #56。
+
+- `✓ https://siebelschool.illinois.edu/admissions/graduate/applications-process-requirements` 项目侧另有口语提示：`Applicants with TOEFL iBT speak scores below 22 have a low chance of admission`（样例口语恰为 22，**不低于**，未被这条挡住）
 
 ## 材料上传 —— ⚠️ 与 Cornell 直接冲突
 
@@ -84,3 +107,16 @@ season: 2027fall
 #### 学历门槛
 
 - `待核实` GRE 是否要求
+- `✓ https://siebelschool.illinois.edu/admissions/graduate/degree-program-options` 「Comparison of CS Graduate Programs」表，GPA 列的列头逐字为 `Undergraduate GPA (Recommended, 4.0 scale)`；取值：MCS（Urbana-Champaign / Chicago / Online）**3.2**、MS in Computer Science (thesis) **3.2**、MS Bioinformatics **3.2**、5-year BS/MCS **3.2**、PhD **3.4**、5-year BS/MS **3.5**
+- 🔴 `✓ https://siebelschool.illinois.edu/admissions/graduate/faqs` 学校**对上面那个数字本身的官方解释**——问「My undergraduate GPA is below the average quoted on your website. Will my application be reviewed?」，答：`Our website states the average GPA of admitted students. It is not a minimum.`
+- `✓ https://siebelschool.illinois.edu/admissions/graduate/faqs` 同向佐证：`Our school typically requires a higher minimum as a benchmark for admission`（对照 Graduate College 那条基于 "B" equivalent 的最低线）
+
+> **所以 3.2 是类型 B，不是类型 A。** 表头写 `Recommended`（`CONTEXT.md`「第二条线」表里的**类型 A 触发措辞**），
+> 但学校自己把这个数字解释成**已录取者的平均分、且明说不是门槛**——那描述的是「谁被录取了」，判**类型 B**。
+> 措辞与实质冲突时按实质判：该词条已写明「触发措辞只判定第二条线的**类型**」，而类型的定义是语义的，不是词表的。
+> ⚠️ 类型 B 是**单个平均值、无区间** ⇒ 按词条 ⚠️ 第二条（类型 B 通往 `safer` 必须有离散度）**不判 `safer`**；3.4 高于 3.2 ⇒ **到 `match` 为止**。
+
+#### 学位形态 —— 🔴 本行可能选错了学位
+
+- `✓ https://siebelschool.illinois.edu/admissions/graduate/degree-program-options` 同一张表：**MS in Computer Science** 的 Thesis Required = **Yes**、Research Required = **Yes**、Admission Cycle = **Fall only**；**MCS（Master of Computer Science）** 三项分别为 **No / No / Spring & Fall**
+- → 在 UIUC，`MS in Computer Science` 是**带论文的研究型硕士**，不是 coursework master；本行 `program` 填的正是它 → 归 #55。**分档结论不受影响**：两个学位的 3.2 相同
