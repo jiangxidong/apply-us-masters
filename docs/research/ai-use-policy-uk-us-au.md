@@ -856,3 +856,276 @@ URL：https://humsci.stanford.edu/prospective-students/guide-getting-grad-school
 > **结构性说明**：美国研究生申请的 certification 勾选文本通常位于申请系统（Slate / ApplyWeb / CollegeNET）提交前的最后一屏，需登录方可见，
 > 绝大多数学校**不在官网公开发布**。因此「未找到」多数是**发布方式**所致，而非该条款不存在。
 > 这与英国 KCL / LSE 的情况完全一致——**是全球性的结构盲区，不是某一国的问题**。
+
+---
+
+## 三、澳大利亚
+
+> **本节的结论与英美完全不同形态，必须先说方法。**
+> 澳洲高校的招生规则集中在**政策库（policy library）**里的 Policy / Procedure 正式文书，
+> 每份都有版本号、批准机构、生效日期，且**层级分明**（Policy 定原则 → Procedure 定操作）。
+> 本节对 **8 所学校** 的招生 Policy / Procedure 正式文书 + 面向申请人的 how-to-apply 页面
+> 逐份抓取后全文检索 `artificial intelligence` / `generative` / `ChatGPT` / `machine-generated`。
+
+### 3.0 ⚠️ 全局结论：**8/8 命中为 0**
+
+**截至 2026-08-14，本次抓取的 8 所澳洲大学的招生政策/程序正式文书与申请人指引页面中，没有任何一份提及 AI。**
+
+**这是事实结论，不是数据缺口**——所有相关约束都落在通用的
+「incomplete / inaccurate / fraudulent / misleading information」条款上，
+而这些条款的文本**从未点名 AI**，因此按本文件的判定纪律，**不能推定其涵盖 AI 辅助写作**。
+
+| 学校 | 已查文书 | AI 命中 |
+|---|---|---|
+| **Melbourne** | Selection and Admission Policy (MPF1295) | 0 |
+| **UQ** | Admission Policy + Admission to Coursework Procedure + HDR Admission Procedure | 0 |
+| **ANU** | Policy: Admissions (Coursework) ANUP_008805 + Procedure ANUP_007810 | 0 |
+| **Adelaide** | Admissions Policy + Coursework Admission Procedure + Graduate Research Admission Procedure | 0 |
+| **UWA** | Admissions Policy (Coursework) UP 16/5 + HDR Admission Policy UP23/13 | 0 |
+| **Monash** | Admission to Coursework Courses and Units Procedure + Graduate Research Admissions Procedure + 学术诚信 Policy | 0 |
+| **UNSW** | Admissions Policy v2.2（Effective 13 May 2026） | 0 |
+| **Sydney** | 研究生 how-to-apply 页 + 国际生申请页 + PG research 申请页 | 0 |
+
+---
+
+### 3.1 University of Melbourne
+
+文书：**Selection and Admission Policy (MPF1295)**｜URL: https://policy.unimelb.edu.au/MPF1295/ ｜2026-08-14
+元数据（页面逐字）：`Version: 22` / `Document Type: Policy` / `Document Status: Published` / `Approved On: 30 April, 2026` / `Effective Date: 17 August, 2026` / `Policy Approver: Academic Board`
+
+⚠️ 查阅日（2026-08-14）显示的 Published 版本 v22 生效日为 **2026-08-17，即查阅日之后 3 天**；当日在效版本应为 v21（`Approved On: 09 January, 2025`）。两版在本主题上实质内容一致（均无 AI 条款）。
+
+**AI：0 命中 → D 档。**
+
+后果条款 5.27（`Cancellation or withdrawal of offer`）：
+
+> The Academic Registrar or a dean may refuse entry into a course or subject including, but not limited to, **withdrawing an offer or cancelling the admission and enrolment of a student** where:
+> ...
+> b) the offer of admission has been made based on **incomplete, inaccurate or fraudulent information** provided by the person or a third party on behalf of the person;
+> ...
+> f) in the reasonable opinion of a dean or the Academic Registrar the person is holding open, or intends to hold open, the offer or enrolment for purposes other than genuine study;
+
+条款 5.28：
+
+> Any action taken under this section must be notified in writing to the student.
+
+申请人 declaration（政策内提及，条款 4.13(f)）：
+
+> agree to the terms and conditions specified by the University and complete all declarations required in the application process.
+
+⚠️ **declaration 逐字文本未公开**——政策只规定「须完成 declaration」，未复刻其措辞。
+
+---
+
+### 3.2 University of Queensland
+
+| 文书 | URL | AI 命中 |
+|---|---|---|
+| Admission Policy | https://policies.uq.edu.au/document/view-current.php?id=140 | 0 |
+| Admission to Coursework Procedure | https://policies.uq.edu.au/document/view-current.php?id=228 | 0 |
+| Higher Degree by Research Admission Procedure | https://policies.uq.edu.au/document/view-current.php?id=244 | 0 |
+
+（三份页面均自述 `This is the current version of the approved document.`｜2026-08-14）
+
+**AI：0 命中 → D 档。**
+
+Coursework Procedure `Part G - Withdrawal of or Refusal to Make an Offer of Admission` 第 (42) 条：
+
+> The Academic Registrar may refuse to make an offer or withdraw an offer:
+> if it is found that the applicant failed to:
+> ...
+> **provide complete and accurate information relevant to their application for admission**, whether submitted by the applicant or on behalf of the applicant.
+> ...
+> if UQ determines an international applicant is not meeting the Department of Home Affairs' Genuine Student requirement criterion for a student visa (or equivalent criterion).
+
+第 (43) 条：
+
+> The Academic Registrar may also refuse to make an offer or withdraw an offer:
+> if they reasonably believe:
+> the applicant poses a risk to other students, staff, themselves, or the UQ or broader community;
+> **the applicant is not a genuine applicant.**
+
+HDR Admission Procedure 第 (40) 条（**澳洲各校中措辞最直接的一条**）：
+
+> The Dean may withdraw a letter of offer if it is found **or suspected** that the applicant has provided false, misleading, incomplete or inaccurate information in their application.
+
+⚠️ 注意 "**or suspected**" —— UQ 是本次样本中唯一把「怀疑」也写入触发条件的一校。**但该条仍未提及 AI。**
+
+---
+
+### 3.3 Australian National University
+
+| 文书 | URL | 元数据 | AI 命中 |
+|---|---|---|---|
+| Policy: Admissions (Coursework) ANUP_008805 | https://policies.anu.edu.au/ppl/document/ANUP_008805 | `Effective Date: 1 Dec 2024` / `Next Review Date: 1 Dec 2029` / `Approved By: Academic Board` | 0 |
+| Procedure: Admissions (Coursework) ANUP_007810 | https://policies.anu.edu.au/ppl/document/ANUP_007810 | `Effective Date: 10 Mar 2026` / `Next Review Date: 10 Mar 2031` | 0 |
+
+Policy scope：
+
+> This policy applies to the University's coursework programs, including non-award studies. It does not apply to higher degrees by research.
+
+申报义务：
+
+> All academic failing grades are included in the calculation of an applicant's entrance GPA. **Applicants applying to ANU are required to disclose their complete academic history, even if their academic transcripts may exclude failing grades.**
+
+**⚠️ ANU 的特殊之处：连「提供虚假/误导信息」的后果条款都没找到。**
+已在这两份文书中检索 `mislead / fraudulent / false / falsif / revoke / rescind / misrepresent / dishonest / forged` 全部命中，
+**无一条针对申请材料造假的后果规定**。ANU 把该事项留给了未在本次检索范围内的其他文书（如 Coursework Awards Rule 2024 / 学生纪律规则）。
+
+**档位：D。虚假信息后果：在 Admissions 政策与程序中亦未找到明确条款。**
+
+---
+
+### 3.4 Adelaide University
+
+⚠️ **结构性提示**：查阅当日 adelaide.edu.au 的政策库已以 **"Adelaide University"** 名义发布
+（阿德莱德大学与南澳大学合并后的新实体），政策正文多处出现 `Adelaide University`、`foundation universities`、`Transitional Academic Board` 等过渡期措辞。
+
+| 文书 | URL | 元数据 | AI 命中 |
+|---|---|---|---|
+| Admissions Policy | https://adelaide.edu.au/about/policies/admissions-policy/ | `Effective from 19 December 2025` / `Approving authority Vice Chancellor and President` | 0 |
+| Admission for Coursework Programs Procedure | .../admission-for-coursework-programs-procedure/ | `Effective from 24 September 2025` | 0 |
+| Graduate Research Admission Procedure | .../graduate-research-policy/graduate-research-admission-procedure/ | — | 0 |
+
+上位 Policy 第 3.7 节（**全部内容**）：
+
+> 3.7 We may refuse or revoke admission
+> We reserve the right to refuse or revoke admission if an applicant poses a risk to students, staff or others.
+
+⚠️ **上位 Policy 层面对造假只字未提**，仅写了「风险」这一条。
+
+Coursework Procedure 第 3.3.2 条：
+
+> We may refuse admission or revoke an offer of admission if:
+> the offer was made in error or was based on **incomplete or incorrect information**
+> ...
+
+⚠️ **注意**：coursework 程序仅写 "incomplete or incorrect information"，**没有** "fraudulent" 或 "misleading" 字样。
+
+Graduate Research Admission Procedure 第 5 节：
+
+> 5. Why an offer may be withdrawn
+> We reserve the right to withdraw an offer of admission of an applicant in cases where:
+> An offer is made in error.
+> An offer is made based on **incomplete, inaccurate, fraudulent, or misleading information** supplied by the applicant or certifying authority.
+> ...
+> **Applicant fails to disclose prior misconduct findings at any HEP.**
+
+（HEP = Higher Education Provider。即申请人须主动申报在任何高教机构的既往 misconduct 处分记录——
+澳洲少数把「学术不端历史」写进招生条款的例子，但**指向的是既往处分记录，不是申请材料本身的 AI 使用**。）
+
+---
+
+### 3.5 University of Western Australia
+
+| 文书 | 元数据 | AI 命中 |
+|---|---|---|
+| Admissions Policy (Coursework) UP 16/5 (F79902)，含 Admissions (Coursework) Procedures（PDF） | Policy 部分 `Approval Date: 28 August 2024` / `Version: 03`；Procedures 部分 `Approval Date: 22 February 2024`；`Approver: Academic Board` | 0 |
+| Admission to Higher Degree by Research Courses Policy UP23/13 (F23/2327)（PDF） | `Approval Date: 24 September 2025` / `Version: 03` / `Approver: Academic Board` | 0 |
+
+Policy 第 5.6–5.7 条：
+
+> 5.6 All applicants to courses of the University are required to disclose all of their prior academic study as a part of their application.
+> 5.7 An application for admission may be denied at the discretion of the University in situations where:
+> (a) **the applicant has engaged in dishonest, deceitful, and/or fraudulent behaviour;**
+> ...
+> (g) there is evidence that the applicant does not have a genuine intent to study at the University;
+
+Procedures `Part 10: Withdrawal of Offer`：
+
+> 10.1.3. Evidence arises that the applicant should be refused admission in line with clause 5.7 of the Admissions (Coursework) Policy, **including evidence of fraud or misconduct in the admissions process**.
+
+**⭐ 后果时长（澳洲各校中罕见的明确量化）**，Procedures 第 9.7 条：
+
+> 9.7. **Refusal of admission normally have a timeframe of five years from the decision**, unless otherwise specified.
+
+HDR Policy 第 9 节：
+
+> 9.1 An offer of admission may be withdrawn and/or admission cancelled, where:
+> ...
+> (b) the offer of admission has been made based on **incomplete, inaccurate or fraudulent information** provided by the applicant or a third party on behalf of the applicant;
+
+---
+
+### 3.6 Monash University
+
+| 文书 | scope（页面逐字） | AI 命中 |
+|---|---|---|
+| Admission to Coursework Courses and Units Procedure | "all applicants for coursework courses, units and approved enabling programs; current students seeking to transfer course; incoming study abroad and exchange students; and all locations." | 0 |
+| Graduate Research Admissions Procedure | "all applicants for admission to Monash University graduate research courses, including joint doctoral and research master's courses." | 0 |
+
+Coursework Procedure 第 16 节：
+
+> **16. Cancellation of application, offer or enrolment**
+> 16.1 The dean of the managing faculty (or nominee), or the campus Pro Vice-Chancellor (or nominee) in the case of courses offered in Indonesia, Malaysia or Suzhou, can decide to reject an application, or cancel an offer of a place or a student's enrolment if:
+> - the applicant has previously been suspended or excluded from Monash or another educational institution;
+> - admitting or enrolling the applicant may place the University in breach of a law or a legal requirement;
+> - **the applicant is found to have falsified information that would otherwise have led to their application being rejected;**
+> - the applicant failed to disclose information that would have led to their application being rejected; or
+> - the applicant has breached any of the terms and conditions of application or offer.
+
+Graduate Research Admissions Procedure 第 2.18 条（同构，另加 HDR 专属项）：
+
+> Rejection of application, cancellation of offer or enrolment
+> 2.18 The GRC (or delegate) may reject an application, or cancel an offer of admission or a student's enrolment if:
+> - the applicant has not satisfactorily demonstrated the eligibility requirements under section 1 of this procedure;
+> - the applicant has previously been suspended or excluded from the University or another educational institution;
+> - admitting or enrolling the applicant may place the University in breach of a law or other legal requirement;
+> - **the applicant is found to have falsified information that would otherwise have led to their application being rejected;**
+> - the applicant failed to disclose information that would have led to their application being rejected;
+> - the applicant fails to respond, or commence, in accordance with the offer in which case the offer will be lapsed and withdrawn, **and such offers will not be reinstated**; or
+> - the faculty advises that it does not have sufficient resources or supervisory expertise to support the student's proposed research project to completion.
+
+⚠️ 注意 Monash 的触发词是 "**falsified information**"（伪造信息）——比 Melbourne/UWA 的 "inaccurate" 门槛更高，
+**更难被解释为涵盖「用 AI 辅助写作」**。
+
+---
+
+### 3.7 UNSW
+
+文书：**Admissions Policy**｜元数据（PDF 页眉逐字）：`Version 2.2` / `Approved by: Deputy Vice-Chancellor Education and Student Experience` / `Approval date 13 May 2026` / `Effective date 13 May 2026`
+
+Scope：
+
+> The policy applies to admission to undergraduate, postgraduate coursework and higher degree research programs and non-award study at UNSW.
+
+**AI：0 命中 → D 档。**
+
+⚠️ **UNSW 的情况比其他七所更极端**：这份 Admissions Policy 全文仅 3 页，是一份**纯原则性政策**
+（"Applicants will be selected for admission on merit."、"Eligibility requirements for admission will be clearly expressed and publicly available."），
+检索 `integrity / cancel / withdraw / lapse / genuine / own work / honest / misconduct / accurate / verif` **全部零命中**——
+即 **UNSW 的招生政策连「虚假信息后果」条款都不在这一层**，实体规则下放到未在本次范围内的其他文书。
+
+---
+
+### 3.8 University of Sydney
+
+已查申请人指引页（AI 命中 = 0）：
+| URL | 类型 |
+|---|---|
+| https://www.sydney.edu.au/study/how-to-apply/postgraduate-coursework.html | 研究生授课型申请页 |
+| https://www.sydney.edu.au/study/applying/how-to-apply/international-students.html | 国际生申请页 |
+| https://www.sydney.edu.au/study/applying/how-to-apply/postgraduate-research.html | 研究型申请页 |
+
+⚠️ **诚实标注**：https://www.sydney.edu.au/policies/a-to-z-policy/coursework-policy.html 的政策正文为 JS 渲染，
+本次抓取只取到导航壳，**Coursework Policy 正文未成功核验**。
+Sydney 的 D 档判定**仅基于上述三个申请人指引页**，其政策库正文**记为未核实**，不作为零命中的证据。
+
+---
+
+### 3.9 澳洲小结与结构性解释
+
+**为什么澳洲是三国中唯一「全面沉默」的？** 基于抓取到的政策文本本身可以观察到三点（以下是推断，明确标注为推断）：
+
+1. **澳洲招生规则的载体是「政策库正式文书」，不是网页指引。** 英美的 AI 条款大量出现在 how-to-apply 页、FAQ、招生博客这类**低摩擦载体**上——改一句话就能上线。澳洲的等价规则必须走 Academic Board 批准 + 版本号 + 生效日期的流程（本节每份文书都有），**修订成本高、周期长**。
+2. **澳洲的招生合规重心在签证与 ESOS/Genuine Student，不在文书真实性。** UQ、ANU、Adelaide 的条款里 Department of Home Affairs 的 **Genuine Student** 要求反复出现，而个人陈述的原创性几乎不被单独规定。
+3. **澳洲授课型硕士的申请材料本身就比英美轻。** 多数澳洲授课硕以成绩单 + 学位证为主，个人陈述的权重远低于英美——**没有强规则，某种程度上是因为没有强需求**。
+
+⚠️ 以上第 1、2 点有政策文本支撑，第 3 点是基于申请材料清单的推断，**未在任何官方文本中得到直接确认**。
+
+**但沉默不等于安全**——澳洲的通用条款后果反而是三国中最重的一类：
+- **Melbourne / UWA**：不仅撤 offer，还可 **cancelling the admission and enrolment**（已入学也能取消）
+- **UWA**：refusal of admission **normally have a timeframe of five years**
+- **UQ（HDR）**：「**或怀疑**」提供虚假信息即可撤 offer
+
+详见 [§六](#六沉默地带政策没说的地方意味着什么)。
