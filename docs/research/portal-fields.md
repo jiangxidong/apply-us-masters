@@ -676,6 +676,80 @@ Cornell 要 **Academic Statement of Purpose** 和 **Personal Statement** 两份*
 
 ---
 
+### C.3 UIUC Graduate College（Slate / Technolutions）
+
+**平台取证**：抓取到的 portal 页 `<title>Application Management</title>`（Slate 申请人门户的标准标题），HTML 资源域 `choose-illinois-edu.cdn.technolutions.net`、`slate-technolutions-net.cdn.technolutions.net`，`technolutions` 出现 12 次。**与 Columbia SEAS 同平台、不同实例**——但两校的字段结构差异极大，见下。这直接证明：**平台相同不代表字段可复用。**
+
+**🌟 扫描规格与所有人的直觉相反**
+
+> `Please obtain an electronic version or scan a copy of the credentials at the lowest resolution that results in a legible document (we recommend using under 200 dpi whenever possible). Scanning in "gray scale" or black and white may produce the best results. Please be certain that your document is saved as a PDF file or Word document.`
+
+- **要求尽量低分辨率（建议 200 dpi 以下）、灰度或黑白**——目的是压小体积。
+- 对照 **Leeds**：`scans should be complete and of a good quality, showing the 4 corners of all pages`（强调质量与完整）。
+- 对照 **Cornell**：`Ensure each scanned or saved image is clear and easy to read`。
+- → 一份"高分辨率彩色扫描"在 Leeds 是加分，在 UIUC 是被明确劝阻的做法。**扫描参数本身就是不可跨校复用的约束。**
+- 格式：**PDF 或 Word**（Cornell 收 PDF/TIFF/JPEG/GIF 但不收 Word；UCL 收 .docx）。
+- 内容标识：`The uploaded document must include your name and the institution name`。
+- 🌟 系统提供 **view document 按钮**让申请人自查清晰度，不清晰须重传。
+
+**🌟 个人陈述的第五种形态：一组 250 词短答题**
+
+- **Academic statement**：全体必交，**字数上限由所申项目自行设定，范围 500–1000 词**——同一所大学内部不同项目上限不同。
+- **Personal statement**：不是一篇长文，而是**一组短答题，每题上限 250 词**；第 1–2 题必答，第 3–4 题选答（明示 `your response is voluntary and not answering these questions will not affect your admissions decision`）。
+
+至此**八校八种文书形态**，没有任何两校能共用同一份成品：
+
+| 学校 | 上限 |
+|---|---|
+| UCL | 表内 3,000 字符 / 上传两页 A4（12pt 单倍行距） |
+| Manchester AMBS | 不超过一页 |
+| Manchester CS（modular） | 约半页 A4 |
+| Leeds EPS | 不超过一面 A4 |
+| Columbia SEAS | 建议 250–1,000 词，超出不罚 |
+| Cornell SOP | 一到两页；Personal Statement 未给数字 |
+| **UIUC academic statement** | **500–1000 词，具体由项目定** |
+| **UIUC personal statement** | **每题 250 词 × 4 题（2 必 2 选）** |
+
+**⚠️ 推荐信 —— 两个别处没有的机制**
+
+1. 🌟 **八校中唯一写清"填推荐人信息"与"提交申请"先后关系的学校**
+   > `The application will require this information prior to allowing you to submit your online application. However, you do not need to wait for your recommenders to submit their letters before you submit your online application. You can and should submit your online application prior to your recommenders submitting their letters.`
+   即：**不填推荐人信息就不能提交**，但**不必等推荐信到齐**，官方还主动建议先交申请。
+
+2. 🔴 **`import these recommendations`——最需要产品设防的一个功能**
+   > `If you have submitted an application to another program or term previously, you are able to import these recommendations to this application. However, you must obtain explicit permission from the letter writer to use their letter for this application. If you are asking these references to provide a new letter, do not import these reference records as they will not receive a new request to submit a new letter.`
+   - 旧推荐信可**一键导入**新申请；
+   - 官方硬性要求：**必须取得写信人的明示许可**；
+   - 且导入后**推荐人不会收到新请求**——学生可能误以为推荐人会重写。
+
+   > 🔴 **这是 UCL 之外的第二条红线，而且性质不同。** UCL 的风险是"AI 触发系统以申请人名义给第三方发信"；UIUC 的风险是 **"AI 代为勾选导入，等于在未取得推荐人明示同意的情况下复用其署名文件"**。前者是冒名发信，后者是**冒名复用**。产品必须把 `reference_import_previous` 与 `referee_1_email` 一并列入 AI 禁止自动操作的字段。
+
+**FERPA waiver 的改动代价（比 Cornell 记得更细）**
+逐条推荐记录各问一次是否放弃查阅权；查阅权只对**被录取并实际入读**者生效。
+🌟 改主意的唯一办法：**把原推荐人记录 exclude 掉，再新增一条信息完全相同但 waiver 答案不同的记录**——这会重新走一次发信流程。
+另外：**只有在推荐信尚未提交前**才能 exclude；被 exclude 的推荐人可在 References 页点其姓名后用灰色 **Reinstate** 按钮恢复。
+
+**🔴 缴费顺序与 Cornell / 曼大相反**
+
+| 学校 | 顺序 |
+|---|---|
+| Cornell | **付费 = 提交的最后一步**，付完就不能再改 |
+| Manchester | `You can't submit your application without paying` |
+| **UIUC** | **先提交，后付费**：`Once you have submitted your application, you will be required to pay your application fee by credit card` |
+
+且 UIUC 有一条别处没有的回退规则：`The fee must be paid prior to your program's deadline, or your application will be **unsubmitted**` —— 逾期未付会被**退回未提交状态**。
+金额 **$90**（国内国际同价，2026 春季起；2025 秋季国内价 $70），不可退，未付费前不进入评审。
+
+**其他 UIUC 特有**
+- **联合学位要交两份独立申请**（一份以 Program A 为 Primary，另一份以 Program B 为 Primary），理由写明 `Each application has program-specific application questions and upload requirements`——**题目与上传要求随项目变**。
+- 每所院校都须另附 **transcript legend / university key**（多在成绩单背页）。同一诉求三校三种叫法：Leeds `grading scale`、曼大 `University Grading Scale`、UIUC `transcript legend`。
+- 上传件全部视为 **unofficial**；官方件只在**录取后、且在就读第一学期内**提交。
+- 美国身份类上传件：LPR 传绿卡，asylee / refugee / parolee 传身份文件（英澳无对应）。
+- 推荐人明文排除 `no friends or relatives please`。
+- 免申请费**仅限国内申请人**（UIUC 员工、I-Promise、SROP、McNair、美军服役、allied agencies），且证明文件**必须在提交申请之前传好**；国际申请人不可免，除非来自有获批免费条款的交换协议。
+
+---
+
 ---
 
 ## Part D — 跨国字段复用分析（**本文件最重要的一节**）
