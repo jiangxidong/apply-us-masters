@@ -1407,3 +1407,197 @@ Duke Fuqua 的条款是**完全同构的**："...or AI-generated content, **with
 >
 > **反过来说**：这也意味着产品**不能承诺**「我们知道每所学校的全部 AI 规则」。
 > 真正稳妥的做法是把「提交前那一屏请自己读一遍」写进流程，而不是替用户断言。
+
+---
+
+## 七、三国**一致**的部分（可做统一骨架）
+
+1. **AI 条款一律挂在通用「真实性/欺诈」条款之下，没有一所把它做成独立的处罚体系。** 无论 A/B/C/D，最终援引的后果条款都是同一套：撤 offer / 取消入学 / 禁止再申请。**产品的风险模型只需要一套后果表，不需要一套 AI 专属后果表。**
+2. **「整篇由 AI 生成」在所有有条款的学校都是违规**，无一例外。分歧全在「辅助到什么程度算辅助」。
+3. **「你必须是主要作者 / 唯一作者」是跨国通用表述**：Rackham "sole author"、Lehigh "sole author"、Vanderbilt "primary author"、Oxford "entirely your own work"、KCL "your own work"、LSE "all your own work"。**这句话是全球最安全的产品措辞基底。**
+4. **没有任何一所学校要求申请人证明「我没用 AI」**——举证责任在校方一侧（"where evidence is detected" / "if it is suspected" / "we reasonably consider"）。
+5. **后果都含「已入学后追溯」条款**：Melbourne/UWA 取消 enrolment、KCL §17.6 终止注册、Columbia GSAS revocation of degree、Rackham 转入学术不端程序。**风险不随提交而结束，产品不应给用户「交完就安全」的暗示。**
+6. **申诉权的有无高度分化，但都写明了**：UCAS 有、KCL 有、Rackham 有（院长终审）、**UCL 明确没有**、LSE "without appeal"。
+7. **申请门户内的 certification 勾选文本几乎全部不公开**（三国唯一例外是 MIT）。
+
+---
+
+## 八、三国**就有分歧**的部分（必须逐校 × 逐材料建库）
+
+> **核心结论：后果模型是统一的，但「什么算越界」这条线是院校私有的，甚至是院校内部按材料类型私有的。**
+> 「一个模板 + 一张院校参数表」不够用；需要的是「**学校 × 学历层次 × 材料类型**」三维参数表。
+
+1. **档位跨度覆盖全部四档，且没有国别规律**：同为英国 Russell Group，Cambridge 禁 PS、KCL 说「是个可以考虑的工具」；同为美国顶尖研究生院，Columbia GSAS 全面禁止、UNC 要求引用、Stanford 完全沉默。
+2. **⭐ 「用 AI 改英文」是分歧最尖锐的一条，也是对中国用户最致命的一条**：
+   - **Cambridge（PS/CV）**：禁止，且明说 "This prohibition covers the use of AI to help your use of English."
+   - **Vanderbilt**：明确允许 —— "What if English is not my first language? Applicants may use AI for grammar, spelling, and general editing."
+   - **Rackham / Lehigh / Northwestern**：允许 "words and phrases" 级翻译，**禁止**整段/大段翻译
+   - **Imperial 商学院**：Proofreading 列为 "acceptable (and encouraged)"
+   → **同一个用户、同一份 PS，在这几所学校得到完全相反的答案。**
+3. **同一所学校内部按材料类型分档**（不是极端个例，而是最好的两份政策都这么写）：
+   - **Cambridge**：PS/CV 禁止｜research proposal 允许 + acknowledge｜面试禁止
+   - **Sheffield Hallam**：申请表内文字允许但不得复制粘贴（无披露）｜作品集/写作样本/面试须**事前申报 + 提交内标注**
+4. **同一所学校内部按项目分档**：**Michigan Ross** 的 APA 引用要求只出现在 Online MBA / Weekend MBA / MBAn 的申请页，Full-Time MBA / EMBA / Global MBA / MAcc / MM 页面没有。
+5. **同一所学校内部按学历层次分档**（层级错位，四个实例）：LSE 本科有 / 研究生无｜Imperial 商学院有 / 大学层面无｜Georgia Tech 本科有 / 研究生无｜Cornell 本科有 / 研究生无。
+6. **条款位阶差异极大，直接决定其约束力**：全校 Admissions Policy（KCL §17、Sheffield Hallam §2.21）＞ 中央 Application Guide（Oxford）＞ 招生指南页（Cambridge、Edinburgh）＞ application instructions（UNC、Ross、Fuqua）＞ FAQ（Vanderbilt）＞ **招生博客（Imperial 商学院、LBS）**。**博客不是条款，产品在呈现时必须标出位阶。**
+7. **披露义务的强度与可执行性各不相同**：Ross "are required to" + APA 格式与示例｜UNC "must be cited clearly" 无格式｜Cambridge "should be acknowledged" 无格式无位置｜Sheffield Hallam "declared in advance and clearly marked" 有两个动作但无格式。
+8. **AI 检测声明只有 3 例，且载体位阶差三级**：Oxford（中央申请人政策）＞ Fuqua（项目申请说明）＞ Imperial 商学院（博客）。
+9. **后果的「射程」差异巨大**：Columbia GSAS 终身禁申 GSAS 全部项目｜Manchester 可永久排除｜UWA 通常 5 年｜Rackham 5 年｜Oxford 当季全撤 + 一段时期禁申｜Edinburgh 保留拒收后续申请｜Melbourne/UWA 可取消已生效注册。
+10. **申诉权有无相反**：UCL「无申诉权」与 LSE「without appeal」vs. UCAS/KCL/Rackham 明文有申诉。
+11. **国别整体形态三分**：**英国 = 条款分散、位阶混乱、层级错位最多**｜**美国 = 条款位阶最高、模板正在扩散、写得最细**｜**澳洲 = 全面沉默，但通用条款后果最重**。
+
+---
+
+## 九、⭐ 产品结论：应该在流程的哪一步、用什么措辞提示用户？
+
+> 任务要求回答一个产品问题，并明确指出「**提示时机比措辞更重要——文书写完再提示等于没提示**」。以下是基于上述全部证据的明确建议。
+
+### 9.1 时机的硬约束：三条来自政策本身的推导
+
+**（1）同一份 PS 会被投给多所学校 → 【最严的那一所决定整份草稿的写法】**
+
+这是全部结论中最关键的一条。用户的选校列表里只要有一所 Cambridge（PS/CV 禁止 AI，**含改英文**）、
+Edinburgh（用 AI 写 PS "could be committing fraud"）或 Columbia GSAS（"may not be used to produce any application materials"），
+那么**这份 PS 的整个生成过程就已经被锁死了**——他不可能先用 AI 起草一版，再为 Cambridge「洗掉」。
+
+> **推论：AI 使用边界必须在【开始写之前】就确定，且必须由【选校列表】驱动。**
+> 写完再提示，用户面对的唯一选项是「推翻重写」或「赌一把」——这正是任务所说的「等于没提示」。
+
+**这不是本文件的发明，而是官方自己的做法**：U-M Rackham 在 SOP 写作指导页写的是
+"Please consult Rackham's guidance and policies related to the use of generative artificial intelligence **before preparing** your academic statement of purpose or your personal statement."
+
+**（2）规则的粒度是「学校 × 学历层次 × 材料类型 × 项目」，不是「学校」**
+
+- Cambridge 同一页面上 PS/CV 与 research proposal **档位相反**
+- Sheffield Hallam 同一政策内申请表文字与作品集 **档位相反**
+- Michigan Ross 同一学院内不同 MBA 项目 **有无条款不同**
+- LSE / Imperial / Georgia Tech / Cornell **同一学校不同学历层次条款不同**
+
+> **推论：任何按「学校」建模的提示都会给出错误答案。** 数据结构最少要到四维。
+
+**（3）披露档需要产出一个「东西」→ 必须有第二个触点在导出/提交前**
+
+A 档不是一句提醒能满足的，它要求一个**实际产物**：Ross 要 APA 行内引用、UNC 要 "cited clearly"、
+Cambridge 要 "acknowledged"、Sheffield Hallam 要「事前申报 + 提交内标注」。
+这个产物**只能在文本定稿后才能加**，且**只对 A 档学校加**。
+
+### 9.2 建议方案：**两个触点，一个红线，绝不自作主张**
+
+#### 触点一（主触点）：**选校列表确定后、任何文书生成动作开始之前**
+
+**位置**：用户加完选校、点击「开始写个人陈述 / 生成初稿」的**那一次点击之前**，作为一个必须通过的门。
+**不是**设置页里的一个开关，**不是**首次使用的一次性公告——因为选校列表会变，规则必须跟着变。
+
+**逻辑**：对当前选校列表做**取最严**运算，输出三种结果之一：
+
+| 列表中的最严档位 | 提示形态 | 产品行为 |
+|---|---|---|
+| 含 **C 档**（Cambridge PS/CV、Edinburgh、Columbia GSAS、Oxford…） | **硬提示 + 需要用户明确选择** | 对这些学校**默认关闭**代写/改写/润色，只保留「提问帮你回忆经历」「结构建议」「事实校对」等不落笔的功能 |
+| 最严为 **A 档**（UNC、Ross、Cambridge research proposal、Sheffield Hallam 作品集） | **中提示** | 记录该校需要披露，**在触点二兑现** |
+| 全为 **B / D 档** | **轻提示（一次性，可折叠）** | 正常使用，但仍展示「你必须是唯一作者」这条通用底线 |
+
+**措辞（触点一，C 档存在时）**——建议直接引用原文，不做二次转述：
+
+> **你的选校里有 3 所对申请文书使用 AI 有明确限制，其中最严的一条来自剑桥大学研究生招生：**
+>
+> > "AI must not be used when writing personal statements and CVs. **This prohibition covers the use of AI to help your use of English.**"
+> > —— University of Cambridge, Using AI in your application（2026-08-14 查阅）
+>
+> **注意最后一句：剑桥的禁令包括「用 AI 帮你改英文」。** 语法润色、句子改写、翻译成英文，在剑桥都算违规。
+>
+> 因为你的个人陈述会同时投给多所学校，**最严的那一所决定了整份文书能怎么写**。
+>
+> 建议你现在选一条路：
+> - **[推荐] 为剑桥单独写一份**，其余学校用另一份 → 我可以帮你做提纲、提问、查事实，但正文由你写
+> - **全部学校都按剑桥标准写** → 我全程只做提问和结构建议，不落笔
+> - **把剑桥移出列表** → 其余学校的限制较宽松，我可以帮你改写和润色
+>
+> 违规的后果不是「扣分」：剑桥把 AI 生成的不实内容按 application fraud 处理；
+> 爱丁堡的原文是 "could be committing fraud"，处理方式是撤销 offer 并保留拒收你后续所有申请。
+
+**为什么这样写**：
+- **先给原文再给结论**——用户不会相信一个软件转述的规则，但会相信学校官网的原句；
+- **点名最严的那一所**，而不是给一张表——用户此刻需要的是一个决策，不是一份资料；
+- **把「改英文也禁」单独拎出来**——这是中国用户最可能踩、也最想不到的一条；
+- **给出三个动作而不是一句警告**——警告不改变行为，选项才改变行为；
+- **后果用原文的动词**（fraud / withdraw / refuse further applications），不用「可能有风险」这种无信息量的措辞。
+
+#### 触点二（收口触点）：**导出 / 复制 / 标记为定稿之前**，且**只对 A 档学校触发**
+
+**位置**：用户点「导出这份 PS」或「复制到剪贴板」时。
+**触发条件**：该文书的目标学校中存在 A 档要求。**B/C/D 档学校不触发**（C 档在触点一已经拦住，D 档不该被打扰）。
+
+**措辞（以 UNC 为例）**：
+
+> **这份文书要投的 UNC Chapel Hill 研究生院要求：如果用了 AI，必须明确注明。**
+>
+> > "The starting point for writing statements of purpose should be applicant-generated. While the use of generative AI tools may be useful for structuring and editing writing, it should primarily be the voice of the applicant. **Any use of AI must be cited clearly.**"
+> > —— UNC Chapel Hill Graduate School, Application Instructions（2026-08-14 查阅）
+>
+> **UNC 没有说明这个注明该写成什么格式、写在哪里。** 我不会替你写这句话——
+> 写错位置或写错措辞，可能比不写更糟。
+>
+> 建议：**发邮件问一句 UNC 研究生院招生办**，或按对方给的格式写。
+> 如果你需要一个参照，密歇根 Ross 商学院是目前唯一给了格式的学校，它要求：
+> `(OpenAI, personal communication, January 16, 2023)`（APA in-text citation "Personal Communication"）。
+
+### 9.3 一条红线：**产品绝不自动生成披露声明**
+
+这是本次调研得出的最反直觉、也最重要的一条产品结论。
+
+**理由三条，全部有证据**：
+
+1. **多数学校的申请系统里根本没有地方交这个声明。** Rackham / Northwestern TGS / Lehigh 的申请系统里，提交前那一屏的 attestation 方向是**「我声明我没有以违规方式使用 AI」**。用户自己在 PS 结尾加一句「本文部分由 AI 辅助」，**不满足任何要求，却与他刚勾选的 attestation 直接冲突**。
+2. **一份 PS 会投多校。** 加了披露声明的那份 PS，投到 Cambridge / Edinburgh / Columbia GSAS 就是**递交了一份自认违规的证据**。
+3. **形态③的陷阱**（§6.2）：Manchester 与 Duke Fuqua 的条文字面上暗示「注明就不算抄袭」，但**两校都没有提供注明的位置和格式**。按字面理解自行注明，是在一条**流程上走不通的路径**上主动暴露。
+
+> **产品能做的是：告诉用户「这所学校要求你披露」+ 给出原文 + 给出唯一已知的格式先例（Ross 的 APA 写法）+ 建议他去问招生办。**
+> **产品不能做的是：替他决定披露的措辞、格式和位置。**
+
+### 9.4 其余四条落地要点
+
+1. **通用底线句常驻，不做弹窗。** 在写作界面固定展示一句跨国通用、不会错的话：
+   > 「你必须是这份文书的唯一作者（sole author）。这一条在英美澳所有有明文规定的学校都成立。」
+   有条款的学校用的正是这个词（Rackham / Lehigh "sole author"、Vanderbilt "primary author"、Oxford "entirely your own work"）。
+
+2. **D 档必须显式呈现为「未找到明确条款」，不能留白，更不能显示为「允许」。** 建议措辞：
+   > 「我们在 XX 大学的招生政策与申请页面上**没有找到**关于申请材料使用 AI 的明确条款（查阅日 2026-08-14）。
+   > **这不代表允许。** 该校的通用条款仍然适用——[原文]。」
+   附上该校最重的一条后果原文（如 UCL「无申诉权」、Melbourne「可取消已生效注册」、UWA「通常 5 年内不受理」）。
+
+3. **标注条款位阶与查阅日期。** 「Imperial 商学院招生博客（2025-12-03）」与「KCL 全校招生政策 §17.3（2025 年 9 月生效）」在用户心里应该是不同分量。政策变动快，每条都要带查阅日。
+
+4. **规则库要有过期机制。** 本文件已发现多处周期问题：Melbourne MPF1295 在查阅日次日换版（v21 → v22）；LSE 研究生招生政策 `Next review due by September 2025` **已过复审期**；UNSW Admissions Policy v2.2 生效于 2026-05-13。**建议规则条目强制带「查阅日 + 页面自述版本/生效日」，超过 6 个月未复核的条目在 UI 上降级显示。**
+
+---
+
+## 十、抓取备注与未解决项
+
+**抓取手段**：curl（浏览器 UA）+ firecrawl scrape / map / search + pdftotext / pypdf + `r.jina.ai` 代理 + Wayback（原站 500 时）。
+
+**已记录的抓取障碍（供复现）**：
+- **全渠道 403**（curl / WebFetch / firecrawl / Wayback）：`ox.ac.uk` → 仅 `r.jina.ai` 可读
+- **Cloudflare 拦截 plain curl**：`michiganross.umich.edu`、`michigan.law.umich.edu`、`ox.ac.uk` → 用 firecrawl 或 r.jina.ai 绕过
+- **原站 HTTP 500**：`michigan.law.umich.edu` 的 Annotated Application PDF → 用 Wayback 2025-11-12 快照（该文件内 certification 为截图，OCR 有损，**已在 §4.3 标注不建议引用**）
+- **JS 渲染只取到导航壳**：UCL PG 个人陈述页、`sydney.edu.au/policies/a-to-z-policy/coursework-policy.html`
+- firecrawl 限速约 11 req/min
+
+**明确的未解决项（不得据此下任何结论）**：
+
+| 项目 | 状态 |
+|---|---|
+| **各校申请门户内的 certification / declaration 勾选原文** | **结构性不可核实**（登录墙后）。三国仅 MIT 公开全文。这是本次最大方法论盲区，见 §6.4 |
+| UCAS 勾选界面的确切措辞 | UCAS Hub 内需登录，未能核验（见 §1.0(b) 警告框） |
+| UKPASS / UCAS 研究生申请服务的停用时点 | ucas.com 上未找到任何说明，**不做推测** |
+| University of Sydney Coursework Policy 正文 | JS 渲染未取到；其 D 档判定仅基于三个申请人指引页 |
+| Oxford Saïd Business School 申请要求页 | curl 与 firecrawl 均返回空，未完成核实（牛津**中央**研究生招生条款已核实） |
+| Stanford `gradadmissions.stanford.edu/admitted-students/conditions-admission` | 未取到正文，记为未核实 |
+| Columbia GSAS personal statement prompt 页 | 未取到正文 |
+| Cornell Graduate School admission-revocation-policy 子页 | firecrawl 与 curl 均未取到正文（该政策存在已由上级页面引述证实） |
+| Caltech 研究生申请表内传闻的 AI 勾选题 | 官方 AI 政策页、研究生院 FAQ、Apply Online 页、Application Checklist PDF **全部检索未找到**；申请表在登录墙后 → **不得作为 A 档实例引用** |
+| 各国其余院校（Harvard GSAS、Yale、UCLA、UBC 等）、AMCAS / AACOMAS / Common App 的 AI 声明 | 未纳入本次范围 |
+
+**未采信的来源（虽在搜索结果中大量出现）**：新闻报道（11alive、Columbia Spectator、Cornell Sun、Poets&Quants、Clear Admit、ABA Journal）、
+留学中介与第三方比较站（GradPilot、Wordvice、mbaMission、Kaplan、Spivey、Oriel Admissions）、
+Reddit / Quora / Facebook / LinkedIn / Instagram、academia.stackexchange、Medium、Scribd。
+**这些仅用于发现线索 URL，未用于本文件任何一条结论。**
