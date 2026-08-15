@@ -813,3 +813,195 @@ Melbourne 是唯一给出明确机制的：
 > **MBA 必须单独建模，它不属于本文讨论的 coursework master 主流形态。**
 
 ---
+
+# C 三国对照：共有骨架 vs 必须分叉
+
+> 本节的 **UK 列一律引用 [`uk-apply-timeline-deposit.md`](./uk-apply-timeline-deposit.md)**，不重复其原文引述；
+> US / AU 列引用本文件 [A-1](#a-1-美国coursework-master) / [A-2](#a-2-澳洲coursework-master) / [B](#b-三国共缺的四个维度) 节。
+> **最后一列「判定」是本票的实际产出**，其余是支撑证据。
+
+判定取值：
+- 🟢 **可统一**：三国机制相同，只是参数不同 → **一个模型 + 一张参数表**
+- 🟡 **半统一**：概念存在于三国但语义/形态不同 → **一个抽象接口 + 三套实现**
+- 🔴 **必须分叉**：三国的东西根本不是同一个 → **三套独立模型**，强行统一会产生错误结论
+
+---
+
+## C-1 主表
+
+### 第一刀：申请入口层
+
+| # | 维度 | 英国 | 美国 | 澳洲 | 判定 |
+|---|---|---|---|---|---|
+| 1 | **是否有集中申请系统** | **无**。UCAS 只覆盖本科（Coventry 页面明写）。四所 100% 直申 | **无跨校统一系统**。但 Liaison CAS 家族（GradCAS / BusinessCAS / EngineeringCAS…）存在且**可选加入**；**本次 5 所样本项目无一走 CAS** | **无**。四校直申各自 portal | 🟢 **可统一**：三国 coursework master 都是「直申院校 portal」。产品不需要为「集中系统」建模 |
+| 2 | **底层平台厂商** | 四所四种：SITS:Vision / PeopleSoft / Power Apps / Salesforce | Slate（Columbia SEAS）、ApplyWeb-CollegeNET（Cornell）、其余未确认 | **集中度最高**：StudyLink Connect（Flywire）× 3（UNSW/UQ/Adelaide），TechnologyOne eStudent × 1（Melbourne） | 🔴 **必须分叉，但分叉维度是「平台」不是「国家」**。自动填表 / portal 状态抓取要按平台适配；澳洲的 StudyLink 一次适配覆盖三校，英国四所要写四次 |
+| 3 | **中介 / agent 的官方地位** | 部分承认：Coventry 列为三大入口之一 + 专用门户；Leeds 有 agent 登录；UCL/Manchester PGT 页未列 | **本次五所样本的公开页面均未见** agent 入口（**未找到**，不等于不存在） | **制度化，且是产品红线**：跨校共用 `partner.studylink.com`；**部分国籍强制经 agent**（Melbourne 对 Pakistan / 在印度完成高等教育者；Adelaide 对中东/北非/撒哈拉以南非洲/南亚/菲律宾/拉美；UQ 由系统按 citizenship 动态判定且不公布名单）；agent 可代做 certified copy、代接受 offer、代申请 conditional CoE | 🔴 **必须分叉**。澳洲的「按国籍强制走 agent」是一个**会让直申路径直接不可用**的前置门，英美无对应物 |
+| 4 | **申请费** | £0–£160，非校级统一（同校内商科与 CS 可不同） | **$0–$105**。Northeastern 对**整个 MS 层级按周期整体豁免**；UIUC 一年内 $70→$90 | Go8 四校齐平 A$150–154；**RMIT 按国籍收**（名单内 AU$100，中国不在名单 → $0），且**申请费可抵扣进押金** | 🟡 **半统一**。字段结构可统一（金额 + 是否可退 + 豁免条件），但**值是「院校 × 学院 × 周期 × 国籍」的函数**，必须建成可失效的动态数据，不能当静态属性缓存 |
+| 5 | **同时申请上限 / 志愿** | 「一项目一申请」：UCL 硬上限 2、Coventry 不限、Manchester/Leeds 未公开 | 「一项目一申请 + 一份费用」：**Columbia SEAS 硬上限 1（每学期整个工院）**、UIUC 不限但每份都要交费 | **「一申请多志愿」**：UQ 3、UNSW 3（且 `"Program changes are not available and require a new application"`）、Melbourne 3 或 4（官方页面自相矛盾） | 🔴 **数据模型必须分叉**。英美是 `N 个 Application`；澳洲是 `1 个 Application + N 个 Preference`。**这不是参数差异，是实体关系差异** |
+
+### 第二刀：时间线与决策层
+
+| # | 维度 | 英国 | 美国 | 澳洲 | 判定 |
+|---|---|---|---|---|---|
+| 6 | **截止机制形态** | 四种：固定日期+非日期型阶段漏斗（UCL）／日期型分轮次两日期（Manchester，且商科与 CS 轮次不同）／滚动+校级总截止（Leeds）／纯滚动不写日期（Coventry） | 主导是**硬截止日**：Columbia priority+regular 双档逐项目不同；Cornell 逾期不受理；Northeastern 固定截止 + **滚动出结果**；UIUC 校级不给日期全部下放 | **三日期型 offer round**（UNSW / RMIT：投递截止 + 出结果 + **接受截止**）／审理时长承诺（Melbourne 4–8 周）／日历日硬截止（UTAS） | 🟡 **半统一**。可抽象为枚举：`rolling` / `fixed-deadline` / `rounds` / `undisclosed`，但**每种形态携带的日期字段数不同**（英国轮次 2 个日期，澳洲轮次 3 个日期），schema 要能容纳可变日期集 |
+| 7 | **国际生是否有单独截止日** | 有，按「是否需要签证」（UCL 26 Jun vs 28 Aug）或「国际 vs UK」（Leeds 31 Jul vs 11 Sep） | 有，且**再按校区细分**（Northeastern：国际生美国校区 5/1、国际生 Vancouver 6/1、国内生 8/30） | 有，且**按国籍再切一刀**（UNSW：India/Pakistan 本国居住者 + 非洲国家（南非除外）非洲居住者，T1 2027 最后一轮提前到 19 Nov 2026）；另有 **onshore / offshore 分档** | 🟡 **半统一**。「截止日是申请人属性的函数」三国共有，但**函数的自变量不同**：英国是签证需求，美国是校区，澳洲是国籍 + 是否已在境内 |
+| 8 | **入学季数量** | 1–6：三所 Russell Group 样本只有 9 月；Coventry 一年 6 个开学点 | **稳定 2–3 个**（Fall + Spring，UT Dallas 含 Summer） | **2 个主 intake（Sem 1 ≈ 2 月底/3 月、Sem 2 ≈ 7 月中）+ RMIT 第 3 个**；且**每个 intake 的课程可用性不同**；**UNSW 用 term 制不是 semester 制** | 🟡 **半统一**。日历模型可统一为「(intake, 课程可用性, 学期制类型)」三元组，但**「学期制类型」这个字段是澳洲逼出来的**，英美不需要 |
+| 9 | **审理时长是否公开承诺** | **四所均未找到** | 只有项目级内部节奏（Cornell CS M.Eng. 处理 3 周 + 审理 5–6 周），**无校级承诺** | **Melbourne 是三国样本中唯一给出校级承诺的**：Graduate coursework **4–8 weeks**，并列出四类超时例外 | 🔴 **必须分叉**。这不是「有没有数据」的问题，是「有没有这个制度」的问题 |
+| 10 | **额外筛选环节** | UCL Management 强制在线面试（第三方 jobma.com）；Coventry 可能有 interview / **credibility interview** / portfolio；Leeds LUBS 明确面试非标准流程；Manchester ACS 连 PS 和推荐信都不要 | **Columbia SEAS 全部 MS 强制录像面试**：`"three randomly selected questions, be given 90 seconds to consider your responses, and have three minutes to record"`，且**提交并付费后才解锁** | RMIT 有专门的**面试轨截止日**（面试截止 + 面试后接受截止，两个额外日期） | 🔴 **必须分叉**。三国的面试各自有独立的触发条件、时间约束和第三方系统 |
+| 11 | **复议 / 申诉通道** | **未找到**（四所样本） | **明确拒绝反馈**：Cornell `"It is not practical for us to comment on individual applicants as to why they were not offered admission."` | **Melbourne 有正式通道**：`study.unimelb.edu.au/how-to-apply/request-a-review`，可在 portal 内提交并附证据 | 🔴 **必须分叉** |
+
+### 第三刀：offer 与钱、签证文件层（**delta 最深的一刀**）
+
+| # | 维度 | 英国 | 美国 | 澳洲 | 判定 |
+|---|---|---|---|---|---|
+| 12 | **offer 术语体系** | **conditional / unconditional 二元制**，四所统一使用，Leeds 2027-28 政策有正式定义（另有 combined offer / exceptions） | **没有这套二元制**。取而代之：① `contingent upon` 兜底措辞（NEU）② `conditional admission` 但**只用于「在读未毕业」**（UIUC）③ **Limited Status / Full Status 按语言分数分级**（UIUC，英澳都没有） | **三元**：`Full offer` / `Conditional offer` / **`Packaged offer`**（可串 EAP→Foundation→VET→HE 四段，**每段一张 CoE**）。且「非条件」无统一词（RMIT 同页混用 full / unconditional） | 🔴 **必须分叉**。若复用英国的 `conditional/unconditional` 状态机：美国的 Limited Status 会被错误建成 conditional；澳洲的 packaged offer 建不出来（一个 offer 对应多门课多张 CoE） |
+| 13 | **offer 有效期** | 写在 offer 信；Manchester 明示典型 4–6 周；UCL 有 6/30 后两周的兜底规则；Leeds 与押金截止绑定 | Cornell CS M.Eng. 约 1 个月（Spring 压缩到 2–3 周）；其余**未找到** | **lapse date**（Melbourne）／`"last day to accept"`（RMIT，逾期 offer 取消需重新申请）／**acceptance deadline 在 offer round 表里提前公布**（UNSW） | 🟢 **可统一**。三国都是「offer 携带一个响应截止时点，逾期作废」，只是时长与公布方式不同 |
+| 14 | **是否可 defer** | UCL 未查；**Manchester ACS 明确不可**；**Leeds 明确不可** | **Columbia SEAS 明确不可**（`"Deferrals will not be offered."`）；**Cornell 可**（`"one or two semesters"`，需联系 field） | **UNSW 可但非自动**（`"Offer deferrals are not automatically approved and must be requested via StudyLink"`）；RMIT 有 defer 通道 | 🟢 **可统一**为三值枚举（`不可` / `需申请` / `可`），值逐校 |
+| 15 | **是否收押金** | **全部收**（国际生）：UCL 学费 10%（≈£4,270）／Manchester £2,500（另有部分项目的 acceptance deposit £2,500）／Leeds £2,000／Coventry £4,000–£8,000 按地区 | **不普遍**：Columbia ≥ $4,000（按项目，写在录取信）；**Cornell 明说 `"doctoral programs and many master's programs do not require an enrollment deposit"`**；NEU/UIUC/UTD **未找到** | **全部收**：Melbourne **AUD $17,000**（或协议指定额）／UNSW 按 offer letter，**金额由 mode of study + visa risk rating + sponsorship 决定**／UQ、Adelaide（称 "First Tuition Payment"）、RMIT、UTAS 均按 offer letter | 🟡 **半统一**。字段存在于三国，但**美国是可选的、澳洲是必然的**；且**澳洲的金额不可离线计算**（visa risk rating 是外部动态输入） |
+| 16 | **押金的构成** | **纯学费预付**（NHS surcharge 是签证阶段单独交英国政府，不经学校） | **纯学费预付**，抵扣到 add/drop 后的学生账户 | **复合**：学费押金 + **强制 OSHC** + 可能的 **ELICOS 学费** + **enrolment fee**（RMIT 逐字）；RMIT 的**申请费也抵扣进押金** | 🔴 **必须分叉**。费用估算模型：英美在「接受 offer」这一步算 1 项，澳洲算 4 项 |
+| 17 | **「交押金」是否等于「接受 offer」** | **各校答案相反**：UCL 明确**不等于**；Manchester AMBS 明确**等于**；Coventry 部分等于 | **等于**：Columbia `"all newly admitted MS students are asked to submit a tuition deposit **to accept the offer of admission**"` | **接受 offer 之后的独立一步**（RMIT/UQ/Adelaide 的 Step 2 接受 → Step 3 付款，顺序固定） | 🔴 **必须分叉**。这直接决定状态机里「accepted」这个状态的进入条件 |
+| 18 | 🔴🔴 **签证文件的前置条件（本篇最硬的一条）** | **CAS ← 押金**（Manchester/Leeds/Coventry 三所白纸黑字；**UCL 是唯一例外**，只挂在「正式接受 unconditional offer」上） | **I-20 ← 资金证明 + 护照**，**与押金完全无关**。NEU OGS 把规格写到逐条：必须英文/官方抬头/12 个月内出具/注明币种与美元换算/明示可动用流动资金；**明确不接受**股票基金、退休金、公积金、信用额度、电汇凭证、房产证、租约、工资单、税表、实物资产 | **CoE ← 接受 offer + 押金 + OSHC**（UNSW/UQ/Adelaide/RMIT/UTAS 五所一致）；且 **CoE 经联邦 PRISMS 系统签发，不是学校系统** | 🔴 **必须分叉，且是三套完全不同的链**。<br>UK：`钱 → CAS`（1 条链）<br>AU：`钱 + 医保 → CoE`（1 条链，但输入多一项）<br>US：`占位链（钱）` 与 `签证链（资金证明）` **互不相交，押金不算进资金门槛，资金证明也不因交押金而降低**<br>**若按「押金 = 签证前置」统一建模，美国全线错误，UCL 也会被错误建模** |
+| 19 | **签证文件能否在未清 condition 时先发** | **不能**。四所一致：CAS 硬前置是清完所有 offer condition | 不适用（I-20 不与学术 condition 绑定，绑定的是录取 + 接受 + 资金证明） | **能**：**conditional CoE**（RMIT），`"if your current academic results indicate that you are on track… you may be eligible to request a conditional CoE. This allows you to start your student visa application earlier."`（只能经 agent 申请）；Melbourne 也有 Conditional CoE 流程 | 🔴 **必须分叉**。澳洲存在一条英国不存在的**时间线捷径** |
+| 20 | **签证文件的后续维护义务** | 未在本次范围内取证 | 未在本次范围内取证 | **明确的持续义务**：RMIT `"RMIT must update the details of your CoE and notify the Department of Home Affairs if you: [换课 / 休学（会重发新 CoE）/ 提前 2 个月以上完成 / 欠费导致取消]"` | 🟡 未足以判定（英美**未找到**）。**澳洲侧确认存在，产品若做「入学后状态跟踪」，澳洲是唯一有明文触发清单的** |
+| 21 | **押金退款与冷静期** | **14 天法定冷静期**（UCL、Manchester 均有，源自英国消费者法）；退款窗口与硬截止各校不同（Leeds 硬截止 9 Nov 2026、Manchester 31 Jul 2026）；Coventry 虚假信息扣 £4,000 | **无冷静期**。Columbia `"There are no exceptions to this long-standing and standard university practice."` Cornell 不退只抵学费 | **联邦 TPS 兜底 + 学校反悔惩罚**：UNSW `"discontinue… before the census date in their commencing semester will be charged **50% of their deposit fee**"`，并列 5 条豁免（签证拒签但排除欺诈与主动撤签、疾病、学校无法开课、未达 conditional offer 条件、因 GTE 被撤 CoE）；申请走 Refund Request Form，5 个工作日回复 | 🔴 **必须分叉**。三国的底层法律基础不同（英国消费者法 / 美国无 / 澳洲 ESOS+TPS），**退款规则不可能有统一默认值** |
+
+### 第四刀：材料与评估层
+
+| # | 维度 | 英国 | 美国 | 澳洲 | 判定 |
+|---|---|---|---|---|---|
+| 22 | **个人陈述** | **单份 PS = 动机文书**，**硬上限**：UCL 3,000 字符或 2 页 A4（CS MSc 收紧到 1 页）／Leeds LUBS 500 词／Manchester CS 半页 A4／**Manchester ACS 根本不要** | **两份分工**（Cornell：ASOP + Personal Statement 均必需，ASOP 1–2 页）或 **PS + 短答**（UIUC：学术陈述 500–1000 词 + 4 个 250 词短答，2 必答 2 选答）；**软上限**（Columbia 250–1000 词且明说超了不扣分） | **主流不要 PS**，被 **GS declaration** 取代（Melbourne 2026-07-16 起强制）；GS statement 每小问 **< 150 词 × 4**，且 **`Not be AI-generated.`** | 🔴 **必须分叉**。文体不同（动机 vs 学术履历 vs 合规声明）、份数不同（1 / 2 / 0+1）、约束性质不同（硬 vs 软）。**同一份稿子不能跨国改长度复用** |
+| 23 | **CV / Resume** | **条件性**，触发点是毕业年限（Manchester ACS >3 年、AMBS >2 年）或用于解释异常（Leeds EPS：gap / 跨专业 / borderline） | **默认必需**（Columbia 列六类内容、NEU 与 SOP 并列必需、UIUC 固定分区） | **四校文件清单均未列**（负面证据，非明确不要） | 🟡 **半统一**。字段存在，但「是否必需」的判定逻辑三国不同 |
+| 24 | **推荐信数量** | 0–2，**同校内跨学院不同**（Manchester ACS 0 / Manchester CS 2 / AMBS 提交时 0） | **2–3 为主流**（Columbia 3、Cornell 2、NEU 2），**UIUC MCS 为 0（可选）** | **主流 0**；例外 UNSW AGSM MBA 2 | 🟡 **半统一**（一个整数字段），但**默认值不能按国家给** |
+| 25 | **推荐信提交机制** | **两种并存**：系统邀请（UCL PGCE，且触发时点按项目不同——有的提交即发、有的**接受 conditional offer 后**才发）／**按需索取**（Leeds、Manchester AMBS——学校决定要不要） | **系统自动邀请**（Columbia：填入联系方式即触发，且 `"Under no circumstance should you write any portion of the evaluation, nor have any involvement in its drafting or submission."`） | **申请人自行转发 + 上传签名件**（UNSW AGSM，无系统邀请）；<br>⚠️ **UQ portal 提交后有 `provide referee details` 功能，是否发系统邮件——未确认（登录墙后），产品红线相关** | 🔴 **必须分叉**。「AI 以推荐人名义发邮件」是明确禁区（Columbia 措辞最硬），而澳洲主流是申请人线下转发——**两种机制下 AI 的合规边界完全不同** |
+| 26 | **推荐信是否阻塞审理** | **UCL 阻塞**（`"complete application (… and both references returned)"`）／Leeds 不阻塞 | **Cornell 不完全阻塞**（3 封只到 2 封也算达标）／Columbia 未明说 | 不适用（主流不要） | 🟡 布尔字段可统一，值逐校 |
+| 27 | **FERPA / 推荐信保密选项** | **未找到** | **有**（UIUC 明文 FERPA 弃权勾选） | 不适用 | 🔴 **美国专属字段** |
+| 28 | **第三方学历评估** | **不需要**。ENIC Statement of Comparability（£69.60）**不是准入材料**；**UCL 甚至明确拒收**（`"rather than any ENIC Statement of Comparability"`）；Manchester 把 NARIC 当**学校自己的换算参照**；仅受监管专业需要（Coventry 护理） | **不普遍**：NEU `"a WES evaluation is not required"`（自建 FCE）／UT Dallas `"Outside credential evaluations are not required or accepted"`（自建 FCE）／Columbia 仅在学校无法电子直投时作 fallback／Cornell 把 WES 当**投递渠道之一**（ICAP only）／UIUC 未提 | 走**证书数字化平台**：My eQuals / Digitary VIA / Parchment / NSC（Melbourne 提供下拉多选） | 🔴 **必须分叉**。「申请美国必须 WES」是错的；「申请英国要 ENIC」也是错的 |
+| 29 | **中国学历核验（CHESICC / 学信网）** | **不要 CHESICC**。UCL 要**成绩证明**（官方盖章 + 签字翻译，须在毕业日或之后出具），**申请时即上传** | **Columbia 强制**（中国院校学生专属规则），但是**录取之后、入学之前**的核验 | **Melbourne 是中国学生两条法定路径之一**（CSSD → My eQuals 投三份报告；另一条走 authorised agent）；UQ/Adelaide/UNSW **未提** | 🔴 **必须分叉**。**同一份中国材料在三国分别是：申请时材料（UK）／录取后核验（US）／申请路径之一（AU）** |
+| 30 | **certified copy / 公证** | 未在本次范围内系统取证 | 无 certified copy 制度；改为「录取后由 Registrar 直投官方成绩单」+ 事后 verification process | **四校政策直接冲突**：UNSW **明确不要**（授课型）／UQ **要**／Adelaide **要且有 4 条逐项规格 + 授权认证人清单**／Melbourne 不用 certified，改为**校方直接向发证机构核验** | 🔴 **必须分叉**，且**澳洲内部就要逐校分叉** |
+| 31 | **接受的语言考试类型** | IELTS 全接受；TOEFL 接受但限制多（Leeds/Manchester 均**不接受 Home Edition**，Manchester **不接受 MyBest**）；Duolingo **未见接受** | **分裂到学院级**：Cornell **只接受 IELTS + TOEFL**（明文拒 Duolingo/PTE）；Columbia/UIUC/UTD/NEU-CoE 接受 Duolingo；**NEU-Khoury 不接受 Duolingo**，官方还给出「换个学院申请」的建议 | 未逐校取证（**未找到**） | 🔴 **必须分叉，且分叉粒度是学院不是学校** |
+| 32 | **TOEFL iBT 2026-01-21 改版双轨分数线** | UCL / Leeds / Manchester 均已维护新旧两套 | Columbia / UIUC / Cornell / NEU 均已维护新旧两套 | 未取证 | 🟢 **可统一**（英美一致，澳洲未证伪）。**分数线字段必须带生效日期，不能存单值** |
+| 33 | **分数线的表达方式** | **课程级「档位」+ 全项最低分**（UCL Level 1–5；课程页只写档位）；实际区间 IELTS 6.5–7.0 总分 / 单项 5.5–6.5 | **三种口径并存**：无最低分只给软线（Columbia）／硬性单项线 + Tier A/B 且绑 TA 资格（Cornell）／Limited vs Full Status 双门槛（UIUC）／建议线且不 super-score（NEU Khoury） | **未找到** | 🔴 **必须分叉**。**Columbia 的「IELTS 软线 7」与 Manchester 的「IELTS 硬线 7.0」若都存成 `ielts_min=7.0`，会给出完全相反的建议** |
+| 34 | **语言不达标的救济路径** | **pre-sessional 语言班 + combined offer**（语言班成绩顶替语言分数，Leeds 政策明文）；语言班时长是当前分数的函数（Coventry） | **降级录取 + 校内内测 + 降课业负荷**（UIUC Limited Status → EPT → 非学分 ESL）／**独立 Pathway 项目**（NEU Global Pathways） | **packaged offer 串 EAP/ELICOS，每段独立 CoE**；ELICOS 有联邦标准（ELICOS Standards 2018） | 🔴 **必须分叉**。三种形态对申请人的实际影响完全不同：<br>UK = 多一次申请 + 多一笔钱 + 多一段签证期，**仍是一张 CAS**<br>US = 不产生额外申请，**申请阶段看不出来**，影响的是入学后课业<br>AU = **产生多张 CoE**，签证时间线被拆段 |
+| 35 | 🔴🔴 **是否卡本科院校层级** | **具名清单制**。Leeds 公开四份分学院清单（Business School 一份为中英双语具名全表，本次抓取含 918 行中文校名），并写死 `"If your institution is not listed then unfortunately it is not accepted."` + `"75%-80% minimum GPA requirement depending on your institution"`；Manchester 走另一路：公开国别分数线 + 「well ranked institution」形容词，**但不公开名单** | **不卡院校层级，卡国别学历形态**。UIUC 有 **Minimum Requirements By Country**（China：4 年学士 + **B Average / 80%**）；其余四所一律是「recognized standing / regionally accredited / 该国教育部认可」。**五所样本无一公开境外院校分级名单** | **不给名单也不给国别表，给换算规则**。Melbourne：`"the final WAM may be adjusted depending on the previous institution's accreditation, subject grading, and pass marks"` | 🔴 **必须分叉，三套完全不同的判定函数**：<br>UK = 查表（清单 → 档位 → 分数线）<br>US = 按国别定形态与最低分<br>AU = 把分数换算到本校标尺再按院校调整<br>**且英国内部还分两类：Leeds 可穷举可建库，Manchester 不可穷举只能给区间 + 免责** |
+| 36 | **GPA 的换算目标** | **英国学位等级（1:1 / 2:1 / 2:2）**，由学校用院校清单换算，申请人不自行折算；Manchester MBA 另用**班级排名**（top 25%） | **4.0 制**，且 **UIUC 只算本科最后两年**；NEU Khoury 给三条并列尺子（3.0/4.0、8.0/10.0、80/100） | **WAM 百分比**（Melbourne 65%），由学校单方面换算 | 🔴 **必须分叉**。产品**不能只存一个 `gpa` 字段**，至少要存：原始均分 + 原始满分 + 计算口径（全程 / 后两年）+ 发证院校，三国判定函数各自去取 |
+| 37 | **工作经验的作用** | **学术条件的补正**，触发点是毕业年限（>2 / >3 / >5 年分别触发 CV、职场推荐人） | **先修课程的替代**（UIUC MCS `"prerequisite coursework or commensurate experience"`） | **可上传的雇主 certified reference**（Adelaide，条件性） | 🔴 **必须分叉**。三国触发的动作不同，不能做成通用加分项 |
+| 38 | **录取后核验流程** | 等价物是「清 condition」——语义是「你还没达到 → 达到了才算数」 | **独立正式流程**：Columbia Verification Process，需**签署授权与免责表**，核验全部学术、职业与推荐信息；自报分数在此阶段核验 | 前置：certified copy / 校方直接向发证机构核验（Melbourne `"The University will verify all results and documentation with the issuing institution upon receipt of your application."`） | 🔴 **必须分叉**。**英国是「达标验证」，美国是「诚信审计」，澳洲是「来源核验」**——三种不同的失败模式，风险提示文案完全不同 |
+
+### 第五刀：国家制度层（**英美完全没有的一层**）
+
+| # | 维度 | 英国 | 美国 | 澳洲 | 判定 |
+|---|---|---|---|---|---|
+| 39 | **是否有国家级招生法定标准** | **无**（一致性来自行业惯例 + 签证制度） | **无**（I-20/SEVIS 是联邦移民规定，**招生本身没有任何联邦标准**） | **有，两层**：**HESF 1.1 Admission**（招生政策必须成文、公平一致；收费前必须告知全部费用、学分认定、offer 撤销与退款政策；合同必须书面）＋ **ESOS Act / National Code 2018 / CRICOS / TPS / PRISMS** | 🔴 **结构性差异**。**在澳洲，下列可做国家级默认值**：offer 必须书面、必须列明全部费用、必须写明退款与撤销政策、CoE 必经 PRISMS、学费保护经 TPS。**英美这一层是空的**——这解释了为什么美国样本的 offer 术语最不统一、退款规则最不透明 |
+| 40 | **国际生招生名额配额** | 无 | 无 | **有：NOSC（New Overseas Student Commencement）**。UNSW `"All programs have exhausted their New Overseas Student Commencement (NOSC) allocation for 2026 intakes and are **closed to new applications for 2026**."`（豁免：UNSW Canberra / AGSM / HDR / Study Abroad / non-award） | 🔴 **澳洲专属状态**。这既不是「截止了」也不是「招满了」，是**「配额用尽 → 整所学校对国际生关闭整个申请季」**。[#4 状态层](https://github.com/jiangxidong/EduApplication/issues/4) 必须支持这种院校级不可用状态 |
+| 41 | **签证风险评级是否进入申请流程** | 无（Coventry 按**地区**分押金档，是静态可穷举表） | 无（资金证明规格全国统一） | **深度介入，且是三处**：① **押金金额**由 visa risk rating 决定（UNSW Fee Procedure §2.4，**产品无法离线计算**）② **申请费按国籍收**（RMIT）③ **SSVF 不达标可直接导致申请失败且不复议**（RMIT） | 🔴 **必须分叉**。**「申请人的国籍/居住地会改变申请流程本身」在澳洲是常态，在英美是例外** |
+| 42 | **GS / GTE 等真实性声明** | 无对应物（英国的等价物是签证阶段的 credibility interview，非申请阶段；Coventry 提到可能有 credibility interview） | 无对应物 | **有，且四校落点各不相同**：Melbourne **在申请表内且必填**／UNSW **offer 之后条件触发，且直申者也必须找 agent 或 regional manager 会签并面签**／Adelaide **作为 conditional offer 的一个 condition**／UQ **公开页只指向签证，学校表单内是否有 GS 未确认** | 🔴 **必须分叉**，且**澳洲内部四校四种**。⚠️ **产品红线**：Melbourne GS statement 明文 `Not be AI-generated.` |
+| 43 | **政策文本是否可信为「现行制度」** | — | — | **⚠️ 反例**：UNSW Student Fee Procedure 的押金退款豁免条款仍写 **GTE**，而 GTE 已于 2024 年被 **GS** 取代 | 🔴 **通用工程警告**：**政策 PDF 的措辞可能滞后于现行制度，不能作为唯一真值源**。同理 UNSW Fee Policy 的 **Schedule 1 是 UNSW Bengaluru（印度校区）专属**，依据印度 UGC 2024 规定，其退款比例表与澳洲本土完全无关——**抓取时极易误采** |
+
+---
+
+## C-2 结论：共有骨架有多大
+
+### 🟢 真正可以做「一套模型 + 一张参数表」的（共 6 条）
+
+1. **申请入口形态**：三国 coursework master 都是直申院校 portal，不存在覆盖性的集中系统（#1）。
+2. **offer 携带响应期限**：三国都是「offer 有一个响应截止时点，逾期作废」（#13）。
+3. **defer 三值枚举**：`不可 / 需申请 / 可`（#14）。
+4. **语言分数线的双轨时效性**：TOEFL 2026-01-21 改版，三国样本同步维护新旧两套 → **分数线字段统一设计成 `(值, 生效起始日, 生效截止日)`**（#32）。
+5. **申请费不可退**：三国样本无一例外（RMIT 的「抵扣进押金」是抵扣不是退款）。
+6. **押金抵扣学费**：三国一致，押金都不是额外费用（UK 四所、Columbia、Cornell、Melbourne、UNSW 均明文）。
+
+### 🔴 必须国别分叉的（共 21 条，按对产品的杀伤力排序）
+
+| 排序 | 分叉点 | 若不分叉会产生什么错误 |
+|---|---|---|
+| 1 | **签证文件的前置链**（#18） | 美国全线错误（I-20 挂资金证明不挂押金）；UCL 也被错误建模（CAS 挂接受 offer 不挂押金） |
+| 2 | **是否卡本科院校层级 + 用什么卡**（#35） | 给中国申请人的选校建议全错。UK 需查具名清单（Leeds 可建库、Manchester 不可穷举），US 查国别表，AU 算 WAM |
+| 3 | **GPA 的换算目标**（#36） | 只存一个 `gpa` 字段 → 三国都算错。UIUC「只算后两年」这条会被完全丢掉 |
+| 4 | **个人陈述的文体与份数**（#22） | 用一份稿子跨国改长度 → 美国缺 ASOP、澳洲缺 GS 且触碰 AI 红线 |
+| 5 | **offer 术语体系**（#12） | Limited Status 被错建成 conditional；packaged offer 建不出来 |
+| 6 | **同时申请的实体关系**（#5） | 澳洲的「1 申请 N 志愿」建不出来；Columbia 的「每学期只能 1 个」漏掉会导致申请作废 |
+| 7 | **推荐信提交机制**（#25） | AI 合规边界判断错误（Columbia 措辞最硬，UQ 的 portal 功能未确认） |
+| 8 | **语言分数线的表达性质**（#33） | 软线与硬线混存 → 给出完全相反的建议 |
+| 9 | **agent 的强制性**（#3） | 澳洲部分国籍的直申路径根本不可用，产品会引导用户走进死路 |
+| 10 | **语言救济路径**（#34） | 三种形态对时间线和费用的影响完全不同 |
+| 11 | **中国学历核验的时点**（#29） | 同一份材料的准备时机差半年 |
+| 12 | **第三方学历评估**（#28） | 让用户白花 WES / ENIC 的钱（UT Dallas 明确**不接受**，UCL 明确**拒收**） |
+| 13 | **押金的构成**（#16） | 澳洲的费用估算漏掉 OSHC + ELICOS + enrolment fee |
+| 14 | **押金退款与冷静期**（#21） | 三国法律基础不同，无法有统一默认值 |
+| 15 | **国家级监管地板**（#39） | 会误以为美国也有「必须书面告知全部费用」这类保护 |
+| 16 | **国际生名额配额**（#40） | 澳洲的「配额用尽」状态无法表达 |
+| 17 | **签证风险评级进入申请流程**（#41） | 澳洲押金金额无法离线计算，申请费按国籍这条会漏 |
+| 18 | **GS / GTE 声明**（#42） | 澳洲四校四种落点，且触碰 AI 红线 |
+| 19 | **certified copy 制度**（#30） | 澳洲内部就要逐校分叉（UNSW 不要 / UQ 要 / Adelaide 严格 / Melbourne 改为校方核验） |
+| 20 | **录取后核验的语义**（#38） | 风险提示文案完全错位（达标验证 vs 诚信审计 vs 来源核验） |
+| 21 | **接受的语言考试类型**（#31） | 分叉粒度必须到学院（NEU 内部 CoE 与 Khoury 就不同） |
+
+### 🟡 半统一的（共 11 条）
+
+字段可以共用，但**判定逻辑或值域必须逐国实现**：申请费（#4）、截止机制形态（#6）、国际生截止日的自变量（#7）、入学季与学期制（#8）、是否收押金（#15）、CV 是否必需（#23）、推荐信数量（#24）、推荐信是否阻塞（#26）、签证文件后续维护（#20）。
+
+---
+
+## C-3 对 delta 架构的直接建议：切五刀
+
+基于上表，建议 delta 层沿以下**五个接缝**切分，而不是按「国家」平铺：
+
+1. **平台适配层（按 vendor 切，不按国家）** — Slate / ApplyWeb / StudyLink / SITS / PeopleSoft / Power Apps / Salesforce / TechnologyOne。
+   澳洲切一刀覆盖三校，英国要切四刀。**这一层与国别正交。**
+
+2. **申请实体模型层（按国家切，只有两种）** — `N × Application`（英 + 美）vs `1 × Application + N × Preference`（澳）。
+   这是**实体关系差异**，必须在最底层解决。
+
+3. **时间线 / 状态机层（按国家切三套）** — 三条签证文件链是三套不同的状态机：
+   - UK：`submit → conditional offer → accept → clear conditions → unconditional → deposit → CAS → visa → enrol`（UCL 的 deposit 位置不同，作为参数）
+   - AU：`submit(N preferences) → offer(full/conditional/packaged) → accept → deposit + OSHC → CoE(可 conditional 前置) → visa → enrol`
+   - US：`submit → decision → accept + deposit（占位链）` ∥ `financial docs + passport → I-20 → SEVIS fee → F-1（签证链）`——**两条链并行且不相交**
+
+4. **材料模型层（按国家切三套，且要能下钻到学院）** — 文书文体、CV 触发条件、推荐信数量与机制、成绩单认证路径。
+   **注意：这一层的最小粒度不是学校而是学院**（Manchester ACS vs Manchester CS；NEU CoE vs NEU Khoury；Leeds LUBS vs Leeds EPS 的清单都不同）。
+
+5. **准入判定层（按国家切三套判定函数）** — 院校清单查表（UK）／国别形态表（US）／WAM 换算（AU）；
+   加上语言分数线的 `(值, 性质=硬/软, 生效期)` 三元组。
+
+**跨五刀的横切关注点（cross-cutting）**：
+- **周期（intake year）是全局维度**，不是属性。申请费、分数线、截止日、清单、押金都会按周期变（UIUC 一年 $70→$90；Leeds 清单标 2026/27 entry）。
+- **申请人国籍 / 居住地在澳洲会改变流程本身**（agent 强制、申请费、offer round、押金金额），在英美只改变参数。这一点需要在架构上给澳洲留出「流程分支」而不只是「参数分支」的能力。
+
+---
+
+# 未解决项
+
+## 本轮明确「未找到」的（按重要性）
+
+**美国**
+1. 🔴 **UIUC / UT Dallas / Northeastern 的申请系统底层厂商**——未取到能定性的静态资源指纹。
+2. 🔴 **Cornell 的 enrollment deposit 金额**——公开页只说「部分项目要」，未给数字。
+3. 🟠 **Northeastern / UIUC / UT Dallas 是否收 enrollment deposit**——公开页未见。
+4. 🟠 **Cornell / Northeastern / UT Dallas 的同时申请上限**。
+5. 🟠 **Columbia 之外的美国学校是否要求 CHESICC**——Northeastern 有中国专属 FCE 规则页，但正文为 Salesforce 动态渲染，本次抓取未取到条款。
+6. 🟡 **是否存在「CGS April 15 Resolution」这类跨校统一的接受截止日约定**——本次五所样本的公开页面**全文检索无命中**，不予采信。
+
+**澳洲**
+7. 🔴 **四所 Go8 的具体语言分数线**——本轮未逐校取证（B-3.2(c) 留空）。
+8. 🔴 **UQ portal 的 `provide referee details` 是否向推荐人发系统邮件**（登录墙后）——**产品红线相关，优先级最高**，见 `au-notes.md` §8。
+9. 🟠 **UQ / Adelaide / RMIT / UTAS 的院校层级或 GPA 换算机制**——只取到 Melbourne 的 WAM 规则。
+10. 🟠 **UTAS 国际生是否另有早于校级表的截止日**——本次只取到校级综合日程。
+11. 🟠 **UQ / Melbourne / Adelaide 的单文件大小上限与接受格式**（只有 UNSW 公开：PDF/JPG/TIF，10Mb）。
+12. 🟡 **Melbourne 志愿数量到底是 3 还是 4**（两个官方页面互相矛盾，见 `au-notes.md` §8）。
+13. 🟡 **澳洲各校接受的语言考试类型清单**（是否接受 Duolingo / PTE）。
+
+**英国**（承接 UK 文件的未解决项，未在本轮推进）
+14. 三所的 2027 entry 开放 / 截止日期；Leeds 申请费具体金额；Leeds / Manchester 的同时申请上限；Coventry 的任何具体日期。
+15. 🟠 **UK 四所的 certified copy / 公证要求**——本轮未系统取证。
+16. 🟠 **UK 四所是否有正式的录取复议 / 申诉通道**——未找到。
+
+**跨国**
+17. 🟠 **英美的签证文件后续维护义务**（澳洲侧已确认存在明文触发清单，英美未取证）。
+18. 🟡 **美国样本中是否存在境外院校分级名单**——五所公开页面均未见，但**不能据此断言不存在**（可能是内部文件）。
+
+## 方法论警告（供后续 ticket 复用）
+
+1. **政策 PDF 会滞后于现行制度**：UNSW Fee Procedure 仍写 GTE（已被 GS 取代）。**不能把政策文本当唯一真值源。**
+2. **同一份政策文件里可能夹着完全不适用的境外校区条款**：UNSW Fee Policy 的 Schedule 1 是印度 Bengaluru 校区专属，依据印度 UGC 规定。**抓取时必须检查 scope 声明。**
+3. **「清单未列」≠「明确不要」**：澳洲四校的推荐信、CV 结论都是负面证据，本文件已逐条标注证据强度，后续不得升级为正面结论。
+4. **最小分叉粒度是学院不是学校**：Manchester ACS vs Manchester CS、NEU CoE vs NEU Khoury、Leeds LUBS vs Leeds EPS、Columbia SEAS vs Columbia GSAS —— 四国八例，全部在学院层就分叉。
