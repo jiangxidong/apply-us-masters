@@ -21,3 +21,11 @@
 URL 住在 `channels/` 那条事实行上。依据与出处物理分离，但由 `✓` 连接。
 
 唯一的例外是伪保底的 `经验：` 从句，它**不得单独成立**、且只在 `pseudo_safer=yes` 的行上合法。
+
+## 后续
+
+上面那条例外已由 [`0015`](0015-pseudo-safer-annotates-the-users-prior-not-the-tier.md) **删除**——正文一字未改，这里只补指针。
+
+`0015` 把伪保底判在分档机器之外（`pseudo_safer = yes` ⇒ `tier ≠ safer`），
+它的两半各自要求 `channels/` 里一条 `✓` 事实行，不再借用 `tier_basis`。
+于是本 ADR 的准入测试**不再有任何例外**：`tier_basis` 里不存在零出处从句。

@@ -222,13 +222,14 @@ _Avoid_: 保底、稳了、safe、不合格、够不着
 
 准入测试：一个信号能进 `tier_basis`，**当且仅当**它已经是、或能被写成 `channels/` 里一条带 `✓ <url>` 的事实行，或项目池的 `deadline` 列。判别式因此不靠人判断，而是**它有没有一行带 `✓` 的家**。够格的信号是一张**封闭白名单**（硬门槛、录取群体分布、项目公布的录取率……全表见 [#16](https://github.com/jiangxidong/EduApplication/issues/16) §3）。申请人自己的背景**算**依据——三档全是「你 vs 项目公布的线」的比较，不带画像根本写不出依据；表述只写「你的 X 与该项目公布的 Y 的关系」，不滑向录取概率。
 
-⚠️ **这一格装的比「依据」多**：`tier_basis` = 至少一条依据 + 可选的**放大器**从句 + 只在 `pseudo_safer=yes` 行上合法的 `经验：` 从句。后两者**都不计入「至少一条」的计数**，也都不得单独成立。
+⚠️ **这一格装的比「依据」多**：`tier_basis` = 至少一条依据 + 可选的**放大器**从句。放大器**不计入「至少一条」的计数**，也不得单独成立。
+⚠️ 此前这里还有第三种从句（只在 `pseudo_safer=yes` 行上合法的 `经验：`）。**它已被删除**——伪保底的两半现在都要求可链接事实（见「伪保底」、[ADR 0015](docs/adr/0015-pseudo-safer-annotates-the-users-prior-not-the-tier.md)）。`tier_basis` 里**不存在任何零出处从句**。
 
 - **不写 URL**：一句话，禁 `|`，禁换行。依据格只**点名**事实（「最低 3.0、项目建议 3.2、你 3.6」），URL 住在 `channels/` 那条事实行上——依据与出处物理分离，由 `✓` 连接。
 - 两条机械判别式：`tier_basis` 空 ⇒ `tier` 必须是 `undecided`；`tier = ineligible` ⇒ `tier_basis` **非空**（未达标的行恰恰填得满）。
 - 「点名的那条事实真在 `channels/` 里有 `✓`」是 **agent 侧纪律，无法机械校验**——不假装它能。
 - 它强制了顺序：想给一个项目分档，必须**先把支撑事实收集进 `channels/`**。分档是收集事实的副产品，不是它的替代品——这正是「凭经验」最难混进来的地方。
-_Avoid_: 匹配理由（那是「依据」+「作废条件」的渲染，不是第三个存储位）、凭经验（作为**单独成立**的依据——见上面的 ⚠️，`经验：` 从句本身在 `pseudo_safer=yes` 行上合法）
+_Avoid_: 匹配理由（那是「依据」+「作废条件」的渲染，不是第三个存储位）、凭经验（**任何形态**——`经验：` 从句那条例外已随 [ADR 0015](docs/adr/0015-pseudo-safer-annotates-the-users-prior-not-the-tier.md) 删除）
 
 **放大器** — `—`
 可链接、但**只能附着在依据上、不得单独成立**的信号。它能让一条分档判断更冲刺，撑不起这条判断本身——典型如「是否 rolling」：那是**时序**事实，不是**选择性**事实。够格的信号同样是封闭清单，见 [#16](https://github.com/jiangxidong/EduApplication/issues/16) §3。
@@ -239,8 +240,23 @@ _Avoid_: 匹配理由（那是「依据」+「作废条件」的渲染，不是�
 什么情况会让这条分档判断**不再成立**。一句话，禁 `|`，禁换行，**必填**——与「依据」同受「写不满就不写」约束。
 
 定义是**中性**的，方向随档而变：前四档的作废条件是坏消息，`ineligible` 行是好消息（见「分档」的两条 ⚠️）。
-⚠️ **承重不均**：它在 `safer` 行与 `pseudo_safer=yes` 行上做真功；`reach` 是众数档，其作废条件多为可推导的样板。**样板不是缺陷，仍必填**——它让「这条分档什么时候失效」跨会话保持显式。但别把它当 `reach` 的质量保证，`reach` 的质量保证是「依据」的准入测试。
+⚠️ **承重不均**：它在 `safer` 行上做真功；`reach` 是众数档，其作废条件多为可推导的样板。**样板不是缺陷，仍必填**——它让「这条分档什么时候失效」跨会话保持显式。但别把它当 `reach` 的质量保证，`reach` 的质量保证是「依据」的准入测试。
+⚠️ **它只对分档负责。** 伪保底**不借用这一格**——它的作废是可推导的（[ADR 0015](docs/adr/0015-pseudo-safer-annotates-the-users-prior-not-the-tier.md) 推翻了 [#11](https://github.com/jiangxidong/EduApplication/issues/11) 第三次更正的「复用」那半句）。
 ⚠️ 它与**失效传播**不是一回事：作废条件说的是**这条判断**在什么条件下不成立；失效传播是画像三字段（GPA / 本科院校 / 语言分）变更时，**只降**实际引用了该字段的行、自动降为 `undecided` 且**原句不保留**（[#16](https://github.com/jiangxidong/EduApplication/issues/16) §7）。
+
+**伪保底** — `pseudo_safer`（`yes` / `no` / `unknown`）
+一个**纯项目属性**的反直觉标注：这个项目**名义门槛低**（低到极致就是明写 `no minimum GPA`），**方向却极挤**。
+
+它纠正的是**用户的先验**（「排名不高 = 保底」），**不是产品的分档**——分档那边早已判成 `reach`（项目不公布第二条线，谁都拿不到 `safer`）。典型形态：同一句话里既写 `no minimum GPA` 又写 `the program is highly selective`（Columbia CS MS，[#22](https://github.com/jiangxidong/EduApplication/issues/22) §3 实测表）。
+
+- **两半各自要有 `✓` 事实行**：「名义门槛低」与「方向极挤」都住 `channels/<channel_key>.md`，各带各的 `✓ <url>`。写不满就填 `unknown`——**禁零出处的伪保底断言**（[#11](https://github.com/jiangxidong/EduApplication/issues/11) §3）。美国学校常常自己把「极挤」写出来（`highly selective` / `competitive`），所以这一半在美国范围内通常查得到。
+- **不占「依据」也不占「作废条件」**：它不是分档判断的一部分，两半都不进「依据」的封闭白名单。作废是**可推导**的——支撑它的任一条 `✓` 事实变了就重判，同「缺口」那条判别式：可现算的东西不落盘。
+- **不参与失效传播**：两半都在项目侧、零申请人输入，所以画像三字段变更（[#16](https://github.com/jiangxidong/EduApplication/issues/16) §7 链一）**永不触发它**。它与 `safer` 同属项目属性先行，方向相反——`safer` 由项目**公布了第二条线**给出，伪保底由项目**没有第二条线却又极挤**这个组合给出。
+- 渲染成顾问判断节里一条**独立提示**，**不占分档表的格**（[ADR 0015](docs/adr/0015-pseudo-safer-annotates-the-users-prior-not-the-tier.md)；先例见 `prototype/program-shortlist` 原型）。挤进分档表，它就变回了一个分档修正词。
+
+⚠️ **机械判别式**：`pseudo_safer = yes` ⇒ `tier ≠ safer`。伪保底**永远不推翻**一个由第二条线得来的 `safer`——那等于让顾问经验压过学校公布的数据，正是 [ADR 0009](docs/adr/0009-safer-is-defined-by-the-programs-second-published-line.md) 把标定权交给学校时堵上的洞。
+⚠️ **`no` 的意思是「已经看过两半信号、判定它不是伪保底」**，不是「默认不是」。默认值是 `unknown`；把没看过的行填 `no`，这一列当场作废。
+_Avoid_: 假保底（同一概念的旧名，中文名以本条为准）、保底（见「分档」）
 
 **录取率** — `—`
 学校或项目**公布**的历史录取比例。它是**事实**，可标 `✓`，但**必须带口径**（哪一年、全体还是国际生、含不含 waitlist）。查不到口径就不裸给数字。
@@ -523,6 +539,7 @@ _Avoid_: 骨架 / 补全（用时序冒充责任——「什么时候被填」�
 | 降级运行时 / 联网档位 | 取回失败 | 「降级」已指换季那件事；且产品里不存在「档位」这个实体（[ADR 0007](docs/adr/0007-a-checkmark-is-earned-by-a-fetch-not-by-a-capability.md)） |
 | 骨架 / 补全（作为归属判据） | 唯一写入者 / 消费方判据 | 用时序冒充责任——「什么时候被填」定不了「谁该填」（[ADR 0008](docs/adr/0008-the-owner-binds-to-a-section-not-a-file.md)） |
 | 匹配理由（作为一个列） | 依据 + 作废条件 | 它没有独立信息——「算冲刺，因为 X，除非 Y」就是完整的匹配理由；而它天生是散文，是 `|` 最高危的一列（[#11](https://github.com/jiangxidong/EduApplication/issues/11)） |
+| 假保底 | 伪保底 / `pseudo_safer` | 中文名以词条为准；同一个概念在早期材料里两种写法并存（`docs/research/competitor-skills.md:39` 用的是「假保底」） |
 | 三档虚拟档案 | 三个样例档案 / `persona` | 「档」已经是 `tier` 且是**五**档；同一个字指两个东西，「第二档档案在 UIUC 上应得 `safer` 档」当场有歧义 |
 | 联网档位（作为回归模式名） | 离线模式 / 预取证模式 | 产品里不存在「档位」这个实体（[ADR 0007](docs/adr/0007-a-checkmark-is-earned-by-a-fetch-not-by-a-capability.md)）；模式是**回归套件**的属性，不是产品的属性 |
 | 起步清单 / 推荐方向（作为首屏产出） | 缺口清单 / 第 0 问 | 首屏给不出可取证的方向建议——硬编码院校库在 Out of scope，凭记忆给撞停手线取证类（[ADR 0012](docs/adr/0012-the-first-reply-is-a-mirror-not-a-list.md)） |
