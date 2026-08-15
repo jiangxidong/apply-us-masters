@@ -4,6 +4,7 @@ channel_key: cornell--gradschool
 season: 2027fall
 generated: 2026-08-15
 source_fingerprint:
+  apply.md: 776643646-1914
   profile.md: 2962069914-2208
   programs.md: 1431628522-1419
   recommenders.md: 3298438568-3030

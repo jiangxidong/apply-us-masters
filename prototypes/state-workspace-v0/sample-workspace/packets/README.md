@@ -31,6 +31,8 @@ packets/<program_key>/
 `source_fingerprint` 记的是**生成那一刻源是什么样**，是历史观察值（同 `log.md` 的镜像豁免），
 不是「源现在是什么样」，所以它不是镜像。
 
+⚠️ **`apply.md` 必须进指纹**：换季只改它的 `season` 一个字段，不进指纹的话换季不会让任何包失效。
+
 ⚠️ **用 `cksum` 不用 `mtime`**：实测 `git checkout` 会把全部文件的 mtime 刷成同一个值，
 新克隆的仓库里 mtime 恒定失配，等于「每次都重生成」，检测不出任何东西。
 
