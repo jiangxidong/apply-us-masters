@@ -12,15 +12,15 @@ awk -F'\t' 'NR==1{n=NF} NF!=n{bad=1; print "  ✗ 第 "NR" 行 "NF" 列，应为
 
 echo
 echo "=== 待核实清单（自动汇出，不落盘）==="
-awk -F'\t' 'NR>1 && $11 ~ /待核实/ {c++; print "  · "$2" — "$4} END{print "  合计 "c+0" 行"}' $W
+awk -F'\t' 'NR>1 && $9 ~ /待核实/ {c++; print "  · "$2" — "$4} END{print "  合计 "c+0" 行"}' $W
 
 echo
 echo "=== 上季核过、本季尚未复核（换季降级留下的痕迹）==="
-awk -F'\t' 'NR>1 && $11 ~ /核过/ {print "  · "$4"\n    "$11}' $W
+awk -F'\t' 'NR>1 && $9 ~ /核过/ {print "  · "$4"\n    "$9}' $W
 
 echo
 echo "=== 分档 / 状态统计（枚举列是 ASCII，中文标签在展示层）==="
-awk -F'\t' 'NR>1{t[$6]++; s[$10]++} END{
+awk -F'\t' 'NR>1{t[$6]++; s[$8]++} END{
   print "  分档:"; for(k in t) print "    "k": "t[k];
   print "  状态:"; for(k in s) print "    "k": "s[k]}' $W
 

@@ -60,6 +60,12 @@ season: 2027fall
 
 - `✓ 同上` `ferpa_waiver_checkbox`（FERPA 1974 放弃查阅推荐信权）—— 影响推荐人对保密性的预期，**AI 不得代勾**
 
+## 费用与资格（从 programs.tsv 下沉至此 —— evidence 列只担保 deadline）
+
+- `待核实` 学费口径（UIUC 研究生按 program + residency 分档，Bursar 页单列）
+- `待核实` STEM OPT 资格（须查项目 CIP code 对照 DHS STEM 清单）
+- `待核实` 申请费金额；**UIUC 有多种免申请费路径**（先提交后付费，逾期未付会退回未提交）
+
 ## AI 使用政策
 
 - `待核实` UIUC Graduate College 的明文 AI 政策未查到。
