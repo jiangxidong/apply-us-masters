@@ -6,7 +6,23 @@
 取证边界：所有 portal 页面仅 GET 读取登录前公开页，未注册、未登录、未 POST、未填任何字段。
 -->
 
-# AU 授课型硕士网申字段调研 — Notes
+# 三国主流网申系统字段调研（AU / UK / US）— Notes
+
+服务于 issue #6。字段表：`portal-fields.tsv`（11 列，schema 见下）。
+
+**TSV schema（11 列，制表符分隔，不得增删列）**
+`school / platform / section / field_name_verbatim / normalized_key / type / limit / required / source_url / source_type / checked_date`
+
+**`source_type` 允许值（枚举已锁定，勿新造）**
+`live public form`（登录前真实 HTML 表单，limit 取自 `maxlength`/`required` 属性）｜`official how-to-apply page`｜`official checklist`｜`official PDF application guide`｜`login-walled — not confirmable`
+
+**取证边界（三国一致）**：所有 portal 页面**仅 GET 读取登录前公开页，未注册、未登录、未 POST、未填写任何字段**。登录墙后的字段一律不猜——改用官方 how-to-apply 页 / checklist / PDF 指引，并在 `source_type` 列如实标注来源档次；确实无法确认的记 `未确认(登录墙后)`。
+
+**阅读顺序建议**：赶时间就直接看 **Part D「跨国字段复用分析」**——那是决定"准备包能不能省力"的一节，Part A/B/C 是其取证底稿。
+
+---
+
+## Part A — AU 澳洲（Melbourne / UQ / UNSW / Adelaide）
 
 调研日期：2026-08-14
 字段表：`au-fields.tsv`（143 行，不含表头）
@@ -313,3 +329,51 @@ UQ 的 `Submit your application` 页在「提交后可在 portal 做什么」列
 - https://partner.studylink.com/
 - https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/student-500/genuine-student-requirement
 - https://immi.homeaffairs.gov.au/help-support/applying-online-or-on-paper/on-paper/certified-copy
+
+---
+
+## Part B — UK 英国
+
+> 调研中。平台栈结论继承自同 issue 的另一份调研 `docs/research/uk-apply-timeline-deposit.md`（分支 `research/country-delta`），本节不重复取证。
+
+---
+
+## Part C — US 美国
+
+> 调研中。
+
+---
+
+## Part D — 跨国字段复用分析（**本文件最重要的一节**）
+
+> 版本：v1（仅含 AU 四校 143 行数据）。每补一所学校即刷新本节。
+
+### D.1 方法
+
+复用度用 TSV 的 `normalized_key` 列机械计算，不靠肉眼归类：
+
+```sh
+tail -n +2 docs/research/portal-fields.tsv | cut -f1,5 | sort -u | cut -f2 | sort | uniq -c | sort -rn
+```
+
+（`cut -f1,5 | sort -u` 先按「学校 × 字段」去重，避免同一学校同一字段出现在多个 section 时被重复计数。）
+
+### D.2 v1 结论（AU 内部，四校）
+
+**四校全中（4/4）**：`transcript_upload`、`password`、`application_fee_payment`
+**三校中（3/4）**：`given_name`、`family_name`、`email`、`passport_scan`、`personal_statement`、`english_test_report_upload`、`course_preference_1`、`translation_upload`、`transcript_delivery_method`、`genuine_student_declaration`、`agent_used_yn`
+**仅一校（school-unique）**：57 个 key 中约 27 个只在单校出现，多为国别政策字段（`gs_funding_source`、`accommodation_under18_nomination`、`credential_verification_id`）与平台特有字段（`flywire_terms_consent`）。
+
+### D.3 ⚠️ 最关键的一条：`normalized_key` 相同 ≠ 约束可复用
+
+AU 数据自身就是反例：UQ 的 `given_name` HTML 属性写 `maxlength="50"`，字段下方帮助文字却写 `Maximum 30 characters.`——**同一个字段，同一所学校，两个数字**。跨校时这种分歧只会更多。
+
+因此"准备包能不能省力"的答案是**两层的**，不是一个扁平的复用/独有清单：
+
+| 层 | 复用度 | 产品含义 |
+|---|---|---|
+| **内容层**（学生要准备的实际信息与文件本体） | **高** | 姓名、护照、成绩单、英语成绩、个人陈述正文——一次准备，多校通用。准备包应存**规范化的长版内容**。 |
+| **约束层**（每个 portal 对该内容的字数/格式/份数/认证要求） | **低** | maxlength、文件 MB 上限、是否要 certified copy、志愿数量上限——逐校不同且互相冲突。必须建**每校截断/改写规则表**，在投递时套用。 |
+
+**设计推论**：准备包不应存"已经按某校要求截断好的成品"，而应存 `canonical content + per-school rendering rules`。否则换一所学校就要重写。
+
