@@ -12,7 +12,7 @@
 
 **「明显」这个词从产品里消失。** 跨过第二条线是**一条可链接的 `✓` 事实**，原样通过 [`0005`](0005-basis-points-at-an-existing-checked-fact.md) 的准入测试——不新增标记、不加列、不动 schema，也不在「绝不输出录取概率」这条红线上开洞。同一台机器顺带把「擦线」从主观形容词变成可机械判断的谓词（该维度有第二条线且没跨过），否则它就是「明显」的同一个病。
 
-**`safer` 成为项目属性先行的判断。** 项目不公布第二条线，任何申请人在它这里都拿不到 `safer`，与他多强无关。这把用户的挫败感导向正确的地方——不是你不够好，是它不说。代价是 `safer` 比 #16 §5 预计的更罕见：五所样本中只有 UIUC MCS 具备产出它的条件（Graduate College 3.0 + Siebel School `recommended 3.2`），而**公布区间的一个都没有**。这个稀缺是**诚实的**——美国 coursework master 对一个满足门槛的申请人本来就大多是 `reach`。
+**`safer` 成为项目属性先行的判断。** 项目不公布第二条线，任何申请人在它这里都拿不到 `safer`，与他多强无关。这把用户的挫败感导向正确的地方——不是你不够好，是它不说。代价是 `safer` 比 #16 §5 预计的更罕见：**五所样本里 `safer` 产出为零**——公布区间的一个都没有，而唯一一条压在最低线之上的第二条线（Graduate College 3.0 之上的 Siebel School `recommended 3.2`）经 [#45](https://github.com/jiangxidong/EduApplication/issues/45) 真取回后被学校自己的 FAQ 判为类型 B 的单个均值（`Our website states the average GPA of admitted students. It is not a minimum.`），无离散度 ⇒ 同样不判 `safer`。这个稀缺是**诚实的**——美国 coursework master 对一个满足门槛的申请人本来就大多是 `reach`。
 
 **`match` 反而比 #16 §5 预计的常见。** `"Successful applicants typically have a GPA of 3.5 or higher"`（Columbia CS）这类**录取结果下界**在美国比 `middle 50%` 区间常见得多，而跨过它只证明「你和大多数被录的人一样」——那逐字是 `match` 的定义。#16 §5 的分布描述随之修订。
 
