@@ -3,7 +3,7 @@
 - 状态：已接受
 - 日期：2026-08-15
 - 来源：[#8 网申准备包的交付形态](https://github.com/jiangxidong/EduApplication/issues/8)
-- 原编号：**0011**。落盘时（[`d262e75`](https://github.com/jiangxidong/EduApplication/commit/d262e75)）与并行 session 的 [ADR 0011 词汇表定义词，契约持有取值](0011-the-glossary-defines-words-the-contract-holds-the-values.md)（[`fbc2d00`](https://github.com/jiangxidong/EduApplication/commit/fbc2d00)，[#26](https://github.com/jiangxidong/EduApplication/issues/26)）撞号，按提交顺序本条后落、让号，由 [`a15d5ec`](https://github.com/jiangxidong/EduApplication/commit/a15d5ec) 改为 0013（0012 已被 [#15](https://github.com/jiangxidong/EduApplication/issues/15) 占用）。**#8 的票面与评论里的「ADR 0011」全部指本条**，那是不可变历史、改不动。
+- 原编号：**0011**。落盘时（[`d262e75`](https://github.com/jiangxidong/EduApplication/commit/d262e75)）与并行 session 的 [ADR 0011 词汇表定义词，契约持有取值](0011-the-glossary-defines-words-the-contract-holds-the-values.md)（[`fbc2d00`](https://github.com/jiangxidong/EduApplication/commit/fbc2d00)，[#26](https://github.com/jiangxidong/EduApplication/issues/26)）撞号，按提交顺序本条后落、让号，由 [`a15d5ec`](https://github.com/jiangxidong/EduApplication/commit/a15d5ec) 改为 0013（0012 已被 [#15](https://github.com/jiangxidong/EduApplication/issues/15) 占用）。#8 评论里**改号之前**写下的「ADR 0011」指本条——两条死链（原型交付评论、决议第 2 节）与两处裸引用（推论 2、决议末段）；**唯一的例外是记录改号那条评论本身**，它写的「ADR 0011」反指词汇表那条。那些是不可变历史，改不动。
 
 ## 背景
 
