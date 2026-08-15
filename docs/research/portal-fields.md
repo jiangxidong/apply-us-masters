@@ -603,6 +603,79 @@ Publications 一项要求：上传论文副本 + 描述本人贡献 + **提供�
 
 ---
 
+### C.2 Cornell（Graduate School + CS MEng）（ApplyWeb / CollegeNET）
+
+**平台取证（间接，如实标注）**
+康奈尔官方 FAQ 内逐字出现 `ApplyWeb portal`、`ApplyWeb account`、`ApplyWeb (CollegeNet)`，并把推荐人求助指向 `applyweb.collegenet.support`；申请入口 URL 形如 `w.applyweb.com/cgi-bin/app?s=cornellg`。
+⚠️ 本次直接 GET `w.applyweb.com/public/account?s=cornellg` **连接失败（HTTP 000）**，`gradschool.cornell.edu` 的 recommendations 页也被 Cloudflare 挡回 **403**（`Enable JavaScript and cookies to continue`）。因此 Cornell 的平台名取证来自**康奈尔自己的官方页面**，不是我亲自读到的 portal HTML。本节所有字段同理，来源均为官方指引页。
+
+**🌟 文件上传规格 —— 美国部分最完整的一份，且与英国规则直接冲突**
+
+| 项 | Cornell | 对照 |
+|---|---|---|
+| 格式 | **PDF / TIFF / JPEG / GIF** | UCL：.pdf/.docx/.jpeg/.jpg（Cornell 不收 docx，但收 TIFF/GIF） |
+| 单文件上限 | **10MB** | UCL 5MB；曼大、Leeds、Columbia 均未公开 |
+| 多页处理 | 🔴 **要求合并**：`Combine multiple pages from the same transcript into one file` | 🔴 曼大：`should be uploaded separately and not combined`；Leeds：`do not merge separate qualifications together` |
+
+**这是本次调研中最尖锐的一处跨校冲突**：同一份"多页成绩单"，Cornell 要求合并成一个文件，曼大和 Leeds 要求分开。**一份准备好的 PDF 不可能同时满足两边**——这正是"约束层不可复用"最硬的证据。
+
+**另外三条 Cornell 独有的上传规则**
+- 🌟 **隐私脱敏**：`Do not upload transcripts that include a U.S. Social Security Number (SSN). Redact, cross out, or cover your SSN, if applicable, before scanning.` —— 八校中唯一的脱敏要求。
+- 🌟 **加密文件必失败**：系统不接受也无法正确显示加密/带密码文件，**官方电子成绩单必须先打印、再扫描后上传**。学生"把学校发来的加密 PDF 直接转上去"必然出错。
+- 翻译件要求到 **certified or notarized** 一级（UCL 只要 registered translator，Columbia 只要 reputable service provider）。
+
+**⚠️ 推荐信 —— 八校中机制细节最丰富的一所，且出现三个别处没有的字段**
+
+基本机制：
+> `Students must submit the names and contact information for their references directly on the application. These faculty receive an email with a link to an online form to complete the reference. Referees can upload or type directly into the text box provided.`
+
+系统给推荐人发含链接的邮件，推荐人可上传文件**或直接在文本框里打字**。
+⚠️ **发信时点公开页未写明**（保存推荐人信息时？还是提交申请时？）——**记未确认**，不套用 UCL 的 on-submit 结论。
+
+**三个别处没有的字段：**
+
+1. 🌟 **FERPA `waive access` 勾选框**（美国特有）
+   > `You can waive your right to inspect your recommendations by checking "waive access" below each recommender's address and before you submit the request.`
+   勾选 = 放弃入学后查阅推荐信的权利，并让推荐人知道申请人不会看信、让评审委员会知道这是坦率的推荐。**英澳八校中无任何对应字段。**
+2. 🌟 **`reference_delivery_method`（online / By Mail），且选错不可逆**
+   一旦选了 By Mail 并已提交申请，**推荐人就再也不能改用线上系统**，只能把信直接寄/发给所申 field，且信须用 letterhead 并有签名。
+3. 🌟 **官方要求填"占位值"**：康奈尔 CS 在读生只需 1 封推荐信，官方指引是在第 2 位推荐人处 `enter a "filler"`。产品做字段校验时必须容忍这种**官方认可的占位内容**。
+
+**Interfolio：与 Columbia 完全相反**
+- Columbia：`We do not accept Interfolio, or other 3rd-party services`。
+- Cornell：**接受**，但须所申 graduate field 同意（理由：经 Interfolio 递交的信缺少通常随信的标准推荐表）。
+- CS MEng 给出的具体做法尤其值得注意：Interfolio 为每封信生成一个 **custom document e-mail address**，要把它**填进 ApplyWeb 里推荐人邮箱那一栏，取代推荐人本人的邮箱**。
+  → 也就是说 `referee_1_email` 这个字段**并不总是装着真人邮箱**。产品若把该字段一律当作"真人推荐人邮箱"来做红线拦截，会在 Cornell + Interfolio 这条合法路径上误判。
+
+**其他推荐信细节**
+- 大多数 field 要 2 或 3 封；CS MEng 要 2 封（建议 1 学术 + 1 职业；离开学术界久者 2 封职业信亦可），可再自愿加 1 封。
+- 🌟 **要求 3 封但只到 2 封，视为已满足**：`If you requested three letters of recommendation and only two are received at the time of processing, we will consider that the letter of recommendation requirement has been met.`
+- 须用 **professional email address**，理由写明 `to maintain the integrity and credibility of the recommendations`。
+- 提交后改推荐人：官方指引是**由申请人自行联系全部推荐人**告知变更；系统内能否直接改**未确认**。
+
+**两份文书（不是一份）**
+Cornell 要 **Academic Statement of Purpose** 和 **Personal Statement** 两份**独立**文书，各有官方指引页。
+- SOP 上限：`Unless otherwise noted, one to two pages in a standard font and size is typical`。
+- 🌟 排版要求：`Include your full name and proposed program of study at the top of each page`，理由写明**若评审看纸质版，散页可能被分开**。（对照 Columbia：姓名放**页眉或页脚**。同一个需求，两种落位。）
+- Personal Statement 的字数/页数上限：该页未给硬性数字，**未确认**。
+
+**🌟 附加材料政策与 Columbia 完全相反**
+> `Publications, award certificates, resumes, theses, and similar materials should not be sent unless prior approval has been given by the field of study to which you are applying.`
+获准的材料还须**直接寄给 graduate field，不寄研究生院**。
+→ Columbia **主动要**简历与 publications；Cornell 研究生院**默认不收**。"多准备一份材料总没坏处"在 Cornell 是错的。
+
+**🔴 提交即冻结（八校中写得最死的一条）**
+> `Paying the application fee or requesting a fee waiver is the final step in submitting your application. ... Once a fee is paid or a fee waiver request is submitted, you will not be able to make changes to your application.`
+申请费 **$105** 不可退。免申请费须在 payment page 的 waiver 表内**直接打字**写 `brief but well-reasoned explanation`（可援引失业/低就业、FAFSA 的 EFC、本国经济状况等），且须在截止前**至少 3 个工作日**提交。
+
+**其他**
+- 只能申请 major field，一份申请对应一个 field；改投须另联系一个 field 请求转审（对方 deadline 未过且愿审）。
+- 官方送分机构代码 **2098**；🌟 不需要 department code，若 ETS 强制要选则选 `0000 undecided`。
+- 接受由 **IIE / Amideast** 直接认证上传的成绩单，或经 **SOPHAS / VMCAS / LSAC** 递交——⚠️ 与 Columbia「禁止一切中介与第三方代交」口径不同。
+- 提交后更新成绩单须**申请人自己**经 ApplyWeb 的 **transcript update tool** 操作；补交简历或推荐信可邮件请招生办代传，但**成绩单不代传**。
+
+---
+
 ---
 
 ## Part D — 跨国字段复用分析（**本文件最重要的一节**）
