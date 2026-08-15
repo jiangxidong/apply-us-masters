@@ -6,7 +6,8 @@
 > 所有结论均回官网原文核实。每条主张附 URL + 查阅日期 + 页面自述的生效周期/版本（若页面标注）。
 > 服务于 [#7 英美澳院校对 AI 辅助申请的政策现状](https://github.com/jiangxidong/EduApplication/issues/7)。
 >
-> 引述规则：`>` 引用块内均为**英文逐字原文（verbatim）**，未做任何改写；PDF 来源已把 pdftotext 输出的 `ﬁ`/`ﬀ` 连字还原为普通字母，除此之外一字未改。
+> 引述规则：`>` 引用块内均为**英文逐字原文（verbatim）**，未做任何改写；
+> **引用块内的加粗为本文件所加的强调，原文无加粗**（原页面自带的粗体已在注中说明）；PDF 来源已把 pdftotext 输出的 `ﬁ`/`ﬀ` 连字还原为普通字母，除此之外一字未改。
 > 中文均为本文件的判断/说明，不得与原文混淆。
 
 ---
@@ -1139,7 +1140,7 @@ Sydney 的 D 档判定**仅基于上述三个申请人指引页**，其政策库
 ### 4.1 结论：存在，但是**孤例，不是趋势**
 
 在本次实际抓取核实的**约 35 个机构页面**中（英 10 + 美 15+ + 澳 8 + 商法学院专项），
-真正落在「**先允许，再要求申报/标注 AI 使用**」这一档的，**只有下面 4 条**。
+真正落在「**先允许，再要求申报/标注 AI 使用**」这一档的，**只有下面 5 例——其中 4 条是正式条款，1 条（LBS）只是招生博客的软实例**。
 
 | 强度 | 机构 | 载体（决定其约束力） | 覆盖材料 |
 |---|---|---|---|
@@ -1213,7 +1214,7 @@ URL：https://law.asu.edu/admission/jd/full-time-on-campus ｜2026-08-14
 **误传 2：Duke Fuqua「未注明来源的 AI 属抄袭」= 有披露要求**
 URL：https://www.fuqua.duke.edu/programs/daytime-mba/application-instructions ｜2026-08-14
 
-> All submitted materials must be your own work and a truthful representation of your experiences. Essays are reviewed using plagiarism detection software. Using language or content from external sources, including websites, publications, other applicants' materials, consultants, or AI-generated content, **without proper attribution**, constitutes plagiarism. Plagiarism is a violation of the Fuqua Honor Code and may result in denial of admission.
+> All submitted materials must be your own work and a truthful representation of your experiences. Essays are reviewed using plagiarism detection software. Using language or content from external sources, including websites, publications, other applicants' materials, consultants, or AI-generated content, **without proper attribution** constitutes plagiarism. Plagiarism is a violation of the Fuqua Honor Code and may result in denial of admission.
 
 > We recognize that applicants may use tools such as Grammarly, ChatGPT, or other AI technologies. These tools may be used to support editing and clarity, but your ideas, experiences, and responses should be your own. **AI should help refine your content, not generate it.** You will tell your story better than any tool. **Essays may also be reviewed using AI-detection tools.** Submissions that rely heavily on AI-generated content, misrepresent the applicant, or are written by another person may negatively affect an applicant's evaluation and may constitute a violation of the Fuqua Honor Code.
 
@@ -1359,7 +1360,7 @@ URL：https://www.imperial.ac.uk/business-school/blogs/admissions/ai-admissions-
 字面推论是：**注明出处的 AI 使用，不构成 plagiarism。**
 但——**Manchester 在整个申请流程中没有提供任何 AI 使用的申报字段、披露格式或说明位置。**
 
-Duke Fuqua 的条款是**完全同构的**："...or AI-generated content, **without proper attribution**, constitutes plagiarism"，
+Duke Fuqua 的条款是**完全同构的**："...or AI-generated content, **without proper attribution** constitutes plagiarism"，
 同样未说明如何/在哪里 attribute。
 
 > **这意味着什么**：条文给了一条看似存在的合规路径（「注明就行」），但**这条路径在流程上是走不通的**。
@@ -1487,6 +1488,11 @@ Cambridge 要 "acknowledged"、Sheffield Hallam 要「事前申报 + 提交内�
 
 **位置**：用户加完选校、点击「开始写个人陈述 / 生成初稿」的**那一次点击之前**，作为一个必须通过的门。
 **不是**设置页里的一个开关，**不是**首次使用的一次性公告——因为选校列表会变，规则必须跟着变。
+
+⚠️ **选校列表变更时必须重算最严档位。** 若用户在动笔之后才加入一所 C 档学校（Cambridge / Edinburgh / Columbia GSAS 等），
+**已有草稿会追溯性地变成不合规**，而用户不会收到任何信号——这正是「最严的那一所决定整份草稿」这条推论所预测的失败模式。
+**此时必须就已有草稿再次提示**：用户面对的仍是「重写 / 为该校单独写一份 / 把该校移出列表」三选一，
+但至少他是在知情的情况下做选择，而不是在提交后才知道。
 
 **逻辑**：对当前选校列表做**取最严**运算，输出三种结果之一：
 
