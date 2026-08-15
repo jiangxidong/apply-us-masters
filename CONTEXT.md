@@ -302,6 +302,11 @@ _Avoid_: 假保底（同一概念的旧名，中文名以本条为准）、保�
 ⚠️ 「跨会话不继承」说的是**取回这个动作**不跨会话，**不是已落盘的 `✓` 行跨会话失效**——已经写下的 `✓` 只由**换季降级**改写（见「降级」），会话边界不动它。
 取回**失败**（离线、工具被拒批、运行时无外部访问、PDF / 动态页取不到）与取回**成功但正文里没有这条事实**是两回事：前者是 `待核实`（无原因后缀，下一步「去官网查」），后者是 `待核实（官网未列）`。两者给用户的下一步相反，**agent 不得把取回失败说成「官网没写」**。
 
+**事实行 / 判断行** — `—`
+`channels/` 里 bullet 的两类**首行**。**事实行**断言「校方那边有一个答案」，**必带证据标记**；**判断行**是本工作区自己的推论或渲染配方，**顶层 `- → ` 起头、不带标记**。判据是「**校方那边有没有一个答案**」。
+⚠️ **缩进续行不独立分类**，随它所属的那条 bullet——`→` 在样例里绝大多数是事实行的续行。
+🔴 **判断行不在证据轴上**：给它 `✓` 是凭空造出处（[ADR 0007](docs/adr/0007-a-checkmark-is-earned-by-a-fetch-not-by-a-capability.md)），给它 `待核实` 是造一个永远核不掉的条目——原因后缀那张表四项**全都假定**校方那边有答案。取值、样例与切口位置归 `CONTRACT.md` §4（[#50](https://github.com/jiangxidong/EduApplication/issues/50)）。
+
 **待核实后缀** — `—`
 `待核实` 括号里的补充说明。**共两种，可同时出现**，都不参与机械汇总（`待核实` 依然全中），只在生成自查清单时变成行动提示。
 
@@ -400,6 +405,7 @@ _Avoid_: 假保底（同一概念的旧名，中文名以本条为准）、保�
 **渲染物** — `—`
 canonical 的一种**形态**（长文 / 250 词版 / 可拆短答题的要点）。三者不是同一篇的长短，是三种形态。
 **逐项目文书段不是渲染物**（见下），它既不开形态轴也不开版本轴。
+三种形态由**文件名**承载（`long.md` / `short-250.md` / `points.md`），**不另存 frontmatter 键**；v1 的三个文件名与路径规则归 `CONTRACT.md` §5（[#50](https://github.com/jiangxidong/EduApplication/issues/50)）。
 
 **逐项目文书段** — `per-program`
 「为什么是这个项目」这一段，是文书里**唯一必须逐项目手写**的内容，粒度对齐**提交单元**（[#18](https://github.com/jiangxidong/EduApplication/issues/18)）。
@@ -596,4 +602,8 @@ _Avoid_: 骨架 / 补全（用时序冒充责任——「什么时候被填」�
 | `usable_for`（作为素材的一个字段） | （不存）正文的「不能用在哪」 | 两条判据各判一次：选材路径是「主张 → 素材」，它不在任何决策链上；且文书类型清单逐渠道住在 `channels/` 的「文书规格」，**源在别处** = 镜像（[ADR 0014](docs/adr/0014-a-semantic-slot-is-not-a-stored-field.md)） |
 | `concrete`（作为素材的一个字段） | （不存）正文三问 | 它是同一个文件正文的镜像，也是「零可再生缓存」禁的那样东西（[ADR 0014](docs/adr/0014-a-semantic-slot-is-not-a-stored-field.md)、[#30](https://github.com/jiangxidong/EduApplication/issues/30)） |
 | 「能证实什么」（作为推荐人的一个列） | （不存）素材的 `verifiable_by` | 它是同一条边的镜像面——源在素材侧，反向投影是派生视图（`derive-demo.sh` 缺口三分类已打印「可证实人」）；两端都存必漂移（[ADR 0006](docs/adr/0006-claims-are-one-shared-truth-source.md) 补充（#49）、[#30](https://github.com/jiangxidong/EduApplication/issues/30)） |
+| `word_count`（作为渲染物的一个 frontmatter 键） | （不存，现算） | 零落盘消费方；源就在同一文件的正文里，改一版即假；且它是「当前状态」不是契约（[#50](https://github.com/jiangxidong/EduApplication/issues/50)） |
+| `target`（作为渲染物的一个 frontmatter 键） | （不存）`channels/` 的 `文书规格` | 与 `usable_for` 同一条判据：文书规格逐渠道住 `channels/`，源在别处 = 镜像；样例里已丢掉「超出不罚」这个限定（[#50](https://github.com/jiangxidong/EduApplication/issues/50)）。⚠️ **不波及 `packets/*/essays/*.md` 的 `target_field:`**——另一个键、另一层，可再生层允许镜像（[ADR 0013](docs/adr/0013-a-packet-is-regenerated-whole-never-patched.md)） |
+| `render_form`（作为渲染物的一个 frontmatter 键） | （不存）文件名 | 键值 ≡ 文件名去掉 `.md`，三篇实测全等（[#50](https://github.com/jiangxidong/EduApplication/issues/50)）。**词本身留着**——它是形态轴的名字，只是不落盘 |
+| `supersedes`（作为渲染物的一个 frontmatter 键） | （不存）`ls _versions/` | 零消费方；`_versions/README.md` 自陈它是「这个目录为空」的另一面（[#50](https://github.com/jiangxidong/EduApplication/issues/50)） |
 | 毕业目标（作为第 0 问） | 毕业去向意向 / `post_grad_intent` | 它是画像的一个字段，不是第 0 问——「回国」支不可取证（[#16](https://github.com/jiangxidong/EduApplication/issues/16) 排除），「留美」支能取证但取不全（[#34](https://github.com/jiangxidong/EduApplication/issues/34)：三所样例 1/3） |

@@ -145,8 +145,8 @@ canonical 渲染物就是「把主张写成人话」的产物——`long.md` 的
 「别处的 frontmatter（`essays/canonical/*.md`、`apply.md`、`profile.md`）都该按它重扫一遍，**这次没有重扫**」。
 用本节的判别式顺手扫出四处（`word_count` ×2 零消费方、`long.md` 的「从这里能渲染出什么」整节与
 `target:` 都是**约束层内容跑进了内容层**、`README.md` 的 `render_form` 表疑似第二份），
-**全部转** [#50](https://github.com/jiangxidong/EduApplication/issues/50)（`blocked_by` #39，
-因为其中两处要搬进 `channels/` 的 `#### 文书规格`，而 #39 正在往同一批节里补约束）。
+✅ **[#50](https://github.com/jiangxidong/EduApplication/issues/50) 已判：四处全删。** 只有一条是真信息且没有家——`long.md` 里「Cornell：去掉个人动机段」——搬进 `channels/cornell--gradschool.md` 的 `## 文书规格`，**既不带 `✓` 也不写 `待核实`**（它是判断行，见 [ADR 0007](0007-a-checkmark-is-earned-by-a-fetch-not-by-a-capability.md) 的补充（#50））。
+⚠️ 当初那句「`blocked_by` #39」**事后不成立**：#39 落的是 `## 材料上传` 与 `## 推荐信机制`，与本票的 `## 文书规格` 零重叠。
 
 ## 补充（[#49](https://github.com/jiangxidong/EduApplication/issues/49)）：两个消费方不等于两条边
 

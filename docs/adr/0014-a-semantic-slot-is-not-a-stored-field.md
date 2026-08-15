@@ -52,7 +52,7 @@
 
 **`material_id` 补进主键表，五个变六个。** 它是一条**已经落盘的跨文件引用**（`claims.md` 的 `materials` 列存的就是它），而此前它不在契约的主键名单里——唯一一条跨文件 id 引用没有权威定义。风格同时对齐 `claim_id`：`01` → `m01`，并进文件名（`m01-<中文短名>.md`）。**id 进文件名才能靠 glob 解析引用**，否则每次解析都要打开全部素材文件读 frontmatter，而 `敏感` / `identity` 那条线的整个设计前提就是「agent 少读文件」。
 
-**反悔代价中等偏低。** 名单本身可逆（加回一个键是一次编辑），难回头的是判据——它一旦成为判「该不该有键」的机器，别处的 frontmatter（`essays/canonical/*.md`、`apply.md`、`profile.md`）都该按它重扫一遍。**这次没有重扫**，只裁了 `materials/`。
+**反悔代价中等偏低。** 名单本身可逆（加回一个键是一次编辑），难回头的是判据——它一旦成为判「该不该有键」的机器，别处的 frontmatter（`essays/canonical/*.md`、`apply.md`、`profile.md`）都该按它重扫一遍。**这次没有重扫**，只裁了 `materials/`。（✅ 已由 [#50](https://github.com/jiangxidong/EduApplication/issues/50) 重扫，见下方补充节。）
 
 **顺带修掉一处抄错的已锁决策。** `materials/README.md` 写着「素材门槛（地图已锁定的质量硬约束）：**3–5 个具体素材**」，而 #10 早就判了「单位是**主张**不是篇数；3–5 个是参考值，不是闸门」。样例把被降级的参考值当成硬约束写了进去，`derive-demo.sh` 的篇数计数照着它来——真正的闸门（进了成稿的主张是否都有素材支撑）#27 已经加在脚本里了，所以这是把假闸门降级，不是补新闸门。
 
@@ -67,3 +67,10 @@
 **与素材正文的「谁能证实」行**（定义域由 [#48](https://github.com/jiangxidong/EduApplication/issues/48)
 从一处扩到两处）。`CONTEXT.md` 的「配对使用」作废并改写。
 判据与取证见 [ADR 0006](0006-claims-are-one-shared-truth-source.md) 的**补充（#49）**。
+
+## 补充（[#50](https://github.com/jiangxidong/EduApplication/issues/50)）：`essays/canonical/` 的 frontmatter 重扫
+
+兑现上面那句「**这次没有重扫**」。六键 → **二键**：留 `version` 与 `claims`，删 `word_count` / `target` / `render_form` / `supersedes`。逐键理由见 `CONTRACT.md` §1.1 的名单节；其中 `target` 出局用的正是本 ADR 判 `usable_for` 出局的同一条判据。
+
+🔴 **「消费方尚未实现 ≠ 没有消费方」的第二个实例，而且更险。** `version` 差点被这次重扫杀掉——它在 `prototype/state-layer` 上确实零消费方，救它的是 `prototype/application-packet` 上**已落盘**的三个渲染物 frontmatter 里的 `source_version:`。
+⇒ **重扫一律跨分支 grep。** 第一个实例是 `sensitive`（消费方尚未实现），本条是**消费方不在本分支**。两者的共同点：只在手边这棵树上找消费方，会把真键判成死键。
