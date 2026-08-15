@@ -58,7 +58,7 @@
 |---|---|---|---|---|
 | 1 | `apply.md` | frontmatter + 正文 | **工作区标识 + 申请季** | **冷启动**（创建）；此后**只有换季时**改 `season`。⚠️ 不放完成度、不放待核实计数——那些是派生视图 |
 | 2 | `profile.md` | frontmatter + 正文 | **申请人 canonical 事实**；学历条目是 `institution_id` 的**定义处** | **冷启动 / 画像**；其他阶段只读 |
-| 3 | `programs.md` | Markdown 表，**13 列**（🔴 样例只有 9 列，见下） | **项目池**（选校决策面） | **选校**（**全部 13 列，含 `status`，无例外**——见 §1.5 注 ①） |
+| 3 | `programs.md` | Markdown 表，**13 列**（逐列 schema 见 **§4.6**） | **项目池**（选校决策面） | **选校**（**全部 13 列，含 `status`，无例外**——见 §1.5 注 ①） |
 | 4 | `claims.md` | Markdown 表，4 列 | **主张集**（全局唯一，文书与推荐信共用） | 🔴 **按行单向移交**：**冷启动 / 画像**只 append 新行，**文书**此后全权（见下） |
 | 5 | `channels/<channel_key>.md` | Markdown，**分节** | **约束层**（逐申请渠道的 rendering rules） | 🔴 **按节归属，见 §1.2**（5 个阶段 owner） |
 | 6 | `materials/*.md` | Markdown，字段名单见下（**不计数**） | **文书素材**（素材门槛在此判定）；推荐信线是第二个消费方，**只读** | **文书**（见 §1.5 注 ②） |
@@ -90,11 +90,14 @@
 ⚠️ **完整名单尚未裁决** → [#38](https://github.com/jiangxidong/EduApplication/issues/38)：#10 的六个语义字段与样例
 frontmatter 的 `material_id` / `type` / `usable_for` / `concrete` 是**两套互不相交的词汇**，本文件与样例都没把两者对应起来。
 
-🔴 **`programs.md` 的 13 列在样例里只落了 9 列**——`tier_basis` / `tier_void_if` / `pseudo_safer`
-（[#11](https://github.com/jiangxidong/EduApplication/issues/11) 在 #4 的 9 列上加的判断层）不在 `sample-workspace/programs.md` 里。
-**这一处不能照抄补齐**：样例里一条 `✓` 事实都没有，填 `tier_basis` 撞
-[ADR 0005](../../docs/adr/0005-basis-points-at-an-existing-checked-fact.md)，留空则按 #11 的机械规则三行都得改成 `undecided`。
-→ [#31](https://github.com/jiangxidong/EduApplication/issues/31) 裁决。`derive-demo.sh` 的列数完整性检查现断言 9 列，跟着一起改。
+✅ **`programs.md` 的 13 列已在样例里落全**（[#31](https://github.com/jiangxidong/EduApplication/issues/31)）。逐列 schema 见 **§4.6**。
+
+> 本处旧版写着两条**错的**断言，读到引用它的地方请以此为准：
+> ① 「样例里一条 `✓` 事实都没有」——不成立，三个 `channels/` 文件共 **40 条 `✓ <url>` 事实行**。
+> 真实约束窄得多：**承载分档的 `✓` 只有 UIUC 一条**（研究生院对中国申请人的 B Average / 80%），
+> 于是 [ADR 0005](../../docs/adr/0005-basis-points-at-an-existing-checked-fact.md) 的准入测试对 UIUC 行当场就过，Columbia / Cornell 两行过不了。
+> ② 「`derive-demo.sh` 的列数完整性检查断言 9 列」——不成立。它是**自相对**的（`if(!n) n=NF`，表头定基准），
+> 9 是**打印出来的**不是断言的；判断层四列**追加在末尾**后它自动打印 13，**脚本一行都没改**。
 
 **`claims.md` 的四列**：`claim_id` / 断言（中文自由文本，禁 `|`）/ `materials`（支撑素材 id 列表，空格分隔；
 **空 = 缺素材缺口**）/ `voice`（`self` / `referee` / `both`）。
@@ -497,6 +500,42 @@ LC_ALL=C             →  [<3 个乱码字节> 推荐信机制 —— 风险 A�
 跑 `./derive-demo.sh` 可以复现全部派生视图。
 
 ---
+
+## 4.6 `programs.md` 的 13 列（**唯一完整列举处**）
+
+**13 = [#4](https://github.com/jiangxidong/EduApplication/issues/4) 的 9 列 + [#11](https://github.com/jiangxidong/EduApplication/issues/11) 的判断层 4 列。**
+本表存在的直接原因是 [ADR 0008](../../docs/adr/0008-the-owner-binds-to-a-section-not-a-file.md) 限定 1：
+owner 的绑定单位是「该文件格式自己的结构单元」，**表格的结构单元是列**，而切法**必须来自契约里预先声明、脚本能枚举的结构**。
+在本节落盘之前全仓库只有「13 列」这个**计数**，没有名单——「表格切列」因此是纸面机制。现在它有货了。
+
+⚠️ 有名单**不等于**本文件按列分 owner：[#25](https://github.com/jiangxidong/EduApplication/issues/25) 已判 `programs.md` 是**单 owner = 选校、全部 13 列含 `status` 无例外**（§1.5 注 ①）。本节是**声明**，不是切分。
+
+| # | 列 | 值域 | 被 `evidence` 担保 | 被聚合 |
+|---|---|---|---|---|
+| 1 | `program_key` | ASCII，`<school>--<college>--<program>` | ❌ | ❌（主键，被 `grep` / join） |
+| 2 | `school` | 自由文本，可中文 | ❌ | ❌ |
+| 3 | `college` | 自由文本，可中文 | ❌ | ❌ |
+| 4 | `program` | 自由文本，可中文 | ❌ | ❌ |
+| 5 | `channel_key` | ASCII，外键 → `channels/<channel_key>.md` | ❌ | ❌（被 join） |
+| 6 | `tier` | ASCII 枚举，**取值全表在 `CONTEXT.md`「分档」** | ❌ 永不担保（判断） | ✅ |
+| 7 | `deadline` | 日期，或 `待核实`（可带 §4 的封闭后缀） | ✅ **唯一被担保的一列** | ❌ |
+| 8 | `status` | ASCII 枚举，**取值全表在 `CONTEXT.md`「状态」** | ❌ | ✅ |
+| 9 | `evidence` | `✓ <url>` / `待核实`（可带封闭后缀）—— 它**自己就是**标记 | — | ❌（被 `grep` 匹配） |
+| 10 | `tier_basis` | 一句话，禁 `\|`，禁换行 | ❌ | ❌ |
+| 11 | `tier_void_if` | 一句话，禁 `\|`，禁换行 | ❌ | ❌ |
+| 12 | `pseudo_safer` | ASCII `yes` / `no` / `unknown` | ❌ | ✅ |
+| 13 | `status_note` | 一句话，禁 `\|`，禁换行；`status=dropped` 时**必填** | ❌ | ❌ |
+
+🔴 **列序是契约的一部分，不只是排版。** 判断层四列**追加在末尾**，因此 §4.5 解析约定下的
+`$7` = `tier`、`$9` = `status`、`$10` = `evidence` **在 9 列时代与 13 列时代取值相同**——
+`derive-demo.sh` 补列后零改动即是这条的实测收据。**新增列一律追加在末尾**，不得插在中间。
+
+🔴 **写不满的自由文本列留真空格，不填占位符。** `无` / `N/A` / `—` 都会让「这一格有没有值」从
+一个 `$10 == ""` 的机械判断退化成语义判断，而 `tier_basis` 空与非空**正是一条机械判别式的输入**
+（`tier_basis` 空 ⇒ `tier` 必须是 `undecided`）。空格不影响 `awk` 的 `NF` 计数（已实测）。
+
+⚠️ **`pseudo_safer` 判不出来时填 `unknown`，不填 `no`。** `no` 断言「已判定它不是伪保底」，
+而伪保底要写满「名义门槛低 + 方向申请量集中 + 作废条件」才谈得上判定；没做过判定就填 `no` 是凭空断言。
 
 ## 5. 文书的两个正交轴
 
