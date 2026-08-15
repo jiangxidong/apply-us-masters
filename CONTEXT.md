@@ -87,8 +87,11 @@ _Avoid_: 个人资料、背景、简历
 
 ⚠️ `either` 与 `undecided` **必须分开**，切分同 [ADR 0009](docs/adr/0009-safer-is-defined-by-the-programs-second-published-line.md) 之后 `undecided` / `ineligible` 那一刀：**已经有答案** vs **还没有答案**。压成一个值，会把「先留两年再看」这个最常见的真实答案错判成茫然，直接把用户推进兜底路径。
 
-🔴 **它不是第 0 问**（[#15](https://github.com/jiangxidong/EduApplication/issues/15)）。`euro-grad-apply` 把「毕业目标」设为强制第 0 步，本产品**不照抄**：第 0 问的准入是「答案会立刻改变产品下一个**可取证**动作」，而本字段两支的可取证性目前是**未证实的假设**——「回国」那一支要的「国内认可度」已被 [#16](https://github.com/jiangxidong/EduApplication/issues/16) 明确排除（社区讨论密度无可链接出处），「留美」那一支要的 STEM 指定 / CIP code 在三份一手调研（1133 + 1056 + 1610 行）里**零条数据**。
-它落 ASCII 枚举而非中文自由文本，正是为了那个假设**将来被证实**的那一天：一旦 STEM/OPT 那条线成立，它当场变成会被机械读取的字段。
+🔴 **它不是第 0 问**（[#15](https://github.com/jiangxidong/EduApplication/issues/15)）。`euro-grad-apply` 把「毕业目标」设为强制第 0 步，本产品**不照抄**：第 0 问的准入是「答案会立刻改变产品下一个**可取证**动作」，而本字段两支都过不了这一关——「回国」那一支要的「国内认可度」已被 [#16](https://github.com/jiangxidong/EduApplication/issues/16) 明确排除（社区讨论密度无可链接出处）；「留美」那一支要的 STEM 指定 / CIP code **已由 [#34](https://github.com/jiangxidong/EduApplication/issues/34) 查实：能取证，但取不全**。
+
+🔴 **本字段当前不驱动任何筛选或排序，只作为画像记录留存**（[#34](https://github.com/jiangxidong/EduApplication/issues/34)）。三所样例只有 UIUC 一所在申请阶段可取回（大学层 Program Inventory 逐项目给 CIP），Columbia 与 Cornell 的公开面根本不公布——两校 international office 的官方口径都是「见**录取后**的 I-20 第 1 页」，而申请阶段的人手上没有那份文件。用三分之二为空的属性去过滤项目池，产出的不是决策是噪音。
+⚠️ **不要再查一遍**：逐层取证记录在 `research/stem-cip` 分支的 `docs/research/stem-cip-designation.md`（`0c36952`）。
+它落 ASCII 枚举而非中文自由文本仍然值得：UIUC 那条链两环各有各的 `✓`（大学 Program Inventory → CIP，DHS STEM 名单 → 该 CIP 在册），覆盖率一旦补上，它当场变成会被机械读取的字段。
 
 **就读院校** — `institution_id`（ASCII）
 申请人读过的一所学校（本科 / 交换 / 辅修各算一所）。它是继 `program_key` / `channel_key` / `recommender_id` 之后的**第四个主键**，但**定义住在 `profile.md` 的学历条目里**——`documents/` 的目录名只是**引用**它，不另行定义。同一实体两处命名必漂移。
@@ -524,4 +527,4 @@ _Avoid_: 骨架 / 补全（用时序冒充责任——「什么时候被填」�
 | 联网档位（作为回归模式名） | 离线模式 / 预取证模式 | 产品里不存在「档位」这个实体（[ADR 0007](docs/adr/0007-a-checkmark-is-earned-by-a-fetch-not-by-a-capability.md)）；模式是**回归套件**的属性，不是产品的属性 |
 | 起步清单 / 推荐方向（作为首屏产出） | 缺口清单 / 第 0 问 | 首屏给不出可取证的方向建议——硬编码院校库在 Out of scope，凭记忆给撞停手线取证类（[ADR 0012](docs/adr/0012-the-first-reply-is-a-mirror-not-a-list.md)） |
 | 已用于（作为素材的一个字段） | （不存，现推） | 它是镜像——文书侧由 canonical 跨校共用决定「跨校开头雷同」不是缺陷，推荐信侧的差异化轴是**主张**不是素材（[ADR 0006](docs/adr/0006-claims-are-one-shared-truth-source.md)、[#30](https://github.com/jiangxidong/EduApplication/issues/30)） |
-| 毕业目标（作为第 0 问） | 毕业去向意向 / `post_grad_intent` | 它是画像的一个字段，不是第 0 问——两支的可取证性均未证实（[#15](https://github.com/jiangxidong/EduApplication/issues/15)） |
+| 毕业目标（作为第 0 问） | 毕业去向意向 / `post_grad_intent` | 它是画像的一个字段，不是第 0 问——「回国」支不可取证（[#16](https://github.com/jiangxidong/EduApplication/issues/16) 排除），「留美」支能取证但取不全（[#34](https://github.com/jiangxidong/EduApplication/issues/34)：三所样例 1/3） |
