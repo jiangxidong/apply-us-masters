@@ -28,7 +28,7 @@ packets/<program_key>/
 
 ## 四条规则
 
-### ① 整包重生成，绝不就地改（[ADR 0011](../../../../docs/adr/0011-a-packet-is-regenerated-whole-never-patched.md)）
+### ① 整包重生成，绝不就地改（[ADR 0013](../../../../docs/adr/0013-a-packet-is-regenerated-whole-never-patched.md)）
 
 包的 frontmatter 记 `source_fingerprint`：生成那一刻每个真相源的 `cksum`。
 进入准备包阶段先比对——不一致就**整包删了重生成**，一致就直接用。
