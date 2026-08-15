@@ -66,14 +66,15 @@
 
 ## 🔴 已知的实现坑
 
-**检查本身也会写错，已经六次**，其中五次是假阳性、一次是工具缺陷。每一条都要进 `evals/fixtures/violations/`。
+**检查本身也会写错，已经七次**，其中五次是假阳性、两次是工具缺陷。每一条都要进 `evals/fixtures/violations/`。
 
 1. **`grep` 命中文件名。** `grep -nE '^\|.*owner' CONTEXT.md` 命中了 `0008-the-owner-binds-to-a-section-not-a-file.md`（[#26](https://github.com/jiangxidong/EduApplication/issues/26)）。
 2. **`###` 那一层是 `program_key`，从来不是法定节名。** 把它当节标题扫会误报三条（`check28.sh` 第一版，[#28](https://github.com/jiangxidong/EduApplication/issues/28)）。
 3. **`### <program_key>` 带反引号。** 样例写的是 `` ### `columbia--seas--cs-ms` ``，比对 `programs.md` 前不剥反引号必假阳性（`subsection-under-program` 取强版后新增的坑）。
 4. **表头 ≠ 每一行。** 只有紧跟 `|---|` 分隔行的那一行才是表头；逐行扫会把每个单元格都判成表头（本票现场撞出）。
 5. **locale 静默失效。** `LC_ALL=C` 下 `gsub(/^[^一-龥A-Za-z0-9]+/,"",t)` 不剥 emoji，六个节照旧 FAIL 且不报任何错。检查脚本必须**显式**设 `LC_ALL=en_US.UTF-8`，不能靠继承环境（`CONTRACT.md` §4.5）。
-6. 🔴 **awk 的 `==` 在两个中文串之间是坏的**（本票实测，见下）。
+6. 🔴 **awk 的 `==` 在两个中文串之间是坏的**（#14 实测，见下）。
+7. 🔴 **`/bin/sh` 里 `$var` 紧邻多字节字符会被截断**（[#48](https://github.com/jiangxidong/EduApplication/issues/48) 实测，见下）。**没有任何 locale 能修**，与第 6 条不同源。
 
 ### awk 的 `==` 不能用来比中文——`CONTRACT.md` §4.5 那句「awk 正常」是错的
 
@@ -100,6 +101,24 @@ index("中文","阶段")   → 0      # ✅ index 正常
 | `LC_ALL=en_US.UTF-8` | ❌ 错 | ✅ 对 |
 
 **所以规则是**：保持 `LC_ALL=en_US.UTF-8`（剥离步骤必须要它），并**禁止用 `==` / `!=` / `<` 比较中文串**。相等判断走 `index(a,b)==1 && length(a)==length(b)` 或正则 `~ /^…$/`，两者实测正确；`grep` 与 shell 的 `[ x = y ]` 也正确。
+
+### `/bin/sh` 里 `$var` 紧邻多字节字符会被截断——加花括号才对
+
+macOS 的 `/bin/sh` 是 **GNU bash 3.2.57**（不是 dash）。双引号内 `$var` **紧接**一个多字节字符时，展开结果被截成一个替换字符：
+
+```
+h="## 我做了什么"
+echo "[$h]"        → [## 我做了什么]     ✅ 单独展开正常
+echo "[「$h」]"    → [「�]               🔴 后面紧跟「」」就坏
+echo "[「${h}」]"  → [「## 我做了什么」]  ✅ 加花括号就对
+echo "[$h 」]"     → [## 我做了什么 」]  ✅ 中间有空格也对
+```
+
+🔴 **与第 6 条不同源，`LC_ALL` 一个都救不了**（实测 `LC_ALL=en_US.UTF-8` 显式 `export` 进子 shell 后照旧坏，`LC_ALL=C` 同样坏）。第 6 条坏在 `strcoll` 没有汉字排序权重，这一条坏在 bash 3.2 的**参数展开边界识别**——它把紧随其后的多字节序列的首字节当成了变量名的一部分。
+
+**失效形态是半静默的**：检查照常判定、退出码不变，**只有报错信息里的那个名字变成了乱码**——于是「哪一项缺了」这个信息丢了，而检查看起来是在正常工作的。`prototypes/state-workspace-v0/derive-demo.sh` 的三问形状检查上实地撞到。
+
+**规则**：凡在 `sh` 脚本里把中文拼进字符串，**一律写 `${var}`**。中文只经过 `awk` / `grep` 不受影响（它们自己解析 UTF-8），这条只管 shell 自己的字符串拼接。
 
 ## 尚未实现
 
