@@ -108,6 +108,13 @@ _Avoid_: 个人资料、背景、简历
 
 **由谁来说** — `voice`（`self` / `referee` / `both`）
 一条主张适合由谁陈述。比较性、评价性的断言（「他的工程直觉在同届里排前 5%」）申请人自己写进文书是失礼的，只能由推荐人说；动机类断言（「我为什么从后端转做 ML」）推荐人说不了。
+🔴 **它是文书线的闸，不是推荐信线的闸**（[#52](https://github.com/jiangxidong/EduApplication/issues/52)）。
+`referee` 禁的是「申请人自述」；**没有任何取值禁止把一条主张分配给推荐人**——
+`recommenders.md` 的「主张 → 推荐人分配」定义域是**全部主张**，能不能分由 #12 §7 的 pack 门槛
+按证据逐条判（他有没有一条能证实且可进 pack 的素材）。两者不同轴：`voice` 判**叙述位置**，
+分配判**证实能力**。
+⚠️ 上面那句「推荐人说不了动机类」是**能力事实，不是禁令**——能力已由 pack 门槛机械覆盖，
+`voice` 不需要再拦一次；把它读成推荐信线的闸，会用一个不带证据的枚举值否掉证据齐备的分配。
 它是**一个集合的一个属性，不是两个集合**——两个集合就是第二个真相源。
 
 **推荐人** — `recommender_id`（形如 `r1` / `r2`）
@@ -117,7 +124,14 @@ _Avoid_: 个人资料、背景、简历
 
 粒度是**人，不是（人 × 项目）**——美国现实是推荐人写**一封**信、往 N 个 portal 各提交一次，按项目切会把同一份内容复制 N 份。逐（人 × 项目）的只有**提交事实**与逐校机制状态。
 
-「这个人能证实什么」是推荐人的属性，与素材的**可验证性**配对使用。⚠️ 可验证性**在文书线是独立属性、不参与充分度判定，在推荐信线是判定本体**——一条无人可证的自学项目素材是合格的文书素材，**同时不是**合格的 support pack 素材。两条判据各自成立，不互相覆盖（[#12](https://github.com/jiangxidong/EduApplication/issues/12) 结案后修正 §3）。
+「这个人能证实什么」**不是推荐人的落盘属性**（[#49](https://github.com/jiangxidong/EduApplication/issues/49)）——
+它是素材 `verifiable_by` 的**反向投影**，现算（`derive-demo.sh` 的缺口三分类逐条打印「可证实人」）。
+🔴 本处原写「与素材的可验证性**配对使用**」，**那句已作废**：它假定这条边两端都存，与
+[ADR 0006](docs/adr/0006-claims-are-one-shared-truth-source.md) 补充（#30）的通则
+「一条关系边只存在它那个已经落盘的消费端」正面冲突。⚠️ 可验证性**在文书线是独立属性、
+不参与充分度判定，在推荐信线是判定本体**——一条无人可证的自学项目素材是合格的文书素材，
+**同时不是**合格的 support pack 素材。两条判据各自成立，不互相覆盖
+（[#12](https://github.com/jiangxidong/EduApplication/issues/12) 结案后修正 §3）。
 
 **文书素材** — `material` / 主键 `material_id`（形如 `m01`）
 一段可被文书引用的真实经历，是**主张的支撑物**。素材库是状态层的一等公民，不是文书的草稿纸。
@@ -431,7 +445,7 @@ _Avoid_: 申请包、投递包、完成度计数（「已完成 12/17」是镜�
 ① 分配给这位推荐人的每条主张，至少有一条**他本人能证实**的素材；② 那条素材**不敏感**，或已被用户逐条放行。
 单位是**主张**，不是素材篇数。**它是派生视图**：现算、绝不落盘。
 🔴 **它与素材门槛是两道不同的闸，名字只差两个字。** 素材门槛管**成稿**（进了成稿的主张都得有素材撑着，**不问谁能证实**）；pack 门槛管**给第三方的包**（判定本体正是「谁能证实」）。
-一条无人可证的素材**过得了素材门槛、过不了 pack 门槛**——这正是「由谁来说」词条里那句「同时不是合格的 support pack 素材」的完整形式。
+一条无人可证的素材**过得了素材门槛、过不了 pack 门槛**——这正是「推荐人」词条里那句「同时不是合格的 support pack 素材」的完整形式。
 两条合取各自的落盘字段归状态层契约（[ADR 0011](docs/adr/0011-the-glossary-defines-words-the-contract-holds-the-values.md)：词汇表定义词，契约持有取值；落盘形态变了而决策没变，见 [ADR 0014](docs/adr/0014-a-semantic-slot-is-not-a-stored-field.md)）。
 
 **交还点** — `—`
@@ -581,4 +595,5 @@ _Avoid_: 骨架 / 补全（用时序冒充责任——「什么时候被填」�
 | 已用于（作为素材的一个字段） | （不存，现推） | 它是镜像——文书侧由 canonical 跨校共用决定「跨校开头雷同」不是缺陷，推荐信侧的差异化轴是**主张**不是素材（[ADR 0006](docs/adr/0006-claims-are-one-shared-truth-source.md)、[#30](https://github.com/jiangxidong/EduApplication/issues/30)） |
 | `usable_for`（作为素材的一个字段） | （不存）正文的「不能用在哪」 | 两条判据各判一次：选材路径是「主张 → 素材」，它不在任何决策链上；且文书类型清单逐渠道住在 `channels/` 的「文书规格」，**源在别处** = 镜像（[ADR 0014](docs/adr/0014-a-semantic-slot-is-not-a-stored-field.md)） |
 | `concrete`（作为素材的一个字段） | （不存）正文三问 | 它是同一个文件正文的镜像，也是「零可再生缓存」禁的那样东西（[ADR 0014](docs/adr/0014-a-semantic-slot-is-not-a-stored-field.md)、[#30](https://github.com/jiangxidong/EduApplication/issues/30)） |
+| 「能证实什么」（作为推荐人的一个列） | （不存）素材的 `verifiable_by` | 它是同一条边的镜像面——源在素材侧，反向投影是派生视图（`derive-demo.sh` 缺口三分类已打印「可证实人」）；两端都存必漂移（[ADR 0006](docs/adr/0006-claims-are-one-shared-truth-source.md) 补充（#49）、[#30](https://github.com/jiangxidong/EduApplication/issues/30)） |
 | 毕业目标（作为第 0 问） | 毕业去向意向 / `post_grad_intent` | 它是画像的一个字段，不是第 0 问——「回国」支不可取证（[#16](https://github.com/jiangxidong/EduApplication/issues/16) 排除），「留美」支能取证但取不全（[#34](https://github.com/jiangxidong/EduApplication/issues/34)：三所样例 1/3） |

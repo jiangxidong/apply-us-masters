@@ -61,3 +61,9 @@
 🔴 **`verifiable_by` 让一条两端都存的边显形了。** 样例 `recommenders.md` 的「能证实什么」列写的是「素材 01 的三问全过程与结果数字」「素材 02 的学术表现」——**那和 `verifiable_by` 是同一条边的两端**，撞 [#30](https://github.com/jiangxidong/EduApplication/issues/30) 的通则「一条关系边只存在它那个已经落盘的消费端，两端都不存」。
 
 这条边在本 ADR 之前就是两端都有的（素材那端只是散文：`谁能证实：直属 leader（也是推荐人候选 R2）`），**把它变成字段不是病因，是显影剂**。哪一端留、`CONTEXT.md` 那句「『这个人能证实什么』是推荐人的属性，与素材的可验证性**配对使用**」要不要改，归 [#49](https://github.com/jiangxidong/EduApplication/issues/49)——本 ADR 不就地拍板。
+
+✅ **#49 已判**（2026-08-15）：**一条边存了两遍，不是两条判据不同的边**——两个消费方读的是同一个
+二元关系，投影是派生。留素材侧的 `verifiable_by`，删 `recommenders.md` 的「能证实什么」列
+**与素材正文的「谁能证实」行**（定义域由 [#48](https://github.com/jiangxidong/EduApplication/issues/48)
+从一处扩到两处）。`CONTEXT.md` 的「配对使用」作废并改写。
+判据与取证见 [ADR 0006](0006-claims-are-one-shared-truth-source.md) 的**补充（#49）**。
