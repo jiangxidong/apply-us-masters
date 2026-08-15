@@ -104,6 +104,29 @@ frontmatter 的 `material_id` / `type` / `usable_for` / `concrete` 是**两套�
 「哪篇文书用了哪些主张」这条边**只存在消费端**：`essays/canonical/*.md` 的 frontmatter 写 `claims: [c01, c03]`，
 `claims.md` **不设 `used_in` 列**（两端都存必漂移）。见 [ADR 0006](../../docs/adr/0006-claims-are-one-shared-truth-source.md)。
 
+🔴 **`essays/canonical/*.md` 的正文不设结构契约**（[#32](https://github.com/jiangxidong/EduApplication/issues/32)）。
+上表第 7 行此前只规定了「Markdown + frontmatter」，正文一个字没管；这条空白现在是**有意的**，不是漏掉的。
+三个渲染物统一为「frontmatter + 散文」**一种**形态，没有任何 `render_form` 需要破例——
+正文就是文书本身，措辞是手艺，不存在唯一正确取值（§1.5 判别式的限定句）。逐形态「长什么样」的说明留在
+`essays/canonical/README.md`，那是**说明不是契约**。
+
+**唯一一条正文规则是否定式**：正文里**若**出现引用其它真相源主键的表格，
+该表只许存主键与本文件自己的判断，**不得复述被引对象的内容**。
+
+> 由 `points.md` 那张 `| # | 论点 | 素材 | 可回答哪类题 |` 表逼出来。`论点` 是 `claims.md` 的 `断言`、
+> `素材` 是它的 `materials`，两列都是镜像——**且样例里已经实地漂开**：c02 的
+> 「我的工程经验本身暴露了我**缺系统性的分布式系统训练**」在表里成了「我的工程经验暴露了**系统性训练的缺口**」，
+> 「分布式系统」这个限定丢了。
+>
+> 删到只剩 `claim_id` 一列仍不干净：它与 frontmatter 的 `claims:` **互为镜像**，
+> 而**分配能算出集合、集合算不出分配**——两处存必有一处是投影。#32 因此整张表删掉，改四个 `###` 分节：
+> **节标题 = 题类**（自由文本，非封闭词表，故按 §4.5 可用中文），**空节 = 这类题还没东西写**，那就是缺口本身。
+> 边只留在 frontmatter 的 `claims:` 一处，机械读者（`derive-demo.sh`）三个渲染物一视同仁。
+>
+> ⚠️ **本票只裁了正文，没有重扫 frontmatter。** [ADR 0014](../../docs/adr/0014-a-semantic-slot-is-not-a-stored-field.md)
+> 的消费方判据自己写着「别处的 frontmatter（`essays/canonical/*.md`、`apply.md`、`profile.md`）都该按它重扫一遍，
+> **这次没有重扫**」；`word_count` / `target` 正卡在那上面 → [#50](https://github.com/jiangxidong/EduApplication/issues/50)。
+
 🔴 **写入权按「行」单向移交**（[#25](https://github.com/jiangxidong/EduApplication/issues/25)，[ADR 0008](../../docs/adr/0008-the-owner-binds-to-a-section-not-a-file.md) 限定 2）——
 **冷启动 / 画像**：只 append 新行，写 `claim_id` / `断言` / `voice`，`materials` 留空
 （[#21](https://github.com/jiangxidong/EduApplication/issues/21) 已定「全局集里允许零素材主张，那正是缺口本身」）；**从不改已有行**。
@@ -323,6 +346,18 @@ owner 列因此填封闭标记 **`append-only`**，**不能留空**（留空正�
 > **「镜像」的前提是别处有源；没有源的可变内容是判断，不是镜像。**
 > `recommenders.md` 的「主张 → 推荐人分配」会被改写，但它不是任何别处内容的镜像——它就是真相源。
 > 同 [#11](https://github.com/jiangxidong/EduApplication/issues/11) 的 `tier_basis`：**判断必须落盘**，否则跨会话失效。
+
+> 🔴 **再补一句限定**（[#32](https://github.com/jiangxidong/EduApplication/issues/32)）：
+> **镜像 ⇔ 这段内容存在一个唯一正确的取值，而那个取值在工作区内的别处。**
+> 少了这句，判别式对 `essays/canonical/` 是**逐字自毁**的——canonical 渲染物本来就是「把主张写成人话」的产物，
+> `long.md` 的正文整篇都在复述 `claims.md` 的主张，措辞一改「就得跟着改」，按字面读它整篇是镜像，该删。
+> 散文没有唯一正确取值（措辞是手艺）；表格单元格有（`论点` 那一格的正确取值就是 `claims.md` 里那一格的字符串）。
+>
+> ⚠️ **不要把这条读成「散文豁免」。** 紧接着下面那句「任何文件都不写当前状态」禁的正是散文
+> （「不写素材几条、不写闸口几比几」）。切口开在**有没有唯一正确取值**上，不开在体裁上。
+> **「工作区内」同样是限定的一部分**：`✓ <url>` 指向站外，站外页面不是工作区的真相源，不进这条判据。
+>
+> **自测**：两个 agent 各写一遍，差异算 bug 还是算文风？**算 bug ⇒ 是镜像。**
 
 所以工作区里**任何文件都不写「当前状态」**——不写素材几条、不写闸口几比几、不写目录空不空。
 
