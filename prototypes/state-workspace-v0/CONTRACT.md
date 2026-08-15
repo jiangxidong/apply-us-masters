@@ -41,8 +41,22 @@
 | `packets/<program_key>/**` | 由 #8 定 | **可再生产物**，删了能重建 | 准备包阶段 |
 | `log.md` | Markdown，append-only | **跨会话交接** | 每个阶段结束时追加 |
 
+> 🔴 **本表已落后三张票，尚未逐行重排**（下一个动 `#4` 契约的 session 请一并处理）：
+>
+> | 变更 | 来自 | 状态 |
+> |---|---|---|
+> | `essays/materials/` **提到根 `materials/`** —— 推荐信线成为第二个消费方，`essays/` 前缀在说谎 | [#12](https://github.com/jiangxidong/EduApplication/issues/12) | 表里仍写旧路径 |
+> | 新增**第 12 个文件** `recommenders/drafts/<recommender_id>.md`，受起草授权门控（无授权则该目录不该存在） | [#12](https://github.com/jiangxidong/EduApplication/issues/12) | 表里没有 |
+> | 新增**第 13 个文件** `claims.md`（工作区根，Markdown 表）—— 主张是全局一等对象，文书与推荐信共用同一集合 | [#21](https://github.com/jiangxidong/EduApplication/issues/21) | 表里没有 |
+>
+> `claims.md` 的四列：`claim_id`（ASCII 主键，形如 `c01`）/ 断言（中文自由文本，禁 `|`）/
+> `materials`（支撑素材 id 列表，空格分隔；**空 = 缺素材缺口**）/ `voice`（`self` / `referee` / `both`）。
+> 「哪篇文书用了哪些主张」这条边**存在消费端**：`essays/canonical/*.md` 的 frontmatter 写 `claims: [c01, c03]`，
+> `claims.md` **不设 `used_in` 列**（两端都存必漂移）。定义见 [`CONTEXT.md`](../../CONTEXT.md) 与
+> [ADR 0006](../../docs/adr/0006-claims-are-one-shared-truth-source.md)。
+
 **不落盘的派生视图**（每次现算现打，绝不存文件）：
-待核实清单、deadline 日历、完成度自检、每校材料缺口。
+待核实清单、deadline 日历、完成度自检、每校材料缺口、**「主张 → 支撑素材」对照表**。
 
 > 存一份就是第二个真相源。竞品坑 #9：合并单文件与散文件同时被安装 → 同一事实索引两遍，检索互相稀释。
 > `euro-grad-apply` 的 README 自己推荐的安装路径就有这个坑。
