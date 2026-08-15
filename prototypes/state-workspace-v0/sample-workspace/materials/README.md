@@ -55,9 +55,14 @@ frontmatter，而 `sensitive` 那条线的整个设计前提就是「agent 少�
 ⚠️ **正文的「不能用在哪」留下**（m01 有）。它和 `usable_for` 是同一判断的正反两面，但**只有一面是镜像**：
 `不要用在「为什么选这所学校」` 的源不在任何别处，与 `tier_basis`、「主张 → 推荐人分配」同类。**留判断那一面。**
 
-⚠️ 正文的「谁能证实」与 frontmatter 的 `verifiable_by` 覆盖同一条边的同一端。**是不是镜像本票不判**——
-判据与 `../recommenders.md` 的「能证实什么」列是同一条 → [#49](https://github.com/jiangxidong/EduApplication/issues/49)。
-**机械读者一律读 frontmatter。**
+🔴 **正文不写「谁能证实」**（[#49](https://github.com/jiangxidong/EduApplication/issues/49) 已判）。
+它逐段都是镜像：id 镜同文件的 frontmatter；「直属 leader」「授课教师李老师」这类称谓镜
+`../recommenders.md` 的姓名/关系列；「能证实同期的学术表现」镜本文件正文的三问。
+`../recommenders.md` 的「能证实什么」列同判、已删。
+**可验证性只有一个落盘处：frontmatter 的 `verifiable_by`。**
+⚠️ 「谁能证实」被限制成必须先是一个推荐人候选（`recommender_id`），而**联系得上与否是
+`../recommenders.md` 的状态、不是素材的属性**——这条 [#38](https://github.com/jiangxidong/EduApplication/issues/38)
+的决议原来写在样例 m02 的正文旁注里，随那一行删除后收拢到本处，不在两个地方各存一份。
 
 ## 素材门槛
 

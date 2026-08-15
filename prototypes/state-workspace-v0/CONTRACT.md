@@ -135,9 +135,12 @@
 `不要用在「为什么选这所学校」` 的源不在任何别处，与 `tier_basis`、「主张 → 推荐人分配」同类，走 #30 那句前提句放行。
 **留判断那一面。**
 
-⚠️ 正文的「谁能证实」与 frontmatter 的 `verifiable_by` 覆盖同一条边的同一端，**是不是镜像本处不判**——
-判据与 `recommenders.md` 的「能证实什么」列是同一条 → [#49](https://github.com/jiangxidong/EduApplication/issues/49)。
-在 #49 判掉之前，**机械读者一律读 frontmatter**。
+🔴 **正文不写「谁能证实」**（[#49](https://github.com/jiangxidong/EduApplication/issues/49) 已判）。
+它与 frontmatter 的 `verifiable_by` 覆盖同一条边的同一端，且逐段都是镜像：id 镜同文件的 frontmatter，
+「直属 leader」这类称谓镜 `recommenders.md` 的姓名/关系列，「能证实同期的学术表现」镜本文件正文的三问。
+与 `concrete: true` 同形——**源就在同一个文件里**。
+`recommenders.md` 的「能证实什么」列同判、已删（[ADR 0006](../../docs/adr/0006-claims-are-one-shared-truth-source.md) 补充（#49））。
+**可验证性只有一个落盘处：frontmatter 的 `verifiable_by`。**
 
 🔴 **推荐信阶段对 `materials/` 只读，不写**（[#25](https://github.com/jiangxidong/EduApplication/issues/25)）。
 `verifiable_by` 由**文书阶段在素材采集时**填；推荐信阶段**读**它去选人，产出的「主张 → 推荐人分配」落
@@ -161,6 +164,14 @@
 **空 = 缺素材缺口**）/ `voice`（`self` / `referee` / `both`）。
 「哪篇文书用了哪些主张」这条边**只存在消费端**：`essays/canonical/*.md` 的 frontmatter 写 `claims: [c01, c03]`，
 `claims.md` **不设 `used_in` 列**（两端都存必漂移）。见 [ADR 0006](../../docs/adr/0006-claims-are-one-shared-truth-source.md)。
+🔴 **`voice` 是文书线的闸，不是推荐信线的闸**（[#52](https://github.com/jiangxidong/EduApplication/issues/52)）。
+`referee` 禁的是「申请人自述」（比较性断言自夸失礼）；**没有任何取值禁止把一条主张分配给推荐人**。
+`recommenders.md` 的「主张 → 推荐人分配」**定义域 = 全部主张**，能不能分由 #12 §7 的 pack 门槛
+按证据逐条判（`verifiable_by` 含该 `recommender_id` ∧ `sensitive = no`），不由 `voice` 判。
+两者不同轴：`voice` 判**叙述位置**，分配判**证实能力**——让文书线的一个枚举值单方面决定推荐信线的内容，
+撞 [ADR 0006](../../docs/adr/0006-claims-are-one-shared-truth-source.md)「主张集全局唯一、两条线**共用**」。
+⚠️ **`voice` 因此两条线各有一个消费方**：文书线是「这条主张由谁来说」，
+推荐信线是 `claims.md` 那条「`voice = referee` 的零素材主张 = **双重缺口**」的分类依据。
 
 🔴 **`essays/canonical/*.md` 的正文不设结构契约**（[#32](https://github.com/jiangxidong/EduApplication/issues/32)）。
 上表第 7 行此前只规定了「Markdown + frontmatter」，正文一个字没管；这条空白现在是**有意的**，不是漏掉的。

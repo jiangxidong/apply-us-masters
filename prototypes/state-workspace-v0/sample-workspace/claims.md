@@ -18,6 +18,13 @@
 | `materials` | ASCII id 列表，空格分隔 | 支撑素材的 `material_id`（形如 `m01`，并进素材文件名）。**空 = 缺素材缺口** |
 | `voice` | ASCII 枚举 | `self` / `referee` / `both`——这条主张适合由谁陈述 |
 
+🔒 **`voice` 是文书线的闸，不是推荐信线的闸**（[#52](https://github.com/jiangxidong/EduApplication/issues/52)）。
+`referee` 禁的是「申请人自述」——比较性、评价性断言自己写进文书是失礼的。
+**没有任何 `voice` 取值禁止把一条主张分配给推荐人**：`recommenders.md` 的「主张 → 推荐人分配」
+定义域是**全部主张**，能不能分由 pack 门槛按证据逐条判（他有没有一条能证实且可进 pack 的素材）。
+两者不同轴——`voice` 判**叙述位置**，分配判**证实能力**。
+⚠️ **`voice` 两条线各有一个消费方，不搬走**：文书线是「这条主张由谁来说」；
+推荐信线是下面那条「`voice = referee` 的零素材主张 = **双重缺口**」的分类依据。
 🔒 **「谁能证实」不设列**——可验证性是**素材**的独立属性，落在 `materials/*.md` 的 frontmatter `verifiable_by`
 （[#38](https://github.com/jiangxidong/EduApplication/issues/38)；**列名不计数**，[#30](https://github.com/jiangxidong/EduApplication/issues/30)）。
 主张层再存一遍就是第二真相源。[#12](https://github.com/jiangxidong/EduApplication/issues/12) 的 pack 门槛是纯派生：
@@ -45,6 +52,8 @@
 零素材主张有两种成因，处置不同：
 
 - **`voice = self` 的零素材主张**：等着采素材。它合法地待在表里，进不了成稿。
+  ⚠️ 它进不了成稿是因为**零素材**，不是因为 `voice = self`——`voice` 不拦分配（#52），
+  拦它的是 pack 门槛的零素材那一条。
 - **`voice = referee` 的零素材主张**：**双重缺口**。比较性/评价性断言申请人自己写进文书是失礼的，
   只能由推荐人说；而 #12 的 pack 门槛（#17 结案后修正为**两条合取**）要求「分配给某位推荐人的每条主张，
   至少有一条素材同时满足 **(a)** `verifiable_by` 含该 `recommender_id`、且 **(b)** `sensitive = no`
