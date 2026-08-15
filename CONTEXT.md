@@ -370,7 +370,7 @@ canonical 的一种**形态**（长文 / 250 词版 / 可拆短答题的要点�
 形态：一个项目一个目录，一份按 portal 段落顺序从上到下走完的**提交动线** + 按该校渲染规则出的文书成品。
 **总包不存在**（跨项目总览是派生视图）；**不拆「字段表」文件**（使用形态是左右并排对着抄，拆两份就要两处各存一遍答案）。
 
-🔴 **整包重生成，绝不就地改**（[ADR 0011](docs/adr/0011-a-packet-is-regenerated-whole-never-patched.md)）：
+🔴 **整包重生成，绝不就地改**（[ADR 0013](docs/adr/0013-a-packet-is-regenerated-whole-never-patched.md)）：
 包的 frontmatter 记 `source_fingerprint`（生成那一刻每个真相源的 `cksum`），进入准备包阶段先比对，
 不一致就整包删了重生成。**在包里直接改内容，下次重生成时静默丢失。**
 这也是包内允许出现镜像（交还点总表、缺口表）的唯一前提。
