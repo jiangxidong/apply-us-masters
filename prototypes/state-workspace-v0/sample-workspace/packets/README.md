@@ -2,8 +2,15 @@
 
 形态由 [#8 网申准备包的交付形态](https://github.com/jiangxidong/EduApplication/issues/8) 定。
 两个样例包：`cornell--gradschool--cs-meng/` 与 `uiuc--gradcollege--cs-msc/`。
-**故意取这一对**——它们的约束物理互斥（Cornell 成绩单要合并保清晰、**连简历都明令不收**；
-UIUC 要 <200dpi 灰度、简历条件必填）。一个包渲染对了不说明任何事，两个同时对才说明设计真的在读 `channels/`。
+**故意取这一对**——它们身上有本产品目前唯一一处**真正无法调和**的约束：
+🔴 **Cornell 明令禁止附加材料（`Publications, award certificates, resumes, theses`，连简历都不收），
+而 UIUC 的 `cv_upload` 是条件必填。** 一所禁交、一所必交，同一个 `documents/cv/` 槽位，没有交集。
+一个包渲染对了不说明任何事，两个同时对才说明设计真的在读 `channels/`。
+
+⚠️ **成绩单规格不是这样的例子**（[#14](https://github.com/jiangxidong/EduApplication/issues/14) 已更正）：
+Cornell 要「合并 + 清晰」、UIUC 要「<200dpi 灰度」，方向相反但**并不互斥**——
+一份合并的灰度低分辨率 PDF 同时满足两校。两层结构的正当性来自**降级不可逆**，
+不是来自「存在无法同时满足的约束」。别再照旧说法转述。
 
 ## 形态
 

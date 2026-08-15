@@ -71,7 +71,7 @@ source_fingerprint:
 
 ---
 
-## 3. Transcripts 🟢 ⬜ —— 🔴 规格与 Cornell 物理互斥
+## 3. Transcripts 🟢 ⬜ —— 规格与 Cornell 方向相反（但不互斥）
 
 **该校规格** ← `channels/uiuc--gradcollege.md § 材料上传`：
 
@@ -88,8 +88,11 @@ source_fingerprint:
 | 学位证 | `documents/degree/<institution_id>.pdf` | ⬜ 条件必填（成绩单未载明学位时） |
 | 翻译件 | `documents/translation/<institution_id>/` | ⬜ 目录为空 |
 
-🔴 **同一份 canonical，这里降采样、Cornell 合并保清晰——一份成品不可能同时满足两校。**
-这就是 `packets/` 只放渲染物、真相留在 `documents/` 的全部理由。
+**同一份 canonical，这里降采样、Cornell 合并保清晰。**
+⚠️ 这两条**并不互斥**（[#14](https://github.com/jiangxidong/EduApplication/issues/14) 更正）——
+一份合并的灰度低分辨率 PDF 两校都收。canonical 存高分辨率彩色逐页单文件的理由是
+**降级可逆、升级不可逆**，不是「一份成品满足不了两校」。
+本产品目前真正互斥的那一对在第 5 段：**Cornell 禁简历 vs UIUC 简历条件必填**。
 
 ⚠️ **本段的学校约束可能不全**，见文末缺口表第 1 行。
 

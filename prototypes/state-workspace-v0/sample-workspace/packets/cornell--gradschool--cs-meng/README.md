@@ -158,8 +158,9 @@ source_fingerprint:
 `Publications, award certificates, resumes, theses, and similar materials` —— 除非 field 事先批准，否则不允许。
 
 🔴 **连简历都不收。** 对照 UIUC：`cv_upload` 是条件必填。
-同一个 `documents/cv/` 槽位，两校一个必交一个禁交 —— 这就是「canonical + 逐校 rendering rules」
-而不是「逐校成品」的理由。
+同一个 `documents/cv/` 槽位，**一所禁交一所必交，没有交集** —— 这是本产品目前唯一一处
+真正无法调和的逐校约束，也是「canonical + 逐校 rendering rules」而不是「逐校成品」最硬的那条理由。
+（⚠️ 成绩单规格**不是**这样的例子，见 [#14](https://github.com/jiangxidong/EduApplication/issues/14) 的更正。）
 
 ⚠️ 这条约束**目前不在 `channels/` 里**，见文末缺口表第 3 行。在它回填之前，本段的依据是包外的调研，不是真相源。
 
