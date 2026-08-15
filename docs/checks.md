@@ -4,7 +4,7 @@
 
 🔴 **它不复述规则。** 每条检查的规则只有一处权威，见「规则原文」列。本表里任何一句读起来像规则的话都是索引的措辞，**不是规则本身**——照它实现之前先点开指针读原文。判据见 [ADR 0016](adr/0016-the-checklist-holds-names-and-pointers.md)。
 
-⚠️ **`CONTRACT.md` 住在未合并的 `prototype/state-layer` 分支**（`prototypes/state-workspace-v0/CONTRACT.md`），本表指向它的链接在 `main` 上解析不到。显式写出来好过假装，合并后自愈——同 [ADR 0011](adr/0011-the-glossary-defines-words-the-contract-holds-the-values.md) 对 `CONTEXT.md` 那个死链的处理。
+⚠️ **`prototypes/state-workspace-v0/` 整个目录住在未合并的 `prototype/state-layer` 分支**（`CONTRACT.md`、样例工作区、`derive-demo.sh`），本表指向它的链接与路径在 `main` 上一律解析不到。显式写出来好过假装，合并后自愈——同 [ADR 0011](adr/0011-the-glossary-defines-words-the-contract-holds-the-values.md) 对 `CONTEXT.md` 那个死链的处理。⚠️ 本节「已知的实现坑」里的取证也指着那个目录（第 7 条指 `derive-demo.sh`），同此。
 
 ## 怎么读这张表
 
