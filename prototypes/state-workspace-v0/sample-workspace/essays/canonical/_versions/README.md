@@ -6,6 +6,6 @@
 - 历史版本**只增不改不删**
 - **不依赖 git 历史**：用户可能根本不在 git 仓里跑这套东西
 
-当前无历史版本（`long.md` / `short-250.md` / `points.md` 都还是 v1）。
+有哪些历史版本，`ls` 一下就知道 —— 不在这里记镜像状态（写下来就要靠改写维持为真）。
 
 何时该开新版本、两版怎么对比 → [#10](https://github.com/jiangxidong/EduApplication/issues/10)。

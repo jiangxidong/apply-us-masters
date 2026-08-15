@@ -6,7 +6,7 @@
 ## 候选人
 
 | id | 姓名（虚构） | 关系 | 能证实什么 | 已确认愿意写 | 联系方式在手 |
-|---|---|---|---|---|---|
+|---|---|---|---|---|
 | R1 | 王教授 | 本科毕设导师 | 素材 02 的学术表现；毕设全过程 | ❌ **未确认** | 是 |
 | R2 | 陈 leader | 现直属主管 | 素材 01 的全部四要素 | ❌ **未确认** | 是 |
 | R3 | 李老师 | 交换期间授课教师 | 素材 02 的课堂表现 | ❌ **未确认** | 否 |
@@ -21,16 +21,16 @@
 - [ ] R2 已确认
 - [ ] R3 已确认
 
-**当前 0/3 —— 三所学校的推荐信流程全部阻塞。**
+**闸口未全部打勾 → 三校推荐信流程一律阻塞。**（当前打勾数跑 `../derive-demo.sh` 现算，不写在这里。）
 这与官方指引方向一致（UCL 反复强调 `contact your nominated referee(s) before starting your application`）。
 
 ## 逐校机制状态（三校三种机制，不能一刀切）
 
-| 项目 | 机制 | 风险类型 | 需要几封 | AI 停手在哪 | 当前状态 |
-|---|---|---|---|---|---|
-| `columbia--seas--cs-ms` | 系统 → 推荐人，**填入即可能已发** | A 冒名发信 | 3 | 不填 `referee_*_email`；禁 Interfolio | 阻塞（闸口未过） |
-| `cornell--gradschool--cs-meng` | 系统 → 推荐人；接受 Interfolio | A 冒名发信 | 在读生 1 封，第 2 位官方允许填 `filler` | 不填邮箱；**`reference_delivery_method` 选错不可逆，不代选** | 阻塞 |
-| `uiuc--gradcollege--cs-msc` | 系统 → 推荐人；**可导入旧申请的信** | **B 冒名复用** | 待核实 | 不填邮箱；**不代勾 `reference_import_previous`**；不代勾 `ferpa_waiver_checkbox` | 阻塞 |
+| 项目 | 机制 | 风险类型 | 需要几封 | AI 停手在哪 |
+|---|---|---|---|---|
+| `columbia--seas--cs-ms` | 系统 → 推荐人，**填入即可能已发** | A 冒名发信 | 3 | 不填 `referee_*_email`；禁 Interfolio |
+| `cornell--gradschool--cs-meng` | 系统 → 推荐人；接受 Interfolio | A 冒名发信 | 在读生 1 封，第 2 位官方允许填 `filler` | 不填邮箱；**`reference_delivery_method` 选错不可逆，不代选** |
+| `uiuc--gradcollege--cs-msc` | 系统 → 推荐人；**可导入旧申请的信** | **B 冒名复用** | 待核实 | 不填邮箱；**不代勾 `reference_import_previous`**；不代勾 `ferpa_waiver_checkbox` |
 
 ## AI 停手字段清单（全局）
 
