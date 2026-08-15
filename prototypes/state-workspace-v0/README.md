@@ -40,6 +40,7 @@
 | 伪保底这一列在真数据上立得住吗？ | ✅ Columbia CS MS 的同一句话里既有 `no minimum GPA requirement` 又有 `the program is highly selective` —— **两半住在同一条 `✓` 事实行上**，`pseudo_safer` 由 `unknown` 改为 `yes`，且机械判别式 `pseudo_safer = yes ⇒ tier ≠ safer` 在该行成立（`reach`）。这是 `CONTEXT.md`「伪保底」词条点名的那个例子被真取回坐实（#45） |
 | 补 4 列会不会打断已有的派生视图？ | ✅ 不会 —— 判断层四列**追加在末尾**，`awk` 按竖线切开后 `$7`/`$9`/`$10` 取值不变，`derive-demo.sh` **一行未改**即从「9 列」自动打印成「13 列」（它的列数检查是自相对的，不硬编码列数） |
 | 「二元证据标记 + 仅一列」这条锁定决策成立吗？ | ❌ **不成立** —— 按行级合取规则造不出一条合法的 `✓` 行（deadline / 学费 / STEM 资格从不在同一页）。**已决议**：`evidence` 只担保 deadline，其余下沉 `channels/` |
+| 「coursework master」这条切片边界，在真数据上判得动吗？ | ⚠️ **判得动，但必须逐项目取回一句话，不能按学位名推** —— UIUC 的 `MS in Computer Science` 是 Thesis/Research 皆 Yes 的研究型硕士（#31 建行时按名字填错、#45 取回时撞出、#55 改判），同校的 `MCS` 才是学校自称的 `coursework-only degree`。另两行复核后都在切片内：Columbia 的 MS 是 30 points 且 `MS Thesis` 只是十条 pathway 之一并需受邀，Cornell 的 MEng 是 `coursework with a capstone project`。**同一个名字在两校分属两侧、同一所学校的两个学位分居两侧 ⇒ 学位名不是判据**（#55） |
 
 ## 不在本原型范围内
 

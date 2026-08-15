@@ -24,21 +24,22 @@ season: 2027fall
 
 ## 学历门槛
 
-- `✓ https://grad.illinois.edu/admissions/…/international` 中国申请人：**B Average / 80%**
 - `待核实` 是否卡本科院校层级、卡到什么程度（五所样本**无一公开院校分级名单**，见 #5）
-- `✓ 同上` 明确**不需要 WES 等外部学历评估**（对照：UT Dallas 明确不接受外部评估；Northeastern 明确不需要 WES）
-- `✓ 同上` CHESICC / 学信网：**录取后**才要，不是申请时
-- `✓ https://grad.illinois.edu/admissions/country/china` 中国申请人最低线的**精确端点**（上面那条 `…/international` 带省略号，取不回来）：`Minimum GPA Requirements` = **B Average / 80%**
+- `✓ https://grad.illinois.edu/admissions/application-faq/international-applicant-questions` 外部学历评估：不是「不需要」，是 🔴 **不接受** —— 问 `Do you accept credentials from credential evaluation service organizations such as WES and ECE?`，答 `No, all documents must come from your institution. We cannot accept documents from credential evaluation service organizations such as WES or ECE.`
+- 对照（来自 [#5](https://github.com/jiangxidong/EduApplication/issues/5) 的记录，**本轮未复核、无 `✓`**）：UT Dallas 同为**不接受**；Northeastern 是**不需要** —— 两者在产品里的下一步不同（前者是「做了也白做」，后者是「可以省这笔钱」）
+- `✓ https://grad.illinois.edu/admissions/information-admitted-students` 学信网认证（🔴 该页称 **CSSD**，不叫 CHESICC，写 CHESICC 在页上零命中）：`If we are able to verify your credential online, we will accept CSSD credential verification reports from the CSSD website`（链 `https://www.chsi.com.cn/en/`）。**录取后**才要 —— 该条住在「Final Academic Credential Requirements」节，同页时点句 `All final, official credentials are required during your first term of enrollment`
+- `✓ https://grad.illinois.edu/admissions/country/china` 中国申请人最低线：`Minimum GPA Requirements` = **B Average / 80%**；申请阶段只要 `scanned copies of official transcripts` / `official certificate of degree or diploma` / `accompanying official English Translations`，并明写 `If admitted, applicants will be expected to provide final, official or attested copies of all academic credentials.`
 - `✓ https://grad.illinois.edu/admissions/country/china` 换算口径由校方裁量：`When institutions provide a different grading scale or a different degree format, academic credentials will be reviewed on an individual basis to determine acceptable degrees and GPAs.`
 - `✓ https://siebelschool.illinois.edu/admissions/graduate/applications-process-requirements` 校级最低线：`The University of Illinois Urbana-Champaign policy requires applicants to hold at least a 3.0/4.0 or higher GPA in the last two years of their undergraduate study`
 - `✓ https://siebelschool.illinois.edu/admissions/graduate/faqs` 国际成绩单由**校方自己换算**：`School staff will calculate and convert international transcripts`，结果取决于原院校的评分制
 
-> ⚠️ 本节前三条里，那条省略号 URL 与挂在它上面的两条 `同上`（WES / CHESICC）本次（2026-08-15）**没有重新取证**。
-> 上面新加的 china 端点正文里**既没有 WES 也没有 CHESICC**，所以**不能**把省略号换成它了事——那会让两条事实静默地开始断言它们来自一个没有它们的页。→ #62
+> ⚠️ 本节第一条出处原是 `https://grad.illinois.edu/admissions/…/international`（**带省略号，不是可取回的端点**），WES 与 CHESICC 两条用 `✓ 同上` 挂在它下面 —— 三条 `✓` 全部悬空。
+> [#62](https://github.com/jiangxidong/EduApplication/issues/62) 已把两条各自重新取回、改写成自带完整 URL 的独立 `✓` 行，省略号那一行删除（`B Average / 80%` 由 china 精确端点承载）。**本文件其余 `✓ 同上` 链全部锚在 `✓ https://grad.illinois.edu/admissions/apply` 上，删除未孤立任何一条**（2026-08-15 逐条核过）。
+> 🔴 **不要把这两条改挂回 `country/china`** —— 那页上既没有 WES 也没有 CHESICC（2026-08-15 重取全文复核，仍然如此）。换锚点 = 让两条 `✓` 静默断言来自一个没有它们的页。
 
 ## 英语门槛 —— 🔴 两档，且 2026-01-20 起换了量表
 
-- `✓ https://grad.illinois.edu/admissions/instructions/04c` 研究生院英语线分 **Limited Status / Full Status 两档**（下表为该页原值）
+- `✓ https://grad.illinois.edu/admissions/international-applicants` 研究生院英语线分 **Limited Status / Full Status 两档**（下表为该页原值）。⚠️ 旧链 `https://grad.illinois.edu/admissions/instructions/04c` 现**重定向到本端点**，正文逐字相同（2026-08-15 两次取回 diff 只差聊天机器人插件文本）—— 事实成立、门牌号漂了（同 #39），故 `✓` 改指规范 URL
 
 | 考试 | Limited Status Admission Minimum | Full Status Admission Minimum |
 |---|---|---|
@@ -48,9 +49,19 @@ season: 2027fall
 
 > 🔴 **两档 = 这个维度有第二条线**：Limited 是最低线，Full 是第二条线。没跨过 Full 就是该维度**擦线**（见 `CONTEXT.md`），
 > 而 `safer` 的合取第 ③ 项要求**没有任何维度擦线**——所以这一栏不只是资格门槛，它能单独挡掉 `safer`。
-> ⚠️ 量表在 **2026-01-20** 换过。样例画像的托福考期是 2026-05-16（在换表**之后**）却记着旧制 102，两格打架 → #56。
+> ⚠️ 量表在 **2026-01-20** 换过，同一张表上**两制并排**。样例画像的考期已由 [#56](https://github.com/jiangxidong/EduApplication/issues/56) 挪到 `2025-12-06`（换表**之前**），故 `102` 与四个小分按 **0–120 旧制**读，与该行 `79` / `103` 同量表可比。
+> 🔴 **学校只公布了两档门槛在两个量表上各自的取值（两个点），没有换算表** —— 在 `79↔4.0` 与 `103↔5.0` 之间插值是凭空造数，见 `CONTEXT.md`「分数量表」。新量表单项满分为 **6.0**（`✓ https://siebelschool.illinois.edu/admissions/graduate/applications-process-requirements/additional-required-application-materials`：`A passing score on the TOEFL iBT (spoken portion of the exam only) is 24/30 (for scores dated prior to 1/21/2026 ) and 5.0/6.0 (for scores dated after 1/20/2026).`）。
 
 - `✓ https://siebelschool.illinois.edu/admissions/graduate/applications-process-requirements` 项目侧另有口语提示：`Applicants with TOEFL iBT speak scores below 22 have a low chance of admission`（样例口语恰为 22，**不低于**，未被这条挡住）
+- `待核实（官网未列）` 🔴 **MCS 录取绑的是 Limited 还是 Full Status？** —— 2026-08-15 逐页取回 `grad.illinois.edu` 与 `siebelschool.illinois.edu` 共 9 个页面，**没有一句把某个项目的录取绑到某一档上**。这不是「没查够」，是学校在结构上不这么公布（见下条）
+- `✓ https://grad.illinois.edu/admissions/graduate-admissions-minimum-requirements` limited status 是**逐案裁量**、不是逐项目公布的一档：`A student who does not meet one or more of the admission requirements: may qualify for limited status admission with support from the academic program and approval from the Graduate College.`
+- `✓ https://grad.illinois.edu/admissions/international-applicants` 低于 Full 线的后果是**入学后补课**、不是不录：`The English as a Second Language Placement Test (EPT) will be required prior to enrolling at Illinois for all students who score below the full status minimums listed in the chart above.`
+- `✓ https://grad.illinois.edu/admissions/information-admitted-students` 且 Limited 是真实的**录取**路径：`Some newly admitted students are admitted on Limited Status because of an English language requirement.`
+
+> ⚠️ **唯一一句读起来像绑定的话，不能当绑定用。** `✓ https://siebelschool.illinois.edu/admissions/graduate/faqs` 里写着 `You can click on the country you obtained your degree and see the bottom of the page to find the "Full Status Admission Minimum GPA Requirements".`
+> ① 它说的是 **GPA 维度**，不是英语维度，从这一侧外推到那一侧正是 #56 禁掉的动作；
+> ② 🔴 **它描述的那个小标题今天已不在目标页上** —— `✓ https://grad.illinois.edu/admissions/country/china` 现在的小标题逐字是 `Minimum GPA Requirements`，FAQ 给的链接 `http://www.grad.illinois.edu/admissions/countries` 也是旧路径。这是学校**自己文档之间**的指针漂移（同 #39）。
+> ⇒ 英语维度上**不存在「已取证未达标」** ⇒ 按 `CONTEXT.md`「分档」，本行**判不了 `ineligible`**，`match` 站住；未决前提落在 `programs.md` 的 `tier_void_if`。
 
 ## 材料上传 —— ⚠️ 与 Cornell 直接冲突
 
@@ -107,7 +118,7 @@ season: 2027fall
 
 #### 学历门槛
 
-- `待核实` GRE 是否要求
+- `✓ https://siebelschool.illinois.edu/academics/graduate/professional-mcs` **不要求 GRE**：`The MCS program is a coursework-only degree consisting of 32 credit hours with no GRE required for admission.`
 - `✓ https://siebelschool.illinois.edu/admissions/graduate/degree-program-options` 「Comparison of CS Graduate Programs」表，GPA 列的列头逐字为 `Undergraduate GPA (Recommended, 4.0 scale)`；取值：MCS（Urbana-Champaign / Chicago / Online）**3.2**、MS in Computer Science (thesis) **3.2**、MS Bioinformatics **3.2**、5-year BS/MCS **3.2**、PhD **3.4**、5-year BS/MS **3.5**
 - 🔴 `✓ https://siebelschool.illinois.edu/admissions/graduate/faqs` 学校**对上面那个数字本身的官方解释**——问「My undergraduate GPA is below the average quoted on your website. Will my application be reviewed?」，答：`Our website states the average GPA of admitted students. It is not a minimum.`
 - `✓ https://siebelschool.illinois.edu/admissions/graduate/faqs` 同向佐证：`Our school typically requires a higher minimum as a benchmark for admission`（对照 Graduate College 那条基于 "B" equivalent 的最低线）
@@ -117,10 +128,15 @@ season: 2027fall
 > 措辞与实质冲突时按实质判：该词条已写明「触发措辞只判定第二条线的**类型**」，而类型的定义是语义的，不是词表的。
 > ⚠️ 类型 B 是**单个平均值、无区间** ⇒ 按词条 ⚠️ 第二条（类型 B 通往 `safer` 必须有离散度）**不判 `safer`**；3.4 高于 3.2 ⇒ **到 `match` 为止**。
 
-#### 学位形态 —— 🔴 本行可能选错了学位
+#### 学位形态 —— 本行 = MCS（coursework-only，落在切片内）
 
-- `✓ https://siebelschool.illinois.edu/admissions/graduate/degree-program-options` 同一张表：**MS in Computer Science** 的 Thesis Required = **Yes**、Research Required = **Yes**、Admission Cycle = **Fall only**；**MCS（Master of Computer Science）** 三项分别为 **No / No / Spring & Fall**
-- → 在 UIUC，`MS in Computer Science` 是**带论文的研究型硕士**，不是 coursework master；本行 `program` 填的正是它 → 归 #55。**分档结论不受影响**：两个学位的 3.2 相同
+- `✓ https://siebelschool.illinois.edu/admissions/graduate/degree-program-options` 同一张表：**Master of Computer Science（Urbana-Champaign）** = Admission Cycle **Spring & Fall** / 3 semesters (on campus) / Thesis Required **No** / Research Required **No** / GPA 3.2；**Master of Science in Computer Science with thesis（Urbana-Champaign）** = **Fall only** / 2 years / Thesis **Yes** / Research **Yes** / GPA 3.2
+- `✓ https://siebelschool.illinois.edu/academics/graduate/professional-mcs` 学校自己的定性：`The MCS program is a coursework-only degree consisting of 32 credit hours with no GRE required for admission.`
+- `✓ https://siebelschool.illinois.edu/academics/graduate/professional-mcs/campus-master-computer-science` Urbana-Champaign 校区页：`The Siebel School of Computing and Data Science's Master of Computer Science (MCS) consists of 32 credit hours of coursework and no thesis.`；`Designed to be completed in as little as three semesters of full-time study`
+
+> ✅ **本行 = MCS，在切片（coursework / taught master）内。** #31 建行时 `program` 那一格写成了 `MS in Computer Science` —— 在 UIUC 那是 Thesis/Research 皆 Yes 的研究型硕士、落在切片外。[#55](https://github.com/jiangxidong/EduApplication/issues/55) 已把显示名改回 MCS；**`program_key` 未变**（`cs-msc` 本就是 Master of **C**omputer **S**cience 的 slug，仓库内无一处把它解释成 Master of Science）。分档不受影响：两个学位的 3.2 相同。
+> 🔴 **`deadline` 将来补的时候不能混用**：MCS 是 **Spring & Fall**，带论文的 MS 是 **Fall only**。查错轮次会把一个还开着的申请季报成已关闭。
+> 🔴 **通则（#55）**：切片归属**不能按学位名推**（`MS` / `MEng` / `MCS` 都不是判据），只能看项目页上「thesis 是否 required」那一句 —— 同一个 `MS in CS` 在 UIUC 是研究型、在 Columbia 是授课型。
 
 #### 费用与资格
 
