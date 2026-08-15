@@ -59,4 +59,8 @@
 
 **正文一字未改**（照 [ADR 0004](0004-tiers-are-anchored-on-published-hard-requirements.md) 的先例）。⚠️ 但要留意：本 ADR 的判据是「**这行字为了保持为真，需不需要在别处改动时被改写？**」——而它自己这段论证正是因为别处（ADR 0008 第 4 条）改动而失真。**一条论证也可能是镜像**，不只是数据。
 
-⚠️ **另一处已知冲突，不在 #28 的边界内，只做记录**：上面「Consequences」末段说本 ADR 的两条机械形态「本该并入 ADR 0008 的孤儿检查清单成为**第 7、8 条**」，而 [#25](https://github.com/jiangxidong/EduApplication/issues/25) 已经把**第 7 条**用掉了（多写入者路径的切法必须已声明）。这个序号撞车归 [#35](https://github.com/jiangxidong/EduApplication/issues/35)（孤儿检查以什么形态存在、谁触发）一并处理——那张票要判的正是这份清单该不该继续用序号说话。
+✅ **序号撞车已结案，由 [ADR 0016](0016-the-checklist-holds-names-and-pointers.md)（[#35](https://github.com/jiangxidong/EduApplication/issues/35)）。** 上面「Consequences」末段说本 ADR 的两条机械形态「本该并入 ADR 0008 的孤儿检查清单成为**第 7、8 条**」——**那两个号最后一个都没拿到**：第 7 条被 [#25](https://github.com/jiangxidong/EduApplication/issues/25) 用掉（多写入者路径的切法必须已声明），第 8 条被 [#37](https://github.com/jiangxidong/EduApplication/issues/37) 用掉（季度戳表的键），两次都发生在 #35 开着的时候。
+
+**序号整个废除，改稳定短名。** 本 ADR 这两条机械形态现在叫 `glossary-holds-no-owner` 与 `citation-is-partial`，规则原文仍以本文「决定」①② 与「引用配额」为准；名字、被测对象与归属见 [`docs/checks.md`](../checks.md)。**正文那句「第 7、8 条」不再指任何东西**，照 ADR 0004 的先例正文一字未改，此处作废它。
+
+⚠️ 顺带：Consequences 末段那句「那份『六条检查』从来没有实现，一行代码都没有」**至今仍然为真**——ADR 0016 定的是形态与归属，不是实现。

@@ -20,7 +20,7 @@ owner 绑**阶段**而非 skill：阶段是内容的自然切分，skill 是分�
 
 **节必须可被机械识别，代价是引入一条封闭词表。** 实测三份样例，节集合逐渠道不同、标题带自由后缀（`## 材料上传 —— ⚠️ 与 Cornell 直接冲突`）。规则取「封闭词表 + 前缀匹配 + 禁止互为前缀」，而不是「标题逐字相等」——那些后缀是跨渠道冲突的现场记录，是 ADR 级别的信息，不该为了机械匹配丢掉。
 
-**防蔓延从「不可判定」变成「可脚本化」。** 原问法（什么样的文件可以有多个写入者）没有机械判据；新问法的两个禁止项都能被检出。孤儿检查脚本因此扩到六条：路径可解析到 owner、节名前缀匹配恰好一个词表项、每个词表项恰好一个阶段、节按词表顺序排列、`recommenders/drafts/` 存在蕴含授权声明、`#### <类别>` 必嵌在存在的 `### <program_key>` 下。仍不进 CI。
+**防蔓延从「不可判定」变成「可脚本化」。** 原问法（什么样的文件可以有多个写入者）没有机械判据；新问法的两个禁止项都能被检出。孤儿检查脚本因此多出几条机械判据。🔴 **此处原本是一串按序号排的枚举，已删除**——检查不再用序号说话，也不在本文复述：名字、被测对象与规则原文的归属见 [`docs/checks.md`](../checks.md)（[ADR 0016](0016-the-checklist-holds-names-and-pointers.md)）。本决定产出的是 `path-resolves-to-owner`、`section-prefix-match`、`vocab-item-one-stage`、`drafts-imply-consent`、`subsection-under-program`；原第六条「节按词表顺序排列」已被 [#28](https://github.com/jiangxidong/EduApplication/issues/28) 删除并换成 `overlay-no-bare-lines`。仍不进 CI。
 
 **换季降级必须改成惰性执行。** 由入口阶段一次性全表降级会构成跨 owner 的写——这是本决定挖出的、#4 与 #9 都没发现的第二个无主动作。改成「各阶段下次进入时按文件 frontmatter 的 `season` 比对，就地降级自己的节」。判据现成（原型样例已有 `season: 2027fall`），且未被访问的节保持上季标记比假装重查过更诚实。代价是派生视图要在渲染时按 `season` 比对，不能只看标记。
 
@@ -70,12 +70,12 @@ owner 绑**阶段**而非 skill：阶段是内容的自然切分，skill 是分�
 
 否决「给它一个 `所有阶段` 的 owner 值」：那是把「无 owner」改写成「owner = 全体」，字面上过检查，但这个值一旦存在就是**没有判据的万能出口**。否决「写一条 `log.md` 专属豁免」：本限定说的是**规则的辖区**（可复用、有判据），专属豁免说的是**这个文件特殊**（不可复用）。
 
-### 检查表：六条 → 七条
+### 检查表：改写一条、新增一条
 
-🔴 上面那六条里的**第 1 条**（「路径可解析到 owner」）会把 `log.md` 判成违规——只改叙述不改检查表，限定 3 等于没落地。（计数以 [#28](https://github.com/jiangxidong/EduApplication/issues/28) 换掉一条之后的六条为准。）
+🔴 `path-resolves-to-owner` 原本会把 `log.md` 判成违规——只改叙述不改检查，限定 3 等于没落地。
 
-- **第 1 条改写**：契约里出现的每个路径，**要么**解析到一个 owner 阶段（自身或祖先目录），**要么**在归属表的 owner 列被标成 `append-only`。`append-only` 是**封闭标记**，当前唯一持有者是 `log.md`；新增持有者必须在同一次提交里给出「从不被改写」的论证。
-- **新增第 7 条**（限定 1 的防蔓延闸）：每个多写入者的路径，其切法必须是契约里**已声明且脚本能枚举**的结构。当前合法切法只有两种：`channels/` 的十节封闭词表、`claims.md` 的行。**切法未声明 = 违规。**
+- **`path-resolves-to-owner` 改写**：契约里出现的每个路径，**要么**解析到一个 owner 阶段（自身或祖先目录），**要么**在归属表的 owner 列被标成 `append-only`。`append-only` 是**封闭标记**，当前唯一持有者是 `log.md`；新增持有者必须在同一次提交里给出「从不被改写」的论证。
+- **新增 `split-is-declared`**（限定 1 的防蔓延闸）：每个多写入者的路径，其切法必须是契约里**已声明且脚本能枚举**的结构。当前合法切法只有两种：`channels/` 的十节封闭词表、`claims.md` 的行。**切法未声明 = 违规。**
 - 仍不进 CI。
 
 🔴 **`claims.md` 的 append/rewrite 分工不进检查表——它不是检查，是规则。** 验它要 commit range，而**工作区不是 git 仓库，没有 diff 可跑，也没有「这次写入属于哪个阶段」这项元数据**。它是写给 skill 的行为规则，靠契约措辞约束，不靠脚本。写明于此，免得下一个 session 以为它被机械保护着。**本限定落盘时未经验证**，且在 v1 里不可机械验证——这是本 ADR 尾部那条「转述过 ≠ 核过」的同一条纪律。
@@ -100,20 +100,25 @@ owner 绑**阶段**而非 skill：阶段是内容的自然切分，skill 是分�
 
 **缺行 = 该 owner 在本文件里没有内容，不是陈旧。** 「建节即戳」使**有内容 ⟺ 有行**，所以缺行只能读作「它一个节都没落过」——没有节，就没有要渲染的东西，也就无所谓陈不陈旧。
 
-> ⚠️ **这一条曾被写反过一版**（[#37](https://github.com/jiangxidong/EduApplication/issues/37) 落盘时写的是「缺行 = 陈旧（fail-safe）」，[\`efa8318\`](https://github.com/jiangxidong/EduApplication/commit/efa8318)），在**首季工作区**上当场破：新建的 `channels/x.md` 里文书从没落过节，按那一版它的行缺席 = 陈旧，包会把 `## 文书规格` 渲染成一个引用「上季核过」链接的 ⬜——**而首季根本没有上一季，那个链接不存在**。同一版的第 8 条还要求键**恰好等于契约的 owner 集合**，那等于逼建档的选校替另外四个阶段预先写行：既是本文明令禁止的**跨 owner 的写**，又是 [#23](https://github.com/jiangxidong/EduApplication/issues/23) 否掉的**预建空节**。两处一并更正如上。
+> ⚠️ **这一条曾被写反过一版**（[#37](https://github.com/jiangxidong/EduApplication/issues/37) 落盘时写的是「缺行 = 陈旧（fail-safe）」，[\`efa8318\`](https://github.com/jiangxidong/EduApplication/commit/efa8318)），在**首季工作区**上当场破：新建的 `channels/x.md` 里文书从没落过节，按那一版它的行缺席 = 陈旧，包会把 `## 文书规格` 渲染成一个引用「上季核过」链接的 ⬜——**而首季根本没有上一季，那个链接不存在**。同一版的 `season-stamp-matches-owners` 还要求键**恰好等于契约的 owner 集合**，那等于逼建档的选校替另外四个阶段预先写行：既是本文明令禁止的**跨 owner 的写**，又是 [#23](https://github.com/jiangxidong/EduApplication/issues/23) 否掉的**预建空节**。两处一并更正如上。
 
-**fail-safe 由第 8 条守，不由「缺行」的读法守**：漏戳会被检查判成违规，而不是被静默读成本季。
+**fail-safe 由 `season-stamp-matches-owners` 守，不由「缺行」的读法守**：漏戳会被检查判成违规，而不是被静默读成本季。
 
-### 检查表：七条 → 八条
+### 检查表：新增一条
 
-只改叙述不改检查表，限定 4 等于没落地（同限定 3 的教训）。
+只改叙述不改检查，限定 4 等于没落地（同限定 3 的教训）。
 
-- **新增第 8 条**：契约里每个承载证据标记（`✓` / `待核实`）的路径，其 frontmatter 必须有 `season_downgraded` 表，且该表的键**恰好等于「在该文件里实际有内容的 owner」集合**——这个集合由**文件内容 + 归属表机械推出**（逐节剥离前缀匹配到法定节名，再查 owner），不是照抄契约的 owner 名单。**有内容而无戳 = 违规**（这是 fail-safe 那一半：漏戳被检出，而不是被读成本季）；**有戳而无内容 = 违规**（预建空行，同 #23 否掉的预建空节）。**文件级 `season` 字段出现在这类路径上即违规。**
+- **新增 `season-stamp-matches-owners`**：契约里每个承载证据标记（`✓` / `待核实`）的路径，其 frontmatter 必须有 `season_downgraded` 表，且该表的键**恰好等于「在该文件里实际有内容的 owner」集合**——这个集合由**文件内容 + 归属表机械推出**（逐节剥离前缀匹配到法定节名，再查 owner），不是照抄契约的 owner 名单。**有内容而无戳 = 违规**（这是 fail-safe 那一半：漏戳被检出，而不是被读成本季）；**有戳而无内容 = 违规**（预建空行，同 #23 否掉的预建空节）。**文件级 `season` 字段出现在这类路径上即违规。**
 - 仍不进 CI（同上）。
 
 ⚠️ **本限定落盘时，`CONTRACT.md` 侧尚未跟改**——它只活在 prototype 分支，而落盘时仓库根这一个 checkout 在 `main` 上、另有四个 worktree 活着，切分支会搅到别的 session。契约侧与样例侧的改动转 [#47](https://github.com/jiangxidong/EduApplication/issues/47)。**在 #47 落盘之前，`CONTRACT.md` §4 与本节直接冲突，以本节为准。**
 
 ## 后续
+
+- [ADR 0016](0016-the-checklist-holds-names-and-pointers.md)（[#35](https://github.com/jiangxidong/EduApplication/issues/35)）——**本文的检查清单不再是一份清单，序号全部作废。** 本文三处「检查表」小节里的规则原文**一字未改**，只把按序号说话的复述换成了短名；名字、被测对象、跑在哪个夹具上，归 [`docs/checks.md`](../checks.md)。
+  🔴 **本文有两条弱表述就此作废**，照旧文实现会写出弱检查：
+  - `subsection-under-program` —— 本文只要求 `####` 嵌在**存在的** `###` 下；取 [#14](https://github.com/jiangxidong/EduApplication/issues/14) G2 的强版，**并要求该 `program_key` 在 `programs.md` 里存在**。
+  - `drafts-imply-consent` —— 本文只说「`recommenders/drafts/` 存在蕴含授权声明」；取 #14 E1 的强版，**声明住 `recommenders.md`，两道闸**。
 
 - [ADR 0011](0011-the-glossary-defines-words-the-contract-holds-the-values.md)（[#26](https://github.com/jiangxidong/EduApplication/issues/26)）——本决定产出的十节归属表一度在 `CONTEXT.md` 与状态层契约各存一份。0011 定下词汇表与契约的边界判据，把词表与 owner 列整个归到契约。**本文正文一字未改**，此处只补指针。
 
