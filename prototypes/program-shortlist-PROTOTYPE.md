@@ -138,6 +138,13 @@
 
 ## 5. 从清单收敛到最终投递名单
 
+> 🔴 **本节已被 [#13](https://github.com/jiangxidong/EduApplication/issues/13) 推翻。** 下面的 `决定` 列**不存在**——
+> 它与 `status` 列断言同一件事，并存必然漂移。唯一状态轴是 `status`
+> （`considering` / `shortlist` / `applying` / `submitted` / `dropped`），
+> 「投」= `applying`，「不投」= `dropped`（必须带一行理由），「待定」= `shortlist`。
+> 见 `docs/adr/0002-one-program-pool-one-status-axis.md`。本节以下内容仅存作讨论痕迹。
+
+
 清单是「候选池」，投递名单是「决定」。原型里用一列表达：
 
 | 项目 | … | 决定 |
