@@ -527,7 +527,81 @@ UQ 的 `Submit your application` 页在「提交后可在 portal 做什么」列
 
 ## Part C — US 美国
 
-> 调研中。
+### C.0 美国与英澳的三个结构性差异（先看这个）
+
+1. **注册表极短，但申请表极长。** Slate 的 Register Account 只有 4 个字段（邮箱／名／姓／出生日期），比澳洲 StudyLink 的 ~12 个字段还少；但登录后的申请表要 3 封推荐信、个人陈述、简历、逐校成绩单、自报分数——材料量远超英澳授课型硕士。
+2. **推荐信是硬性起步，不是可选项。** 澳洲授课型硕士主流**不要**推荐信，英国三校**按课程可能要 0–2 封**，Columbia SEAS 是**固定 3 封**。这是三国间最大的材料量差异，也是产品红线密度最高的地方。
+3. **中介政策与英国相反。** 曼大允许中介代交（且由中介付费）、Leeds 主动建议用海外代表；Columbia **明文禁止**经中介或第三方递交。
+
+---
+
+### C.1 Columbia Engineering (SEAS)（Slate / Technolutions）
+
+**平台取证（本次亲自读取已抓取的 register 页原始 HTML）**
+
+| 项 | 字面取证串 | 出处 |
+|---|---|---|
+| 平台 CDN | `//apply-engineering-columbia-edu.cdn.technolutions.net/favicon.ico`、`//slate-technolutions-net.cdn.technolutions.net/shared/base.css` | `https://apply.engineering.columbia.edu/register` |
+| 出现次数 | HTML 内 `technolutions` 12 次、`slate` 3 次 | 同上 |
+| 表单标识 | `<title>Register Account</title>`、`<form method="post" id="register_form" data-fw-form="1">` | 同上 |
+
+**🌟 美国这边唯一拿到真实 HTML 约束的表单**（其余美国字段同英国一样只能来自官方指引页）：
+
+| 字段 | HTML 约束 |
+|---|---|
+| Email Address | `maxlength="64"`、`data-validate="{ required: true, format: 'email' }"` |
+| First Name | `maxlength="64"`、`required: true` |
+| Last Name | `maxlength="64"`、`required: true` |
+| Birthdate | 拆成 `birthdate_m` / `birthdate_d` / `birthdate_y` 三个 `<select>`，共用一条 required 校验 |
+
+整张注册表**只有这 4 项**——没有国籍、**没有密码**（Slate 走邮件确认链接建号）。注意**出生日期在注册阶段就收集**，澳洲 StudyLink 是登录后才问。
+
+**🔴 推荐信 —— 本次三国八校中最强的一条禁令**
+
+逐字原文（`application-requirements` 页 Letters of Recommendation 节）：
+
+> `Upon entering your recommendation providers' contact information in your application, your recommendation providers will be contacted to supply the letter of recommendation.`
+> **`Under no circumstance should you write any portion of the evaluation, nor have any involvement in its drafting or submission.`**
+
+两句都必须逐字对待：
+
+1. **发信触发点比 UCL 更早。** 字面是"**填入**推荐人联系方式即联系推荐人"（on-entry），而 UCL 明确是"**提交申请那一刻**"（on-submit）。但公开页**没有明说是保存即发还是提交后发**——**记为未确认，不得假定为 on-submit**。产品在 Columbia 上必须按"填入即可能已经发信"来设计防护，这是更保守也更安全的假设。
+2. **禁令的范围比"别代写"宽得多。** 不只是禁止代写评价的"任何部分"，连 **参与起草（drafting）** 与 **参与提交（submission）** 都禁止。这意味着：
+   - AI 代写推荐信 → 违规；
+   - AI 帮推荐人润色 → 落在 `involvement in its drafting` 里，违规；
+   - AI 代推荐人点提交 → 落在 `involvement in ... submission` 里，违规。
+   违规后果适用 academic integrity 条款：`denial or revocation of admission, cancellation of academic credit, suspension, expulsion, or eventual revocation of degree`。
+
+**配套的机制细节**
+- 推荐人须用 **professional email address**。
+- **不接受 Interfolio 或任何第三方代递服务**，不接受纸质信函（`References sent this way will not be reviewed`）。`Letters of recommendation must be submitted by your reference provider directly.`
+- **推荐信不阻塞提交**：`References can be added to your submitted application after the priority deadline, if necessary`，推荐人可在申请提交后把信直接加到申请里。
+
+**⚠️ 第二个"第三方邮箱"字段（容易被漏掉）**
+Publications 一项要求：上传论文副本 + 描述本人贡献 + **提供一位可证实其参与的教授或导师的邮箱**。是否触发系统发信**未确认**，但性质上与推荐人邮箱同属红线邻域，产品应一并纳入"AI 不得代填的第三方联系人"字段类。
+
+**文件上传 —— 美国给的是「内容规格」，不是「技术规格」**
+- **单文件大小上限与允许格式：公开页完全未给**（未确认）。对照 UCL 的 5MB/.pdf/.docx/.jpeg/.jpg，美国这边反而更含糊。
+- 但给了别处没有的**排版规格**（个人陈述）：四边页边距 ≥1 inch 且左右相等、双倍行距、10pt Arial 或 12pt Times New Roman（任何清晰的标准衬线/无衬线字体皆可，禁用手写体花体）、**姓名须出现在每页页眉或页脚**。
+- 成绩单：可传 official transcript 复印件或 **student copy**，但 🌟 **明文禁止上传网页学生端截图**（`We ask that you not upload screenshots of your online student portal`）。
+- **官方成绩单在录取并接受 offer 之后才寄**，且 `Do not have your institution send us transcripts prior to this`。若院校无法经安全加密系统电子发送，须改由 **WES** 出 Course-by-Course Evaluation + International Credential Advantage Package 直发 `finaldocs@columbia.edu`。
+- 翻译件：`must be conducted by a reputable service provider`——措辞比 UCL（禁止本人翻译）松，未给认证机构名录。
+
+**个人陈述的第四种上限形态**
+建议 **250–1,000 词**，但 **超出不受负面影响**（`Your application will not be negatively impacted should you exceed this recommendation`），并明说不必来函申请超字数许可。
+→ 至此四种完全不同的上限：UCL **3,000 字符 / 两页 A4**、曼大 AMBS **一页**、曼大 CS **半页 A4**、Leeds EPS **一面 A4**、Columbia **250–1000 词且软性**。**没有任何两校可以共用同一份成品。**
+
+**其他 Columbia 特有约束**
+- 🌟 **每学期只能申请 SEAS 的一个项目**（含 Columbia Video Network）。违规可能导致申请作废且多付的费用不退，并明文禁止 `Do not create a new application account in order to circumvent this policy`。对照澳洲：UQ/UNSW 一份申请里可填 3 个志愿。
+- **Video Interview 是 MS 申请的强制项**，但**只有提交且付费之后**才在 Status Portal 开放：3 道随机行为题，每题 90 秒思考、三题合计 3 分钟录制，官方说无需事先准备；**VPN 可能导致提交失败**。
+- 分数**自报 + 上传成绩单副本**，逐科填分并附百分位；🌟 **禁止 superscoring**；录取后才由 ETS 直发官方分（code 2111）。有效期须覆盖到入学首学期：GRE 5 年，TOEFL/IELTS/Duolingo 2 年。
+- GRE 在 2026 申请季**不要求**，交与不交都不影响评审。
+- 英语豁免国名单：澳、加、加纳、爱尔兰、肯尼亚、新西兰、尼日利亚、新加坡、英、美（本科或硕士学位来自这十国即豁免）。中国大陆被明确点名须交。
+- 申请费 **$85**，不可退，仅主要信用卡在线支付。
+- 须**声明所交全部信息与文件真实准确**，并可能被要求配合核验。
+- **全线上提交，无任何例外**：`No exceptions are made to the requirement.`
+
+---
 
 ---
 
