@@ -20,7 +20,7 @@ season: 2027fall
 ## 🔴 硬约束
 
 - `✓ https://apply.engineering.columbia.edu/` **每学期只能申请 1 个项目**
-  → 与 `programs.tsv` 交互：Columbia 名下若出现第二行，必须提示用户二选一
+  → 与 `programs.md` 交互：Columbia 名下若出现第二行，必须提示用户二选一
 - `✓ 同上` **明文禁止本人以外任何人代交**（仅 Fulbright / IIE / LASPAU / AMIDEAST / DAF / DAAD / VEF 例外）
   → 中介路径在此校完全关闭
 - `✓ 同上` **强制录像面试**（video interview）
@@ -56,7 +56,7 @@ season: 2027fall
   但 **SEAS 是另一个学院，不能套用**（#5：美国最小分叉粒度是学院不是学校）。
   在查清前，本产品对本项目按 **GSAS 档位从严**处理，并如实告知用户这是保守假设。
 
-## 费用与资格（从 programs.tsv 下沉至此 —— evidence 列只担保 deadline）
+## 费用与资格（从 programs.md 下沉至此 —— evidence 列只担保 deadline）
 
 - `待核实` 学费口径（每学分制？总学分数？Bursar 页与项目页常不一致）
 - `待核实` 生活费预估

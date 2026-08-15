@@ -53,7 +53,7 @@ season: 2027fall
 
 - 🔴 `✓ 同上` `reference_delivery_method`（Interfolio / 在线 / By Mail）**选错不可逆** → AI 不得代选
 
-## 费用与资格（从 programs.tsv 下沉至此 —— evidence 列只担保 deadline）
+## 费用与资格（从 programs.md 下沉至此 —— evidence 列只担保 deadline）
 
 - `待核实` MEng 学费口径（按学年还是按学分）
 - `待核实` STEM OPT 资格（须查项目 CIP code 对照 DHS STEM 清单）

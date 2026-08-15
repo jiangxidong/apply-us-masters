@@ -10,7 +10,7 @@
 **做了什么**
 - 初始化工作区，申请季定为 `2027fall`
 - `profile.md`：录入学历、TOEFL 102、工作经历、目标（留美 2–3 年 → 关注 STEM OPT）
-- `programs.tsv`：录入 3 个候选项目（Columbia SEAS CS MS / Cornell CS MEng / UIUC CS MS）
+- `programs.md`：录入 3 个候选项目（Columbia SEAS CS MS / Cornell CS MEng / UIUC CS MS）
 - `channels/`：三个申请单元的约束骨架落盘，已标出**两处硬冲突**（成绩单扫描规格、文书形态）
 - `essays/`：素材 2 条，canonical 三个渲染物起了 v1
 

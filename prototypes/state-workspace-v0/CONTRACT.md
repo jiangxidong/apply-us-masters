@@ -29,7 +29,7 @@
 |---|---|---|---|
 | `apply.md` | frontmatter + 正文 | **工作区标识 + 申请季** | 冷启动阶段创建；此后**只有换季时**被改。⚠️ 不放完成度、不放待核实计数——那些是派生视图 |
 | `profile.md` | frontmatter + 正文 | **申请人 canonical 事实** | 冷启动/画像阶段；其他阶段只读 |
-| `programs.tsv` | TSV，9 列 | **项目池**（选校决策面） | 选校阶段；投递阶段只改 `status` 列 |
+| `programs.md` | Markdown 表，9 列 | **项目池**（选校决策面） | 选校阶段；投递阶段只改 `status` 列 |
 | `channels/<channel_key>.md` | Markdown | **约束层**（逐申请单元的 rendering rules） | 选校阶段落盘骨架，准备包阶段补全 |
 | `essays/materials/*.md` | Markdown | **文书素材**（素材门槛在此判定） | 文书阶段 |
 | `essays/canonical/*.md` | Markdown | **文书 canonical 渲染物**（当前版） | 文书阶段 |
@@ -85,7 +85,7 @@ canonical 必须取**信息量更大的一侧**——降级可逆，升级不可
 因此两级键：
 
 - **`program_key`** = `<school>--<college>--<program>`，例：`columbia--seas--cs-ms`
-  → `programs.tsv` 的主键，`packets/` 的目录名
+  → `programs.md` 的主键，`packets/` 的目录名
 - **`channel_key`** = `<school>--<college>`，例：`columbia--seas`
   → `channels/` 的文件名。同一 channel 下多个项目共用 portal / 平台 / 申请费 / 上传规则。
   项目级差异写在该文件的 `## 项目级差异` 节。
@@ -97,7 +97,7 @@ canonical 必须取**信息量更大的一侧**——降级可逆，升级不可
 
 ## 4. 证据标记与换季降级
 
-**二元，`programs.tsv` 一列**（`evidence` 列）：
+**二元，`programs.md` 一列**（`evidence` 列）：
 
 - `✓ <官网链接>` —— **deadline 取自这个 URL**
 - `待核实` —— 其余一切情况
@@ -112,7 +112,7 @@ deadline 在项目页、学费在 Bursar 页、STEM 资格在 CIP code 对照的
 - `evidence` 列只对 **deadline** 一项负责 —— 它最易变、后果最重，
   且地图的联网规则专门点名它（「绝不凭记忆报 deadline」）
 - **学费、门槛、STEM 资格、申请费全部下沉到 `channels/<channel_key>.md`**，各带各的行首标记
-- **[#11](https://github.com/jiangxidong/EduApplication/issues/11) 之后往 `programs.tsv` 加多少列都可以，
+- **[#11](https://github.com/jiangxidong/EduApplication/issues/11) 之后往 `programs.md` 加多少列都可以，
   但加的列一律不被 `evidence` 担保。** 新列若需要取证状态，就下沉到 `channels/`
 
 代价：选校时要看两个文件。收益：`✓` 有确切含义，`待核实` 不再退化成常量。
@@ -141,24 +141,37 @@ Columbia SEAS 那条「AI 政策未查到，暂按 GSAS 从严」就没法被自
 
 ## 4.5 🔴 中文值不能进被聚合的列（原型跑出来的实测发现）
 
-macOS 自带的 **BSD `uniq` 会把不同的中文行合并计数**：
+**两个 BSD 工具在中文下是坏的**（已实测，macOS 26.5.2；`LC_ALL=en_US.UTF-8` 都修不好）：
 
 ```sh
 $ printf '冲刺\n匹配\n' | uniq -c
-   2 冲刺          # ← 两个不同的值，被当成同一个
+   2 冲刺                    # 两个不同的值被合并计数
+
+$ printf '冲刺\n匹配\n保底\n' | sort -u
+冲刺                         # 🔴 更严重：三个不同的值直接丢成一个
 ```
 
-`LC_ALL=en_US.UTF-8` **不能修复**（已实测，macOS 26.5.2）。`sort` 本身正常，坏的是 `uniq`。
+坏的是**去重比较**：`uniq` 数错，`sort -u` **丢行**（后者更危险，因为没有任何迹象）。
+`sort`（单纯排序）、`grep`、`awk` 都正常。
+
+> **注意这与格式无关。** 这两个工具对 Markdown 表和 TSV 一样坏，awk 对两者一样好。
+> CJK 不是选格式的判别式，只是「用不用 `uniq` / `sort -u`」的判别式。
 
 **因此两条硬规则：**
 
-1. **`programs.tsv` 里任何会被统计的列（`tier` / `status`）只放 ASCII 枚举值。**
+1. **`programs.md` 里任何会被统计的列（`tier` / `status`）只放 ASCII 枚举值。**
    `tier` = `reach` / `match` / `safer`，`status` = `considering` / `shortlist` / `applying` / `submitted` / …
    中文标签（冲刺 / 匹配 / safer）是**展示层**的事 —— 措辞归 [#11](https://github.com/jiangxidong/EduApplication/issues/11)。
    自由文本列（`school` / `program` / `evidence`）可以是中文，因为它们只被 `grep` / `awk` 正则匹配，不被聚合。
 
-2. **任何派生视图的计数一律走 `awk` 关联数组，禁止 `sort | uniq -c`。**
-   已实测正确：`awk '{c[$0]++} END{for(k in c) print c[k], k}'`、`grep -c`。
+2. **禁止 `uniq` 与 `sort -u`。** 计数走 `awk '{c[$0]++} END{for(k in c) print c[k], k}'`，
+   去重走 `awk '!s[$0]++'`，两者均已实测在中文下正确；`grep -c` 也正常。
+
+3. **`programs.md` 的单元格内禁止出现 `|`。** 转义的 `\|` 仍会被 `awk -F'|'` 切开（已实测）。
+   需要写散文的内容一律进 `channels/` —— 这条对 [#11](https://github.com/jiangxidong/EduApplication/issues/11) 尤其要紧，
+   它会加「匹配理由」这类自由文本列，那正是 `|` 最可能出现的地方。
+
+**解析约定**：Markdown 表用 `awk -F'|'` 解析，前导 `|` 会产生一个空的 `$1`，**第 N 列是 `$(N+1)`**。
 
 跑 `./derive-demo.sh` 可以复现全部派生视图。
 
@@ -192,7 +205,7 @@ points.md        ─────────────────────
 
 | 票 | 它定什么 | #4 定什么 |
 |---|---|---|
-| [#11 选校推荐的输出契约](https://github.com/jiangxidong/EduApplication/issues/11) | `programs.tsv` 的**列清单**、分档措辞、假保底标注、匹配理由怎么写。⚠️ 加的列一律不被 `evidence` 担保（§4） | 文件路径、主键形态、`evidence` 只担保 deadline、换季语义 |
+| [#11 选校推荐的输出契约](https://github.com/jiangxidong/EduApplication/issues/11) | `programs.md` 的**列清单**、分档措辞、假保底标注、匹配理由怎么写。⚠️ 加的列一律不被 `evidence` 担保（§4） | 文件路径、主键形态、`evidence` 只担保 deadline、换季语义 |
 | [#8 网申准备包的交付形态](https://github.com/jiangxidong/EduApplication/issues/8) | `packets/<program_key>/` 里**装什么**、怎么用、完成度怎么自检 | 它落在哪、它是**可再生**的（删了能从 canonical + rules 重建） |
 | [#10 文书双模式](https://github.com/jiangxidong/EduApplication/issues/10) | 何时开新版本、多版本怎么对比、素材门槛怎么判 | 三个渲染物文件名 + `_versions/` 命名约定 |
 | [#9 skill 拆几个](https://github.com/jiangxidong/EduApplication/issues/9) | 阶段怎么切、路由怎么写 | **每个文件的 owner**（第 1 节表格最后一列）——这就是 skill 之间的交接面 |
@@ -206,7 +219,7 @@ points.md        ─────────────────────
 
 | # | 分叉 | 决议 | 依据 |
 |---|---|---|---|
-| 1 | `programs.tsv` 格式 | **TSV** | 待核实汇总必须机械可算，否则会出现「上次说 3 条、这次说 5 条」。代价（人要在 Numbers 里开、CJK 有坑）已由 4.5 节的两条规则兜住 |
+| 1 | 项目池格式 | **Markdown 表**（`programs.md`）<br>*2026-08-15 改判，原判 TSV* | 原判的理由「Markdown 只能让 agent 读一遍再总结」**是错的** —— `awk -F'\|'` 连带对齐空格的表都解析得干净，列数校验一样能做，TSV 的唯一卖点不存在。剩下真正区分的三点里两点指向 Markdown：**渲染**（工作区其余 10 个文件全是 Markdown，且定路径时的理由就是「用户可能放 Obsidian 里」）、**agent 原地改**（TSV 列错位是静默的）。代价是单元格禁止出现 `\|`，见 §4.5 |
 | 2 | 派生视图落不落盘 | **完全不落盘** | 存一份就是第二个真相源。竞品坑：`Checked At` 有字段无失效规则 → 上季打了勾的条目比没打勾的更危险 |
 | 3 | 「二元 + 一列」怎么办 | **evidence 只担保 deadline** | 合取规则造不出合法的 `✓` 行（见 §4） |
 | 3b | `channels/` 逐行标记 | **确认扩展** | 不扩展则约束层的取证状态无法机械汇总（见 §4） |

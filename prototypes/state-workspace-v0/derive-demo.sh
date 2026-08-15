@@ -1,32 +1,43 @@
 #!/bin/sh
-# 派生视图演示 —— 证明「待核实清单 / 完成度 / 闸口状态」可以机械算出，
-# 不必落盘、不必让 LLM 每个会话重读一遍。这是 fork 1（TSV vs Markdown 表）的论据。
+# 派生视图演示 —— 证明「待核实清单 / 完成度 / 闸口状态」可以机械算出，不必落盘。
 #
-# ⚠️ 全程不用 `sort | uniq -c`：macOS 的 BSD uniq 会把不同的中文行合并计数
-#    （`printf '冲刺\n匹配\n' | uniq -c` → `2 冲刺`）。计数一律走 awk 关联数组。
+# ⚠️ 两个 BSD 工具在中文下是坏的，全程绕开：
+#    uniq   —— 把不同的中文行合并计数（`printf '冲刺\n匹配\n' | uniq -c` → `2 冲刺`）
+#    sort -u —— 更严重，直接丢行（三个不同的中文值只剩一个）
+#    LC_ALL 都修不好。去重用 `awk '!s[$0]++'`，计数用 awk 关联数组。
+#
+# Markdown 表用 awk -F'|' 解析：前导 `|` 会产生一个空的 $1，所以第 N 列是 $(N+1)。
 cd "$(dirname "$0")/sample-workspace" || exit 1
-W=programs.tsv
+W=programs.md
 
-echo "=== 列数完整性（TSV 的唯一脆弱点：改错会静默错位）==="
-awk -F'\t' 'NR==1{n=NF} NF!=n{bad=1; print "  ✗ 第 "NR" 行 "NF" 列，应为 "n} END{if(!bad) print "  ✓ 全部 "NR" 行均为 "n" 列"}' $W
+# 只取表体行（以 | 开头、不是表头、不是分隔行），并去掉每格首尾空白
+body() {
+  awk -F'|' '/^\|/ && !/^\|[ -]*-/ && $2 !~ /program_key/ {
+    for (i=2; i<NF; i++) gsub(/^[ \t]+|[ \t]+$/, "", $i); print
+  }' OFS='|' $W
+}
+
+echo "=== 列数完整性 ==="
+awk -F'|' '/^\|/ && !/^\|[ -]*-/ {if(!n) n=NF; else if(NF!=n){bad=1; print "  ✗ 第 "NR" 行 "NF-2" 列，应为 "n-2}; r++}
+  END{if(!bad) print "  ✓ 全部 "r" 行（含表头）均为 "n-2" 列"}' $W
 
 echo
 echo "=== 待核实清单（自动汇出，不落盘）==="
-awk -F'\t' 'NR>1 && $9 ~ /待核实/ {c++; print "  · "$2" — "$4} END{print "  合计 "c+0" 行"}' $W
+body | awk -F'|' '$10 ~ /待核实/ {c++; print "  · "$3" — "$5} END{print "  合计 "c+0" 行"}'
 
 echo
 echo "=== 上季核过、本季尚未复核（换季降级留下的痕迹）==="
-awk -F'\t' 'NR>1 && $9 ~ /核过/ {print "  · "$4"\n    "$9}' $W
+body | awk -F'|' '$10 ~ /核过/ {print "  · "$5"\n    "$10}'
 
 echo
 echo "=== 分档 / 状态统计（枚举列是 ASCII，中文标签在展示层）==="
-awk -F'\t' 'NR>1{t[$6]++; s[$8]++} END{
+body | awk -F'|' '{t[$7]++; s[$9]++} END{
   print "  分档:"; for(k in t) print "    "k": "t[k];
-  print "  状态:"; for(k in s) print "    "k": "s[k]}' $W
+  print "  状态:"; for(k in s) print "    "k": "s[k]}'
 
 echo
 echo "=== 每个项目是否有对应的约束层文件 ==="
-awk -F'\t' 'NR>1 {print $5}' $W | sort -u | while read -r k; do
+body | awk -F'|' '{print $6}' | awk '!s[$0]++' | while read -r k; do
   [ -f "channels/$k.md" ] && echo "  ✓ channels/$k.md" || echo "  ✗ 缺 channels/$k.md"
 done
 
