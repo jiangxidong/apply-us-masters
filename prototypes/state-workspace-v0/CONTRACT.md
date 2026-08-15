@@ -61,7 +61,7 @@
 | 3 | `programs.md` | Markdown 表，**13 列**（逐列 schema 见 **§4.6**） | **项目池**（选校决策面） | **选校**（**全部 13 列，含 `status`，无例外**——见 §1.5 注 ①） |
 | 4 | `claims.md` | Markdown 表，4 列 | **主张集**（全局唯一，文书与推荐信共用） | 🔴 **按行单向移交**：**冷启动 / 画像**只 append 新行，**文书**此后全权（见下） |
 | 5 | `channels/<channel_key>.md` | Markdown，**分节** | **约束层**（逐申请渠道的 rendering rules） | 🔴 **按节归属，见 §1.2**（5 个阶段 owner） |
-| 6 | `materials/*.md` | Markdown，字段名单见下（**不计数**） | **文书素材**（素材门槛在此判定）；推荐信线是第二个消费方，**只读** | **文书**（见 §1.5 注 ②） |
+| 6 | `materials/*.md` | frontmatter **三键** `material_id` / `sensitive` / `verifiable_by` ＋ 正文（形状规则见下，**一律列名不计数**） | **文书素材**（素材门槛在此判定）；推荐信线是第二个消费方，**只读** | **文书**（见 §1.5 注 ②） |
 | 7 | `essays/canonical/*.md` | Markdown + frontmatter | **文书 canonical 渲染物**（当前版） | **文书** |
 | 8 | `essays/canonical/per-program/<program_key>.md` | frontmatter + 散文 | **逐项目 why-this-program 内容**（不可再生） | **文书**（按 §1.4 前缀继承） |
 | 9 | `essays/canonical/_versions/*.md` | Markdown | 历史版本，只增不改 | **文书** |
@@ -71,24 +71,78 @@
 | 13 | `packets/<program_key>/**` | 由 [#8](https://github.com/jiangxidong/EduApplication/issues/8) 定 | **可再生产物**，删了能重建 | **准备包** |
 | 14 | `log.md` | Markdown，append-only | **跨会话交接** | `append-only` —— **不在 owner 辖区**（[ADR 0008](../../docs/adr/0008-the-owner-binds-to-a-section-not-a-file.md) 限定 3，见 §1.5 注 ③） |
 
-**五个主键**，全部 ASCII（遵 §4.5）：`program_key` / `channel_key` / `recommender_id`（`r1`…）/
-`institution_id`（定义权在 `profile.md`，`documents/` 只引用）/ `claim_id`（`c01`…）。
+**六个主键**，全部 ASCII（遵 §4.5）：`program_key` / `channel_key` / `recommender_id`（`r1`…）/
+`institution_id`（定义权在 `profile.md`，`documents/` 只引用）/ `claim_id`（`c01`…）/
+`material_id`（`m01`…，[#38](https://github.com/jiangxidong/EduApplication/issues/38) 补入）。
 
-**`materials/*.md` 的字段**：🔴 **一律列名，不写「N 字段」**（[#30](https://github.com/jiangxidong/EduApplication/issues/30)）——
+> `material_id` 是一条**早就落盘的跨文件引用**（`claims.md` 的 `materials` 列存的就是它），此前却不在本名单里——
+> 唯一一条没有权威定义的跨文件 id。风格对齐 `claim_id`，并**进文件名**（`m01-<中文短名>.md`）：
+> **id 进文件名，引用才能靠 glob 解析**，否则每次解析都要打开全部素材文件读 frontmatter，
+> 而 `sensitive` / `documents/` 禁读区那条线的整个设计前提就是「agent 少读文件」。
+
+#### `materials/*.md` 的字段名单（v1 定稿）
+
+🔴 **一律列名，不写「N 字段」**（[#30](https://github.com/jiangxidong/EduApplication/issues/30)）——
 「六字段 / 七字段」曾在三处票面上并存三种计数，正是 [#24](https://github.com/jiangxidong/EduApplication/issues/24)
 在文件上杀掉的那个病（「表的行数就是文件数，任何文件都不带序号」）。
 
-已确定在名单内的：`敏感`（[#17](https://github.com/jiangxidong/EduApplication/issues/17)，**ASCII 二元 `yes` / `no`**，遵 §4.5）。
-敏感素材**默认不进给第三方的包**——这是 #12 的 pack 门槛两条合取里的第二条（第一条是「这个人能证实它」）。
-已确定**不在**名单内的：`已用于`（#30 裁决，见下）。
+**准入判据 = 消费方**（[ADR 0014 语义槽位不是落盘字段](../../docs/adr/0014-a-semantic-slot-is-not-a-stored-field.md)，
+[#38](https://github.com/jiangxidong/EduApplication/issues/38)）：**有落盘消费方的进 frontmatter，其余留正文。**
+进了 frontmatter 的值一律 ASCII，但那是**格式约束、不是准入判据**（§4.5）。
+判据本身不是新发明——它是 [ADR 0008](../../docs/adr/0008-the-owner-binds-to-a-section-not-a-file.md) 判 owner 归属
+那台机器换个对象用，[ADR 0011](../../docs/adr/0011-the-glossary-defines-words-the-contract-holds-the-values.md) 已抬用过一次。
 
-🔴 **推荐信阶段对 `materials/` 只读，不写**（[#25](https://github.com/jiangxidong/EduApplication/issues/25)）。「谁能证实 / 可验证性」这个字段由**文书阶段在素材采集时**填
-（样例 `materials/01-*.md` 正文里就有，`README.md` 明写它是「素材的**独立属性**，供 `recommenders.md` 选人用」）；
-推荐信阶段**读**它去选人，产出的「主张 → 推荐人分配」落 `recommenders.md`，**不回写这里**。
-`敏感` 同理：文书阶段采集时判定，推荐信阶段读它决定进不进 pack。**消费不产生写入权**（§1.4 的归属判据原话是「后到者只读」）。
+**frontmatter 三键**：
 
-⚠️ **完整名单尚未裁决** → [#38](https://github.com/jiangxidong/EduApplication/issues/38)：#10 的六个语义字段与样例
-frontmatter 的 `material_id` / `type` / `usable_for` / `concrete` 是**两套互不相交的词汇**，本文件与样例都没把两者对应起来。
+| 键 | 值域 | 消费方 |
+|---|---|---|
+| `material_id` | ASCII 主键 `m01`…，**并进文件名** | `claims.md` 的 `materials` 列（跨文件 id 引用）；`derive-demo.sh` 的派生视图 |
+| `sensitive` | ASCII 二元 `yes` / `no`（遵 §4.5） | [#12](https://github.com/jiangxidong/EduApplication/issues/12) pack 门槛两条合取的**第二条**——敏感素材**默认不进给第三方的包**（[#17](https://github.com/jiangxidong/EduApplication/issues/17)） |
+| `verifiable_by` | `recommender_id` 列表（引 `recommenders.md` 的候选人表），可空 | pack 门槛两条合取的**第一条**；`recommenders.md` 据它选人。**空 = #12 的「缺人」缺口** |
+
+🔴 **`敏感` → `sensitive` 只改落盘形态，#17 的决策一个字没变**（仍是「带标记 / 二元 / 用户可下调」）。
+§4.5 那条坑此前被读窄了：`uniq` 数错 / `sort -u` 丢行是「中文内容撞 shell 工具」，
+而脚本 `grep '^敏感:'` 时**已经在中文上做匹配**，对键和对值同样成立。
+
+🔴 **`verifiable_by` 是「可验证性」从散文升上来的**，不是新字段。#12 把可验证性定成 pack 门槛的**判定本体**，
+判定本体停在正文散文里等于门槛不可执行。**空列表 = 缺人缺口**，与 `claims.md` 的 `materials` 空 = 缺素材缺口完全同构。
+硬后果一并接受：「谁能证实」被限制成**必须先是一个推荐人候选**。样例 m02 的「李老师（联系方式不在手）」正卡在这——
+**这恰好对**：联系不上是 `recommenders.md` 的状态，不是素材的属性。一条谁都证实不了的素材写 `verifiable_by: []`，
+它**仍是合格文书素材，只是进不了 pack**（#12 结案后修正 §3：可验证性在文书线是独立属性，在推荐信线是判定本体）。
+
+🔴 **「消费方尚未实现」≠「没有消费方」。** `material_id` 有跑起来的读者；`sensitive` 与 `verifiable_by` 的消费方是
+#12 的 pack 门槛——**契约已定，实现落在 `derive-demo.sh`**。下一个 session 照字面套判据会当场杀掉 `sensitive`，
+所以这条分界写在这里。而**「将来会有人读」不算消费方**——`usable_for` 因此仍然出局。
+
+**三个键删掉，理由各不相同**（这是判据在切真关节，不是一刀切）：
+
+| 键 | 出局的理由 |
+|---|---|
+| `type`（`工作项目` / `学术经历`） | **零消费方**，且是唯一一个中文值的键。分类的实际承载者是 `claims.md`——素材是按**主张**被选中的，从来不是按类型 |
+| `usable_for` | **两条判据各判它出局一次**：消费方判据——选材路径是「主张 → 素材」，它不在任何决策链上；镜像判别式——文书类型清单逐渠道住在 `channels/` 的「文书规格」，**源在别处**（满足 #30 补完前提句后的完整定义） |
+| `concrete: true` | 它为保持为真必须跟着同一文件的正文改，**源就在正文里** → 镜像，且是 #30 明令的「可再生缓存」 |
+
+另有 `已用于` **确定不在名单内**（#30 裁决，见下）。
+
+**正文的形状规则**：三问写成**三个固定小标题** —— `## 时间` / `## 我做了什么` / `## 结果`。
+
+> 🔴 **只判形状，判不了内容。** 三个标题齐全而底下写的是感想，脚本一样放行。
+> **判「具体」的是采集时的 agent，不是脚本**——与 [#14](https://github.com/jiangxidong/EduApplication/issues/14) 已定的
+> 「纯 `awk`/`grep` 可判的归静态检查组、其余须跑 agent」一致。删掉 `concrete` 之后三问只剩正文，
+> 这条规则存在的全部理由就是让 #14 的检查项**至少能断言形状**。
+
+⚠️ **正文的「不能用在哪」留下**（样例 m01 有）。它和 `usable_for` 是同一判断的正反两面，但**只有一面是镜像**：
+`不要用在「为什么选这所学校」` 的源不在任何别处，与 `tier_basis`、「主张 → 推荐人分配」同类，走 #30 那句前提句放行。
+**留判断那一面。**
+
+⚠️ 正文的「谁能证实」与 frontmatter 的 `verifiable_by` 覆盖同一条边的同一端，**是不是镜像本处不判**——
+判据与 `recommenders.md` 的「能证实什么」列是同一条 → [#49](https://github.com/jiangxidong/EduApplication/issues/49)。
+在 #49 判掉之前，**机械读者一律读 frontmatter**。
+
+🔴 **推荐信阶段对 `materials/` 只读，不写**（[#25](https://github.com/jiangxidong/EduApplication/issues/25)）。
+`verifiable_by` 由**文书阶段在素材采集时**填；推荐信阶段**读**它去选人，产出的「主张 → 推荐人分配」落
+`recommenders.md`，**不回写这里**。`sensitive` 同理：文书阶段采集时判定，推荐信阶段读它决定进不进 pack。
+**消费不产生写入权**（§1.4 的归属判据原话是「后到者只读」）。
 
 ✅ **`programs.md` 的 13 列已在样例里落全**（[#31](https://github.com/jiangxidong/EduApplication/issues/31)）。逐列 schema 见 **§4.6**。
 
@@ -149,7 +203,9 @@ frontmatter 的 `material_id` / `type` / `usable_for` / `concrete` 是**两套�
 （`packets/` 的可再生豁免建立在「没人从它读回去」上，索引不满足这个前提）。
 
 另注：frontmatter 的 `usable_for`（可以用在哪类文书）与被删掉的 `已用于`（实际用过哪几篇）**是两回事，不是前者顶替了后者**。
-`usable_for` 自身过不过得了镜像判别式（文书类型清单逐渠道住在 `channels/` 的 `文书规格`）→ #38 一并裁。
+✅ **`usable_for` 自身也已出局**（[#38](https://github.com/jiangxidong/EduApplication/issues/38)）：文书类型清单逐渠道住在
+`channels/` 的 `文书规格`，**源在别处** ⇒ 过不了镜像判别式；同时它也过不了消费方判据（选材路径是「主张 → 素材」，
+它不在任何决策链上）。**两条判据各判它出局一次**，逐键理由见上面 §1.1 的字段名单。
 
 **`recommenders/drafts/` 的门控**：没有推荐人本人的起草授权声明，**这个目录就不该存在**。两道闸：
 **写入闸**（准备包阶段，创建前必须先读到 `recommenders.md` 里的授权声明）+
