@@ -59,7 +59,6 @@ season: 2027fall
 
 - `待核实` 学费口径（每学分制？总学分数？Bursar 页与项目页常不一致）
 - `待核实` 生活费预估
-- `待核实` STEM OPT 资格（取决于项目 CIP code，须查 DHS STEM 清单，**不在项目页上**）
 - `待核实` 申请费金额与减免条件
 
 ## 冻结点
@@ -70,6 +69,36 @@ season: 2027fall
 
 ### `columbia--seas--cs-ms`
 
+#### 学位形态 —— 在切片内
+
+- `✓ https://www.cs.columbia.edu/education/ms/` 学位要求逐字：`Complete a total of 30 points (Courses must be at the 4000 level or above)`、`Take at least 6 points of technical courses at the 6000 level` —— **清单里没有任何 thesis 条目**
+- `✓ https://www.cs.columbia.edu/education/ms/` PATHWAY OPTIONS 共**十条**，`MS Thesis (by faculty invite only)` 只是其中之一，与 `Machine Learning` / `Software Systems` 等并列 ⇒ **论文非必需，且需院系邀请**
+
+> ✅ **在切片（coursework / taught master）内**，本行不用动（[#55](https://github.com/jiangxidong/EduApplication/issues/55) 复核）。
+> 🔴 同一个名字 `MS in Computer Science` 在 UIUC 是 Thesis/Research 皆 Yes 的研究型硕士 —— **学位名不是切片判据**，判据是项目页上「thesis 是否 required」那一句。
+
 #### 学历门槛
 
-- `待核实` GRE 是否要求
+- `待核实` GRE 是否**要求** —— 该 FAQ 只回答「有没有最低分」，「要不要考」转指 SEAS 的 application requirements 页，**本次未取回该页**，故这一条不借势填掉
+- 🔴 `✓ https://www.cs.columbia.edu/education/ms/appfaq/` `While there is no minimum GPA requirement to apply for admission consideration, the program is highly selective. Successful applicants typically have a GPA of 3.5 or higher.`
+- `✓ https://www.cs.columbia.edu/education/ms/appfaq/` GRE 最低分：`No. Most admitted applicants, however, have scores of 750 or higher on the Quantitative section of the test.`
+- `待核实` 上面那条 GRE 数字的**口径**：`750` 属 2011-08 之前的 200–800 量表（现行 GRE 数学是 130–170），该页此处疑为陈旧未更新。**未向学校核实**，故不据此做任何判断
+
+> **这一句同时是伪保底的两半**（`CONTEXT.md`「伪保底」要求两半各自有 `✓` 事实行，此处两半住在**同一条**）：
+> `no minimum GPA requirement` = 名义门槛低，`highly selective` = 方向极挤 ⇒ `pseudo_safer = yes`。
+> ⚠️ 分档侧：类型 **B**（`typically` + `Successful applicants` = 录取结果），且**只给单个下界、无区间** ⇒ 天花板就是 `match`。
+> 而样例画像加权 84.6 / 校内换算 3.4，**低于** 3.5 这条下界 ⇒ 连 `match` 也够不着，落 **`reach`**——
+> 「落在录取群体中段」的公开信号不存在，反而有一条公开信号说明它在中段**以下**。
+> 机械判别式 `pseudo_safer = yes ⇒ tier ≠ safer` 在本行成立。
+
+#### 英语门槛
+
+- `✓ https://www.cs.columbia.edu/education/ms/appfaq/` `For Internet-based TOEFL test, we recommend a total score of 101.` 与 `For IELTS, 7 is the recommended score for admission.`（样例托福 102，**跨过** 101）
+
+> ⚠️ **`recommend` 在这里不构成第二条线。** 它是类型 A 的触发措辞，但 Columbia 在英语这个维度上**没有另一条更低的最低线**——
+> 101 是该项目唯一的线。按 `CONTEXT.md`「第二条线」的 ⚠️ 第一条（UT Dallas `3.0 or better is expected` 那个先例），
+> **无第二条线可跨** ⇒ 这一条**不能**用来给本行立 `safer`，也不构成擦线（只有一条线的维度不存在擦线）。
+
+#### 费用与资格
+
+- `待核实` CIP code（用于判 STEM OPT 资格；STEM 归属是派生视图，渲染时对照 DHS 名单现算，不落盘）

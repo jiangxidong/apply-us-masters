@@ -59,6 +59,7 @@ season: 2027fall
 - `✓ 同上` **Personal Statement**：另一篇，与上一篇互相独立
 - → 渲染来源：`essays/canonical/long.md`（学术线）+ `essays/canonical/points.md`（个人线要点重组）
   ⚠️ **不能把 Columbia 的那一篇原样复用**——它是一篇，这里要两篇且分工不同
+  🔴 **切法**：`long.md` 裁到两页、**去掉个人动机段**——那段进 Personal Statement。
 
 ## 🔴 推荐信机制 —— 风险 A + 两个反直觉例外
 
@@ -77,7 +78,6 @@ season: 2027fall
 ## 费用与资格（从 programs.md 下沉至此 —— evidence 列只担保 deadline）
 
 - `待核实` MEng 学费口径（按学年还是按学分）
-- `待核实` STEM OPT 资格（须查项目 CIP code 对照 DHS STEM 清单）
 - `待核实` 申请费金额；是否有 fee waiver
 
 ## AI 使用政策
@@ -89,6 +89,15 @@ season: 2027fall
 
 ### `cornell--gradschool--cs-meng`
 
+#### 学位形态 —— 在切片内
+
+- `✓ https://www.cs.cornell.edu/master-engineering-computer-science` 学校自己的三学位对照表，M.Eng. 一列 Degree Differences 逐字：`Primarily focused on coursework with a capstone project that advances students' placement in industry jobs.`（同表 MS 一列：`Specialized area coursework with the completion of a thesis`）
+- `✓ https://www.cs.cornell.edu/master-engineering-computer-science` 学位要求：`A student must complete a total of 30 credit hours`，其中 `Three to six (3-6) of the 30 credits must be earned as project credit` —— 是 **project，不是 thesis**
+
+> ✅ **在切片内**，本行不用动（[#55](https://github.com/jiangxidong/EduApplication/issues/55) 复核）。
+> ⚠️ 它成立是因为**页上写了**，不是因为「MEng 通常是 coursework」—— #55 明令不按印象判。
+> ⚠️ 取回时撞到门牌号：`https://www.cs.cornell.edu/masters/` **重定向**到上面这个规范 URL。本文件「推荐信机制」节那条 `✓ https://www.cs.cornell.edu/masters/…` 仍是**带省略号的悬空出处**（与 [#62](https://github.com/jiangxidong/EduApplication/issues/62) 同形，且下面还挂着一条 `✓ 同上`）—— 不在 #55 范围内，另开票。
+
 #### 学历门槛
 
 - `待核实` GRE 是否要求
@@ -96,3 +105,4 @@ season: 2027fall
 #### 费用与资格
 
 - `待核实` 申请费金额
+- `待核实` CIP code（用于判 STEM OPT 资格；STEM 归属是派生视图，渲染时对照 DHS 名单现算，不落盘）

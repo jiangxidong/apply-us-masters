@@ -61,8 +61,8 @@
 | 3 | `programs.md` | Markdown 表，**13 列**（逐列 schema 见 **§4.6**） | **项目池**（选校决策面） | **选校**（**全部 13 列，含 `status`，无例外**——见 §1.5 注 ①） |
 | 4 | `claims.md` | Markdown 表，4 列 | **主张集**（全局唯一，文书与推荐信共用） | 🔴 **按行单向移交**：**冷启动 / 画像**只 append 新行，**文书**此后全权（见下） |
 | 5 | `channels/<channel_key>.md` | Markdown，**分节** | **约束层**（逐申请渠道的 rendering rules） | 🔴 **按节归属，见 §1.2**（5 个阶段 owner） |
-| 6 | `materials/*.md` | Markdown，字段名单见下（**不计数**） | **文书素材**（素材门槛在此判定）；推荐信线是第二个消费方，**只读** | **文书**（见 §1.5 注 ②） |
-| 7 | `essays/canonical/*.md` | Markdown + frontmatter | **文书 canonical 渲染物**（当前版） | **文书** |
+| 6 | `materials/*.md` | frontmatter **三键** `material_id` / `sensitive` / `verifiable_by` ＋ 正文（形状规则见下，**一律列名不计数**） | **文书素材**（素材门槛在此判定）；推荐信线是第二个消费方，**只读** | **文书**（见 §1.5 注 ②） |
+| 7 | `essays/canonical/*.md` | Markdown + frontmatter **二键**（名单见下） | **文书 canonical 渲染物**（当前版） | **文书** |
 | 8 | `essays/canonical/per-program/<program_key>.md` | frontmatter + 散文 | **逐项目 why-this-program 内容**（不可再生） | **文书**（按 §1.4 前缀继承） |
 | 9 | `essays/canonical/_versions/*.md` | Markdown | 历史版本，只增不改 | **文书** |
 | 10 | `documents/<槽位>/…` | 原始文件 | **材料 canonical**（信息量最大的一侧），**七槽位见 §1.3** | **材料** |
@@ -71,31 +71,92 @@
 | 13 | `packets/<program_key>/**` | 由 [#8](https://github.com/jiangxidong/EduApplication/issues/8) 定 | **可再生产物**，删了能重建 | **准备包** |
 | 14 | `log.md` | Markdown，append-only | **跨会话交接** | `append-only` —— **不在 owner 辖区**（[ADR 0008](../../docs/adr/0008-the-owner-binds-to-a-section-not-a-file.md) 限定 3，见 §1.5 注 ③） |
 
-**五个主键**，全部 ASCII（遵 §4.5）：`program_key` / `channel_key` / `recommender_id`（`r1`…）/
-`institution_id`（定义权在 `profile.md`，`documents/` 只引用）/ `claim_id`（`c01`…）。
+**六个主键**，全部 ASCII（遵 §4.5）：`program_key` / `channel_key` / `recommender_id`（`r1`…）/
+`institution_id`（定义权在 `profile.md`，`documents/` 只引用）/ `claim_id`（`c01`…）/
+`material_id`（`m01`…，[#38](https://github.com/jiangxidong/EduApplication/issues/38) 补入）。
 
-**`materials/*.md` 的字段**：🔴 **一律列名，不写「N 字段」**（[#30](https://github.com/jiangxidong/EduApplication/issues/30)）——
+> `material_id` 是一条**早就落盘的跨文件引用**（`claims.md` 的 `materials` 列存的就是它），此前却不在本名单里——
+> 唯一一条没有权威定义的跨文件 id。风格对齐 `claim_id`，并**进文件名**（`m01-<中文短名>.md`）：
+> **id 进文件名，引用才能靠 glob 解析**，否则每次解析都要打开全部素材文件读 frontmatter，
+> 而 `sensitive` / `documents/` 禁读区那条线的整个设计前提就是「agent 少读文件」。
+
+#### `materials/*.md` 的字段名单（v1 定稿）
+
+🔴 **一律列名，不写「N 字段」**（[#30](https://github.com/jiangxidong/EduApplication/issues/30)）——
 「六字段 / 七字段」曾在三处票面上并存三种计数，正是 [#24](https://github.com/jiangxidong/EduApplication/issues/24)
 在文件上杀掉的那个病（「表的行数就是文件数，任何文件都不带序号」）。
 
-已确定在名单内的：`敏感`（[#17](https://github.com/jiangxidong/EduApplication/issues/17)，**ASCII 二元 `yes` / `no`**，遵 §4.5）。
-敏感素材**默认不进给第三方的包**——这是 #12 的 pack 门槛两条合取里的第二条（第一条是「这个人能证实它」）。
-已确定**不在**名单内的：`已用于`（#30 裁决，见下）。
+**准入判据 = 消费方**（[ADR 0014 语义槽位不是落盘字段](../../docs/adr/0014-a-semantic-slot-is-not-a-stored-field.md)，
+[#38](https://github.com/jiangxidong/EduApplication/issues/38)）：**有落盘消费方的进 frontmatter，其余留正文。**
+进了 frontmatter 的值一律 ASCII，但那是**格式约束、不是准入判据**（§4.5）。
+判据本身不是新发明——它是 [ADR 0008](../../docs/adr/0008-the-owner-binds-to-a-section-not-a-file.md) 判 owner 归属
+那台机器换个对象用，[ADR 0011](../../docs/adr/0011-the-glossary-defines-words-the-contract-holds-the-values.md) 已抬用过一次。
 
-🔴 **推荐信阶段对 `materials/` 只读，不写**（[#25](https://github.com/jiangxidong/EduApplication/issues/25)）。「谁能证实 / 可验证性」这个字段由**文书阶段在素材采集时**填
-（样例 `materials/01-*.md` 正文里就有，`README.md` 明写它是「素材的**独立属性**，供 `recommenders.md` 选人用」）；
-推荐信阶段**读**它去选人，产出的「主张 → 推荐人分配」落 `recommenders.md`，**不回写这里**。
-`敏感` 同理：文书阶段采集时判定，推荐信阶段读它决定进不进 pack。**消费不产生写入权**（§1.4 的归属判据原话是「后到者只读」）。
+**frontmatter 三键**：
 
-⚠️ **完整名单尚未裁决** → [#38](https://github.com/jiangxidong/EduApplication/issues/38)：#10 的六个语义字段与样例
-frontmatter 的 `material_id` / `type` / `usable_for` / `concrete` 是**两套互不相交的词汇**，本文件与样例都没把两者对应起来。
+| 键 | 值域 | 消费方 |
+|---|---|---|
+| `material_id` | ASCII 主键 `m01`…，**并进文件名** | `claims.md` 的 `materials` 列（跨文件 id 引用）；`derive-demo.sh` 的派生视图 |
+| `sensitive` | ASCII 二元 `yes` / `no`（遵 §4.5） | [#12](https://github.com/jiangxidong/EduApplication/issues/12) pack 门槛两条合取的**第二条**——敏感素材**默认不进给第三方的包**（[#17](https://github.com/jiangxidong/EduApplication/issues/17)） |
+| `verifiable_by` | `recommender_id` 列表（引 `recommenders.md` 的候选人表），可空 | pack 门槛两条合取的**第一条**；`recommenders.md` 据它选人。**空 = #12 的「缺人」缺口** |
+
+🔴 **`敏感` → `sensitive` 只改落盘形态，#17 的决策一个字没变**（仍是「带标记 / 二元 / 用户可下调」）。
+§4.5 那条坑此前被读窄了：`uniq` 数错 / `sort -u` 丢行是「中文内容撞 shell 工具」，
+而脚本 `grep '^敏感:'` 时**已经在中文上做匹配**，对键和对值同样成立。
+
+🔴 **`verifiable_by` 是「可验证性」从散文升上来的**，不是新字段。#12 把可验证性定成 pack 门槛的**判定本体**，
+判定本体停在正文散文里等于门槛不可执行。**空列表 = 缺人缺口**，与 `claims.md` 的 `materials` 空 = 缺素材缺口完全同构。
+硬后果一并接受：「谁能证实」被限制成**必须先是一个推荐人候选**。样例 m02 的「李老师（联系方式不在手）」正卡在这——
+**这恰好对**：联系不上是 `recommenders.md` 的状态，不是素材的属性。一条谁都证实不了的素材写 `verifiable_by: []`，
+它**仍是合格文书素材，只是进不了 pack**（#12 结案后修正 §3：可验证性在文书线是独立属性，在推荐信线是判定本体）。
+
+🔴 **「消费方尚未实现」≠「没有消费方」。** `material_id` 有跑起来的读者；`sensitive` 与 `verifiable_by` 的消费方是
+#12 的 pack 门槛——**契约已定，实现落在 `derive-demo.sh`**。下一个 session 照字面套判据会当场杀掉 `sensitive`，
+所以这条分界写在这里。而**「将来会有人读」不算消费方**——`usable_for` 因此仍然出局。
+
+**三个键删掉，理由各不相同**（这是判据在切真关节，不是一刀切）：
+
+| 键 | 出局的理由 |
+|---|---|
+| `type`（`工作项目` / `学术经历`） | **零消费方**，且是唯一一个中文值的键。分类的实际承载者是 `claims.md`——素材是按**主张**被选中的，从来不是按类型 |
+| `usable_for` | **两条判据各判它出局一次**：消费方判据——选材路径是「主张 → 素材」，它不在任何决策链上；镜像判别式——文书类型清单逐渠道住在 `channels/` 的「文书规格」，**源在别处**（满足 #30 补完前提句后的完整定义） |
+| `concrete: true` | 它为保持为真必须跟着同一文件的正文改，**源就在正文里** → 镜像，且是 #30 明令的「可再生缓存」 |
+
+另有 `已用于` **确定不在名单内**（#30 裁决，见下）。
+
+**正文的形状规则**：三问写成**三个固定小标题** —— `## 时间` / `## 我做了什么` / `## 结果`。
+
+> 🔴 **只判形状，判不了内容。** 三个标题齐全而底下写的是感想，脚本一样放行。
+> **判「具体」的是采集时的 agent，不是脚本**——与 [#14](https://github.com/jiangxidong/EduApplication/issues/14) 已定的
+> 「纯 `awk`/`grep` 可判的归静态检查组、其余须跑 agent」一致。删掉 `concrete` 之后三问只剩正文，
+> 这条规则存在的全部理由就是让 #14 的检查项**至少能断言形状**。
+
+⚠️ **正文的「不能用在哪」留下**（样例 m01 有）。它和 `usable_for` 是同一判断的正反两面，但**只有一面是镜像**：
+`不要用在「为什么选这所学校」` 的源不在任何别处，与 `tier_basis`、「主张 → 推荐人分配」同类，走 #30 那句前提句放行。
+**留判断那一面。**
+
+🔴 **正文不写「谁能证实」**（[#49](https://github.com/jiangxidong/EduApplication/issues/49) 已判）。
+它与 frontmatter 的 `verifiable_by` 覆盖同一条边的同一端，且逐段都是镜像：id 镜同文件的 frontmatter，
+「直属 leader」这类称谓镜 `recommenders.md` 的姓名/关系列，「能证实同期的学术表现」镜本文件正文的三问。
+与 `concrete: true` 同形——**源就在同一个文件里**。
+`recommenders.md` 的「能证实什么」列同判、已删（[ADR 0006](../../docs/adr/0006-claims-are-one-shared-truth-source.md) 补充（#49））。
+**可验证性只有一个落盘处：frontmatter 的 `verifiable_by`。**
+
+🔴 **推荐信阶段对 `materials/` 只读，不写**（[#25](https://github.com/jiangxidong/EduApplication/issues/25)）。
+`verifiable_by` 由**文书阶段在素材采集时**填；推荐信阶段**读**它去选人，产出的「主张 → 推荐人分配」落
+`recommenders.md`，**不回写这里**。`sensitive` 同理：文书阶段采集时判定，推荐信阶段读它决定进不进 pack。
+**消费不产生写入权**（§1.4 的归属判据原话是「后到者只读」）。
 
 ✅ **`programs.md` 的 13 列已在样例里落全**（[#31](https://github.com/jiangxidong/EduApplication/issues/31)）。逐列 schema 见 **§4.6**。
 
 > 本处旧版写着两条**错的**断言，读到引用它的地方请以此为准：
-> ① 「样例里一条 `✓` 事实都没有」——不成立，三个 `channels/` 文件共 **40 条 `✓ <url>` 事实行**。
+> ① 「样例里一条 `✓` 事实都没有」——不成立，三个 `channels/` 文件共 **40 条 `✓ <url>` 事实行**（#31 落盘时的数）。
 > 真实约束窄得多：**承载分档的 `✓` 只有 UIUC 一条**（研究生院对中国申请人的 B Average / 80%），
 > 于是 [ADR 0005](../../docs/adr/0005-basis-points-at-an-existing-checked-fact.md) 的准入测试对 UIUC 行当场就过，Columbia / Cornell 两行过不了。
+> ⚠️ **上面这句「只有 UIUC 一条」已被 [#45](https://github.com/jiangxidong/EduApplication/issues/45) 推翻**（2026-08-15）：
+> 两次真取回后 Columbia 也有了承载分档的 `✓`（`no minimum GPA … typically 3.5 or higher`），准入测试对它同样过了，
+> 该行 `undecided → reach`；`✓` 事实行总数也从 40 涨到 **50**。**这一格记的是当时的取证，数字会随取证增长——
+> 别把它当现行断言引用**（同 `log.md` 历史观察值的豁免形状）。
 > ② 「`derive-demo.sh` 的列数完整性检查断言 9 列」——不成立。它是**自相对**的（`if(!n) n=NF`，表头定基准），
 > 9 是**打印出来的**不是断言的；判断层四列**追加在末尾**后它自动打印 13，**脚本一行都没改**。
 
@@ -103,6 +164,14 @@ frontmatter 的 `material_id` / `type` / `usable_for` / `concrete` 是**两套�
 **空 = 缺素材缺口**）/ `voice`（`self` / `referee` / `both`）。
 「哪篇文书用了哪些主张」这条边**只存在消费端**：`essays/canonical/*.md` 的 frontmatter 写 `claims: [c01, c03]`，
 `claims.md` **不设 `used_in` 列**（两端都存必漂移）。见 [ADR 0006](../../docs/adr/0006-claims-are-one-shared-truth-source.md)。
+🔴 **`voice` 是文书线的闸，不是推荐信线的闸**（[#52](https://github.com/jiangxidong/EduApplication/issues/52)）。
+`referee` 禁的是「申请人自述」（比较性断言自夸失礼）；**没有任何取值禁止把一条主张分配给推荐人**。
+`recommenders.md` 的「主张 → 推荐人分配」**定义域 = 全部主张**，能不能分由 #12 §7 的 pack 门槛
+按证据逐条判（`verifiable_by` 含该 `recommender_id` ∧ `sensitive = no`），不由 `voice` 判。
+两者不同轴：`voice` 判**叙述位置**，分配判**证实能力**——让文书线的一个枚举值单方面决定推荐信线的内容，
+撞 [ADR 0006](../../docs/adr/0006-claims-are-one-shared-truth-source.md)「主张集全局唯一、两条线**共用**」。
+⚠️ **`voice` 因此两条线各有一个消费方**：文书线是「这条主张由谁来说」，
+推荐信线是 `claims.md` 那条「`voice = referee` 的零素材主张 = **双重缺口**」的分类依据。
 
 🔴 **`essays/canonical/*.md` 的正文不设结构契约**（[#32](https://github.com/jiangxidong/EduApplication/issues/32)）。
 上表第 7 行此前只规定了「Markdown + frontmatter」，正文一个字没管；这条空白现在是**有意的**，不是漏掉的。
@@ -125,7 +194,26 @@ frontmatter 的 `material_id` / `type` / `usable_for` / `concrete` 是**两套�
 >
 > ⚠️ **本票只裁了正文，没有重扫 frontmatter。** [ADR 0014](../../docs/adr/0014-a-semantic-slot-is-not-a-stored-field.md)
 > 的消费方判据自己写着「别处的 frontmatter（`essays/canonical/*.md`、`apply.md`、`profile.md`）都该按它重扫一遍，
-> **这次没有重扫**」；`word_count` / `target` 正卡在那上面 → [#50](https://github.com/jiangxidong/EduApplication/issues/50)。
+> **这次没有重扫**」。
+> ✅ **[#50](https://github.com/jiangxidong/EduApplication/issues/50) 已重扫**：六键降为**二键**（`version` / `claims`），名单见下。
+
+#### `essays/canonical/*.md` 的 frontmatter 名单（v1 定稿）
+
+| 键 | 取值 | 消费方 |
+|---|---|---|
+| `version` | 整数 | `packets/<program_key>/essays/*.md` 的 `source_version:`（**已落盘**，见 `prototype/application-packet` 的三个渲染物） |
+| `claims` | `claim_id` 列表 | `derive-demo.sh` 的两个派生视图；这条边**只存这一处**（[ADR 0006](../../docs/adr/0006-claims-are-one-shared-truth-source.md)、[#32](https://github.com/jiangxidong/EduApplication/issues/32)） |
+
+**删掉的四个键，理由各不相同**（[#50](https://github.com/jiangxidong/EduApplication/issues/50)）：
+
+- `word_count` —— 零消费方；源就在同一文件的正文里，改一版即假；且它是**当前状态**，不是契约。
+- `target` —— 与 [ADR 0014](../../docs/adr/0014-a-semantic-slot-is-not-a-stored-field.md) 判 `usable_for` 出局的同一条：文书规格**逐渠道**住 `channels/`，源在别处 ⇒ 镜像。且样例里已经漂了——Columbia 的「250–1000 词，**超出不罚**」在 `target:` 里丢掉了那个限定。
+- `render_form` —— 键值 ≡ 文件名去掉 `.md`，三篇实测全等。**形态由文件名承载**（§5）。
+- `supersedes` —— 零消费方；`_versions/README.md` 自陈它是「这个目录为空」的另一面。
+
+🔴 **`version` 险些被这次重扫杀掉，救它的是跨分支 grep。** 它的消费方**落在另一个分支的已落盘产物上**。重扫一律跨分支查：同 `sensitive` 那条「消费方**尚未实现** ≠ 没有消费方」，本条是「消费方**不在本分支** ≠ 没有消费方」。
+
+🔴 **本名单只管三个渲染物**（`long.md` / `short-250.md` / `points.md`）。`essays/canonical/README.md` 与 `_versions/README.md` **不是渲染物**、没有 frontmatter，不受本名单约束——键名单挂在 `essays/canonical/*.md` 这个 glob 上，而那个 glob 字面上罩住了两个 README。`materials/*.md` 的名单有同一个洞（`materials/README.md`），两处读法一并按此定死。
 
 🔴 **写入权按「行」单向移交**（[#25](https://github.com/jiangxidong/EduApplication/issues/25)，[ADR 0008](../../docs/adr/0008-the-owner-binds-to-a-section-not-a-file.md) 限定 2）——
 **冷启动 / 画像**：只 append 新行，写 `claim_id` / `断言` / `voice`，`materials` 留空
@@ -149,7 +237,9 @@ frontmatter 的 `material_id` / `type` / `usable_for` / `concrete` 是**两套�
 （`packets/` 的可再生豁免建立在「没人从它读回去」上，索引不满足这个前提）。
 
 另注：frontmatter 的 `usable_for`（可以用在哪类文书）与被删掉的 `已用于`（实际用过哪几篇）**是两回事，不是前者顶替了后者**。
-`usable_for` 自身过不过得了镜像判别式（文书类型清单逐渠道住在 `channels/` 的 `文书规格`）→ #38 一并裁。
+✅ **`usable_for` 自身也已出局**（[#38](https://github.com/jiangxidong/EduApplication/issues/38)）：文书类型清单逐渠道住在
+`channels/` 的 `文书规格`，**源在别处** ⇒ 过不了镜像判别式；同时它也过不了消费方判据（选材路径是「主张 → 素材」，
+它不在任何决策链上）。**两条判据各判它出局一次**，逐键理由见上面 §1.1 的字段名单。
 
 **`recommenders/drafts/` 的门控**：没有推荐人本人的起草授权声明，**这个目录就不该存在**。两道闸：
 **写入闸**（准备包阶段，创建前必须先读到 `recommenders.md` 里的授权声明）+
@@ -191,11 +281,11 @@ LC_ALL=en_US.UTF-8 awk '/^#{2,4} /{ t=$0
 节名因此必须**锚定在头部**。剥离只放行行首那一串**非文字**装饰（`🔴` / `⚠️` / `🔒` / 全角空格 / `**` / `——`），
 锚点一步不动：`## ⚠️ 与 Cornell 冲突 —— 材料上传` 剥离后仍以 `与` 开头，**照旧 FAIL**——这正是要保住的。
 
-🔴 **行首标记不封词表。** 本契约的三张封闭词表（法定节名 / `待核实` 后缀 / `tier`）都是因为**要被机械汇总**才封的；
+🔴 **行首标记不封词表。** 本契约**实持一张**封闭词表——法定节名；`待核实` 后缀归 [ADR 0001](../../docs/adr/0001-evidence-stays-binary-with-a-closed-suffix.md)（全表在 `CONTEXT.md`「证据」），`tier` 归 `CONTEXT.md`「分档」（[#26](https://github.com/jiangxidong/EduApplication/issues/26) / [ADR 0011](../../docs/adr/0011-the-glossary-defines-words-the-contract-holds-the-values.md) 已判，§4.5 与 §4.6 第 6 行都已自陈）。**别再写「三张」这个计数**（[#59](https://github.com/jiangxidong/EduApplication/issues/59)）。三者都是因为**要被机械汇总**才封的；
 行首标记不参与任何汇总，是纯装饰。封表买不到任何机械能力，只换来一个维护面：谁哪天写了 `🚨`，检查当场 FAIL。
 
 **节序自由。** 原「节按上表顺序排列」**已取消**（[#28](https://github.com/jiangxidong/EduApplication/issues/28)），
-孤儿检查第 4 条随之删除。它买到的只是 diff 稳定与阅读可预期，**不定任何 owner**；代价却有两层：
+那条按节序排列的机械检查随之删除。它买到的只是 diff 稳定与阅读可预期，**不定任何 owner**；代价却有两层：
 一是禁掉「把该渠道最扎人的节顶到最前」——三个样例**一致自发**这么做（Columbia 的 `硬约束`、Cornell 与 UIUC 的 `冻结点` 都在第二位）；
 二是更硬的一条——**排序要求插入而不是追加**：文书阶段后来落 `## 项目内容`（第 6）得插进选校的 `硬约束`（2）与准备包的 `材料上传`（8）之间，
 等于要求 owner 在**别人的节中间**落笔。追加只碰文件尾，插入要重写文件中段。
@@ -209,9 +299,10 @@ LC_ALL=en_US.UTF-8 awk '/^#{2,4} /{ t=$0
 覆盖层不带 owner，owner 由 `####` 经前缀匹配递归决定——裸行因此 = **一条事实找不到写入者**，
 是 ADR 0008 两条禁止里的第二条。这**不与「不预建空节」冲突**：一个装着 `待核实 GRE 是否要求` 的 `#### 学历门槛`
 不是空节，那正是「待核实后缀」存在的形态；「不预建空节」禁的是**空**节。
-孤儿检查为此加一条——删掉节序那条之后**仍是六条**；
-⚠️ [#25](https://github.com/jiangxidong/EduApplication/issues/25) 随后又加了第 7 条，**当前是七条**，
-权威计数在 [ADR 0008 的「检查表：六条 → 七条」](../../docs/adr/0008-the-owner-binds-to-a-section-not-a-file.md)一节，本节不再复述条数。
+这条规则对应机械检查 `overlay-no-bare-lines`；
+⚠️ [#25](https://github.com/jiangxidong/EduApplication/issues/25) 随后新增 `split-is-declared`。
+两条检查各自的规则原文、被测对象与曾用号，见 [`docs/checks.md`](../../docs/checks.md)——
+清单只持名与指针（[ADR 0016](../../docs/adr/0016-the-checklist-holds-names-and-pointers.md)），本节不数条数、不复述规则文本。
 
 🔒 **`####` 的合法性只由封闭词表决定，与同名 `##` 是否存在无关。** Columbia 与 Cornell 都没有 `## 学历门槛`（缺席即信息），
 但 GRE 要求本就是**项目级**事实——同一个 Graduate School 下不同项目口径不同，覆盖层是它唯一正确的家。
@@ -227,6 +318,12 @@ LC_ALL=en_US.UTF-8 awk '/^#{2,4} /{ t=$0
 删 `硬约束` 那一份，归 [#27](https://github.com/jiangxidong/EduApplication/issues/27)。
 **不为它新增检查**——「同一条事实」在 `待核实` 自由文本上没有机械判据，要抓它得先把事实行也塞进封闭词表，
 那是拿一条大得多的规则去换一个人眼已经抓到的重复。
+
+🔒 **`费用与资格` 收两类：申请季要付的钱（申请费及其减免），与项目自身的资格属性（CIP 分类、STEM 指定）。二者都由选校消费，owner 不变。**
+这句是 [ADR 0008 限定 5](../../docs/adr/0008-the-owner-binds-to-a-section-not-a-file.md) 要求的「范围话」的**第一个实例**——限定 5 规定：
+援引「现有单元都收不下」来给封闭词表加项时，每一个「收不下」必须引用一句**写下来的**范围话。**以后会被援引，措辞别改写。**
+⚠️ **粒度是项目级**：CIP 与 `program_key` 两头对不上（[#34](https://github.com/jiangxidong/EduApplication/issues/34) 已查实），
+所以它的家是覆盖层 `## 项目级差异` → `### <program_key>` → `#### 费用与资格`，**不是渠道层的 `## 费用与资格`**（[ADR 0018](../../docs/adr/0018-a-global-lookup-table-stays-out-of-the-workspace.md)）。
 
 **只建自己 owner 的节，不预建空节。** 节的**缺席本身是信息**（该渠道没有这类特殊约束）；
 预建会把「没查」与「不存在」压成同一形态，而区分这两者正是「待核实后缀」存在的全部意义。
@@ -293,7 +390,9 @@ Cornell 的 SSN 涂黑要求因此落成「**落槽位时**提醒」，不是「
 - **新增顶层路径** → **必须显式指派，并在同一次提交更新本表**（`recommenders/drafts/` 走这条）
 
 纯「每次都显式指派」不够：它把责任全押在写票的人身上，而 #12 与 #18 各漏过一次。所以规则配机械执法——
-孤儿检查脚本的第 1 条就是「契约里出现的每个路径都能解析到一个 owner 阶段（自身或祖先目录）」。
+**契约里出现的每个路径都能解析到一个 owner 阶段（自身或祖先目录）**；标记 `append-only` 的路径视为已解析，
+见 [ADR 0008](../../docs/adr/0008-the-owner-binds-to-a-section-not-a-file.md) 限定 3，本节不复述。
+这条的机械检查叫 `path-resolves-to-owner`（[`docs/checks.md`](../../docs/checks.md)）。
 
 ### 1.5 §1 合并时转出的四处裁决（**全部已结**）
 
@@ -319,7 +418,8 @@ append-only 且从不被改写的内容里没有「保持为真」这项责任�
 这条推理本文早就在用（见下方镜像豁免：「`log.md` 从不被改写，所以它记的是历史观察值不是镜像」）。
 附带解释了样例里明摆着的一件事：**它的分段单位是「会话」不是「阶段」**，而一个会话可以跨多个阶段——
 按原规则这当场违规，按限定 3 **分段单位根本不参与判定**。
-owner 列因此填封闭标记 **`append-only`**，**不能留空**（留空正是孤儿检查第 1 条要抓的形态）。
+owner 列因此填封闭标记 **`append-only`**，**不能留空**（留空正是机械检查 `path-resolves-to-owner`
+（见 [`docs/checks.md`](../../docs/checks.md)，[ADR 0008](../../docs/adr/0008-the-owner-binds-to-a-section-not-a-file.md) 限定 3）要抓的形态）。
 **否决 `所有阶段` 这个 owner 值**：它把「无 owner」改写成「owner = 全体」，字面过检查，
 但这个值一旦存在就是**没有判据的万能出口**。→ §1.1 第 14 行
 
@@ -334,7 +434,13 @@ owner 列因此填封闭标记 **`append-only`**，**不能留空**（留空正�
 **不落盘的派生视图**（每次现算现打，绝不存文件）：
 待核实清单、缺口清单、deadline 日历、完成度自检、每校材料缺口、推荐信闸口、素材门槛、
 选校清单、投递名单、**「主张 → 支撑素材」对照表**、**推荐人 support pack**（每**推荐人**一份，不跟 `program_key` 走，
-因此**不落 `packets/`**）、**推荐人覆盖缺口**、**pack 门槛**、**请求推荐邮件草稿**（一次性、发出即完成、不迭代）。
+因此**不落 `packets/`**）、**推荐人覆盖缺口**、**pack 门槛**、**请求推荐邮件草稿**（一次性、发出即完成、不迭代）、
+**STEM 资格**（拿本项目的 CIP code 对照 DHS STEM 名单**现算**；工作区里只落 CIP code，见 [ADR 0018](../../docs/adr/0018-a-global-lookup-table-stays-out-of-the-workspace.md)）。
+
+🔴 **入列判据是三条合取，不是「它像不像一张视图」**（[#61](https://github.com/jiangxidong/EduApplication/issues/61)）：
+**产品会产出它 ∧ 每次现算 ∧ 绝不存文件。** 名单里混着**清单**、**判断闸口**、**一次性产物**三种形态，那是**有意的**，不是待清理的杂质。
+⚠️ 一道闸口**本身是一条规则、要落盘**；派生的是它的**判定结果**（「这道闸现在过没过」）——名单里的闸口类条目指的是后者。
+⚠️ 因此**「它不像一张视图」不构成删项理由**。要删一项，得证明它不满足上面三条合取，或 v1 根本不产出它。
 
 > 存一份就是第二个真相源。竞品坑 #9：合并单文件与散文件同时被安装 → 同一事实索引两遍，检索互相稀释。
 > `euro-grad-apply` 的 README 自己推荐的安装路径就有这个坑。
@@ -435,7 +541,8 @@ deadline 在项目页、学费在 Bursar 页、STEM 资格在 CIP code 对照的
 
 - `evidence` 列只对 **deadline** 一项负责 —— 它最易变、后果最重，
   且地图的联网规则专门点名它（「绝不凭记忆报 deadline」）
-- **学费、门槛、STEM 资格、申请费全部下沉到 `channels/<channel_key>.md`**，各带各的行首标记
+- **学费、门槛、CIP 分类、申请费全部下沉到 `channels/<channel_key>.md`**，各带各的行首标记
+  （🔴 落进去的是 **CIP code**，不是 STEM 结论——STEM 资格是派生视图，见 [ADR 0018](../../docs/adr/0018-a-global-lookup-table-stays-out-of-the-workspace.md) 与 §1.5）
 - **[#11](https://github.com/jiangxidong/EduApplication/issues/11) 之后往 `programs.md` 加多少列都可以，
   但加的列一律不被 `evidence` 担保。** 新列若需要取证状态，就下沉到 `channels/`
 
@@ -451,6 +558,17 @@ deadline 在项目页、学费在 Bursar 页、STEM 资格在 CIP code 对照的
 不扩展的话，`channels/` 的取证状态只能写成散文，
 「哪些约束是查过的、哪些是推定的」将无法机械汇总 ——
 Columbia SEAS 那条「AI 政策未查到，暂按 GSAS 从严」就没法被自动提醒。
+
+🔒 **`channels/` 的 bullet 分两类，判据是「校方那边有没有一个答案」**（[#50](https://github.com/jiangxidong/EduApplication/issues/50)）：
+
+- **事实行** —— 断言「校方那边有一个答案」，**必带证据标记**（`✓ <url>` 或 `待核实`）。
+- **判断行** —— 本工作区自己的推论 / 渲染配方，**顶层 `- → ` 起头、不带任何标记**。现货：Columbia 与 Cornell 的 `- → 渲染来源` 行。
+
+🔴 **切口切在「顶层 bullet 的首行」，不切在「有没有 `→`」。** `→` 在样例里绝大多数是**事实行下面的缩进续行**（三个 channel 文件共 8 条），那些续行的标记在**上一行**，本来就不该自带；按「`→` 开头」写会把 Cornell 那条「→ 涂黑要在**扫描之前**做」当场判成不合规，而它是对的。**缩进续行不独立分类，随它所属的那条 bullet**；`> ` 引用块照旧走本节上文的「标记不进散文」。
+
+🔴 **两个错误答案各错在哪**：给判断行打 `✓` 是**凭空造出处**（[ADR 0007](../../docs/adr/0007-a-checkmark-is-earned-by-a-fetch-not-by-a-capability.md) 与停手线取证类）；给它打 `待核实` 会造出一个**永远核不掉的条目**去污染待核实清单——原因后缀那张表（[ADR 0001](../../docs/adr/0001-evidence-stays-binary-with-a-closed-suffix.md)）**四项全都假定校方那边有答案**。
+
+**不为它新增机械检查**，理由同 §1.2 拒绝为「同一条事实」加检查。
 
 ### 换季降级（**惰性执行**，不是全表触发）
 
@@ -489,10 +607,11 @@ $ printf '冲刺\n匹配\n保底\n' | sort -u
 ```
 
 坏的是**去重比较**：`uniq` 数错，`sort -u` **丢行**（后者更危险，因为没有任何迹象）。
-`sort`（单纯排序）、`grep`、`awk` 都正常。
+`sort`（单纯排序）、`grep` 都正常；**`awk` 只坏在比较上**——解析、`index`、正则、数组下标都对，
+但 `==` / `!=` / `<` 对两个纯中文串同样中招，成因与 `uniq` / `sort -u` 同源（见下方 `==` 缺陷那条）。
 
-> **注意这与格式无关。** 这两个工具对 Markdown 表和 TSV 一样坏，awk 对两者一样好。
-> CJK 不是选格式的判别式，只是「用不用 `uniq` / `sort -u`」的判别式。
+> **注意这与格式无关。** 这两个工具对 Markdown 表和 TSV 一样坏，awk **解析**两者一样好。
+> CJK 不是选格式的判别式，只是「用不用 `uniq` / `sort -u`」与「能不能用 `==` 比较」的判别式。
 
 🔒 **反过来，`awk` 的字符类只在 UTF-8 locale 下才对——这一条是可修的，且必须修**
 （2026-08-15 实测，`awk version 20200816`，本机无 `gawk`）。以 §1.2 的节名剥离规则 `gsub(/^[^一-龥A-Za-z0-9]+/,"",t)` 为例：
@@ -505,10 +624,39 @@ LC_ALL=C             →  [<3 个乱码字节> 推荐信机制 —— 风险 A�
 **检查脚本必须显式设 `LC_ALL=en_US.UTF-8`，不能靠继承环境**——它的失效形态是**静默**的，
 跟 `sort -u` 丢行一样没有任何迹象。
 
-⚠️ **上下两条要摆在一起读**，才是「BSD + CJK」的完整判据；拆开会让人以为设了 locale 就万事大吉：
-**`uniq` / `sort -u` 在任何 locale 下都坏（不可修，只能绕开）；`awk` 只在 UTF-8 locale 下才对（可修，且必须修）。**
+🔴 **同一个 UTF-8 locale 换来另一个坏：`awk` 的 `==` / `!=` / `<` 不能比中文串**
+（2026-08-15 实测，`awk version 20200816`，`LC_ALL=en_US.UTF-8`）：
 
-**因此两条硬规则：**
+```sh
+$ awk 'BEGIN{ print ("硬约束" == "冻结点") }'
+1        # 🔴 期望 0——两个不同的纯中文串被判为相等
+$ awk 'BEGIN{ print ("中文" != "阶段") }'
+0        # 🔴 期望 1
+$ awk 'BEGIN{ print ("中文" < "阶段") }'
+0        # 🔴 两串被判相等，< 同样中招
+$ awk 'BEGIN{ print (index("中文","阶段")==1) }'
+0        # ✅ index 正常
+$ awk 'BEGIN{ print ("中文" ~ /^阶段$/) }'
+0        # ✅ 正则正常
+```
+
+成因与 `uniq` / `sort -u` 同源：该 locale 下汉字没有排序权重，`strcoll` 对任意两个纯中文串返回 0，
+「比较相等」这一族（`==` / `!=` / `<`）因此整体失灵；`index` 与正则不经过 `strcoll`，不受影响。
+**禁用与替代写法落成下方硬规则 4，本处不复述。**
+
+⚠️ **上面三条要摆在一起读**，才是「BSD + CJK」的完整判据；拆开会让人以为设了 locale 就万事大吉，
+**而且没有任何一个 locale 能同时救两件事**：
+
+| | `uniq` / `sort -u` 去重 | `gsub` 剥 emoji 前缀 | `awk` 的 `==` 比中文 |
+|---|---|---|---|
+| `LC_ALL=C` | ❌ 坏（不可修，只能绕开） | ❌ 剥不掉 | ✅ 对 |
+| `LC_ALL=en_US.UTF-8` | ❌ 同样坏 | ✅ 对 | ❌ 错 |
+
+**结论**：保持 `LC_ALL=en_US.UTF-8`（§1.2 的剥离步骤必须要它），去重永远绕开 `uniq` / `sort -u`
+（走下方硬规则 2），相等判断永远绕开 `==` / `!=` / `<`（走 `index` 或正则，下方新增硬规则 4）。
+三条防线互不替代，缺一个都不叫「设了 locale 就没事」。
+
+**因此：**
 
 1. **`programs.md` 里任何会被统计的列（`tier` / `status`）只放 ASCII 枚举值。**
    `tier` 取 `reach` / `safer` / … （**五档**），`status` 取 `considering` / `submitted` / … ——
@@ -530,9 +678,13 @@ LC_ALL=C             →  [<3 个乱码字节> 推荐信机制 —— 风险 A�
    需要写散文的内容一律进 `channels/` —— 这条对 [#11](https://github.com/jiangxidong/EduApplication/issues/11) 尤其要紧，
    它会加「匹配理由」这类自由文本列，那正是 `|` 最可能出现的地方。
 
+4. **禁止用 `==` / `!=` / `<` 比较中文串。** 相等判断走 `index(a,b)==1 && length(a)==length(b)`
+   或正则 `~ /^…$/`；`grep` 与 shell 的 `[ x = y ]` 不受影响。数组下标（`s[$0]`）走精确哈希、
+   不经过 `strcoll`，不在此列——硬规则 2 的 `!s[$0]++` / `c[$0]++` 不用改。
+
 **解析约定**：Markdown 表用 `awk -F'|'` 解析，前导 `|` 会产生一个空的 `$1`，**第 N 列是 `$(N+1)`**。
 
-跑 `./derive-demo.sh` 可以复现全部派生视图。
+跑 `./derive-demo.sh` 可以复现其中大部分派生视图（**不是全部**——`deadline 日历` / `完成度自检` / `每校材料缺口` / `请求推荐邮件草稿` 在脚本的 14 个小节里没有任何对应，[#59](https://github.com/jiangxidong/EduApplication/issues/59) 实测）。
 
 ---
 
@@ -553,7 +705,7 @@ owner 的绑定单位是「该文件格式自己的结构单元」，**表格的
 | 4 | `program` | 自由文本，可中文 | ❌ | ❌ |
 | 5 | `channel_key` | ASCII，外键 → `channels/<channel_key>.md` | ❌ | ❌（被 join） |
 | 6 | `tier` | ASCII 枚举，**取值全表在 `CONTEXT.md`「分档」** | ❌ 永不担保（判断） | ✅ |
-| 7 | `deadline` | 日期，或 `待核实`（可带 §4 的封闭后缀） | ✅ **唯一被担保的一列** | ❌ |
+| 7 | `deadline` | 日期，或 `待核实`（可带 [ADR 0001](../../docs/adr/0001-evidence-stays-binary-with-a-closed-suffix.md) 的封闭后缀） | ✅ **唯一被担保的一列** | ❌ |
 | 8 | `status` | ASCII 枚举，**取值全表在 `CONTEXT.md`「状态」** | ❌ | ✅ |
 | 9 | `evidence` | `✓ <url>` / `待核实`（可带封闭后缀）—— 它**自己就是**标记 | — | ❌（被 `grep` 匹配） |
 | 10 | `tier_basis` | 一句话，禁 `\|`，禁换行 | ❌ | ❌ |
@@ -591,7 +743,8 @@ points.md        ─────────────────────
 ```
 
 - **渲染物轴**：`long.md`（完整长文）/ `short-250.md`（250 词版）/ `points.md`（可拆短答题的要点）
-  —— 三者不是同一篇的长短，是**三种形态**。Columbia 要长文，UIUC 要 4 道短答题，Cornell 要两篇独立文书。
+  —— 三者不是同一篇的长短，是**三种形态**（「渲染物」的定义见 `CONTEXT.md` 词条；[ADR 0011](../../docs/adr/0011-the-glossary-defines-words-the-contract-holds-the-values.md)：词的定义归词表，取值归契约）。Columbia 要长文，UIUC 要 4 道短答题，Cornell 要两篇独立文书。
+  🔴 **形态由文件名承载**（`long.md` / `short-250.md` / `points.md`），**frontmatter 不另存形态键**——文件名即形态标识（[#50](https://github.com/jiangxidong/EduApplication/issues/50)）。
 - **版本轴**：当前版永远在稳定路径 `essays/canonical/<name>.md`（所以 rendering rules 可以直接引用）；
   开新版前先把当前版拷进 `_versions/<name>.vN.md`，然后原地改。
 

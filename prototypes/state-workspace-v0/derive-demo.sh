@@ -43,8 +43,10 @@ done
 
 echo
 echo "=== 🔴 推荐信闸口（未过闸不得进入任何涉及推荐人邮箱的步骤）==="
-total=$(grep -c '^- \[.\] R' recommenders.md)
-done_n=$(grep -c '^- \[x\] R' recommenders.md)
+# 闸口行的 id 已按 CONTRACT §1.1 的 recommender_id（`r1`…）归一为小写（#43）。
+# ⚠️ 这两个 pattern 原来写死大写 `R`，归一后会双双数到 0，而 `0 -lt 0` 为假 —— 闸口会静默消失。
+total=$(grep -c '^- \[.\] r[0-9]' recommenders.md)
+done_n=$(grep -c '^- \[x\] r[0-9]' recommenders.md)
 echo "  已确认 $done_n / $total"
 [ "$done_n" -lt "$total" ] && echo "  🔴 未过闸 — 推荐信流程阻塞"
 
@@ -87,7 +89,173 @@ done
 rm -f /tmp/.edu-empty-claims.$$
 
 echo
-echo "=== 素材门槛（硬约束 3–5 条）==="
-n=$(ls materials/*.md 2>/dev/null | grep -vc README)
-echo "  当前 $n 条 / 门槛 3 条"
-[ "$n" -lt 3 ] && echo "  ⚠️ 未达标"
+echo "=== 素材篇数（🔴 参考信息，不是闸门）==="
+# 🔴 本节此前写作「素材门槛（硬约束 3–5 条）」并对 n<3 报「未达标」——那是抄错的闸门。
+#    #10 §2 判的是：硬约束是「不许有无素材支撑的主张」，单位是**主张**不是篇；
+#    3–5 是经验参考值，只写 3 条主张的短文书不需要凑 5 个素材。
+#    真正的闸门是上一节（成稿引用的主张必须有素材支撑），#27 已经加在这里了。
+n=$(ls materials/m*.md 2>/dev/null | wc -l | tr -d ' ')
+echo "  当前 $n 条（经验参考值 3–5；**不据此判定达标与否**）"
+
+# ---------------------------------------------------------------------------
+# 以下三节读的是同一个字段 verifiable_by（#38 定的三键之一），
+# 因此一次加齐：分次加必然让三个视图各写一份「谁能证实」的解析，正是 #30 通则要防的分叉。
+# ---------------------------------------------------------------------------
+
+MAT=/tmp/.edu-materials.$$   # material_id|sensitive|verifiable_by|有无该键|文件名
+CLM=/tmp/.edu-claims.$$      # claim_id|materials|voice|断言
+ASG=/tmp/.edu-assign.$$      # recommender_id|claim_id
+REC=/tmp/.edu-recs.$$        # recommender_id
+trap 'rm -f "$MAT" "$CLM" "$ASG" "$REC"' EXIT INT TERM
+
+: > "$MAT"
+for f in materials/m*.md; do
+  [ -f "$f" ] || continue
+  awk -v file="$f" '
+    /^---[ \t]*$/ { fm++; if (fm==2) exit; next }
+    fm==1 {
+      if ($0 ~ /^material_id:/)   { mid=$0; sub(/^material_id:[ \t]*/,   "", mid) }
+      if ($0 ~ /^sensitive:/)     { sen=$0; sub(/^sensitive:[ \t]*/,     "", sen) }
+      if ($0 ~ /^verifiable_by:/) { v=$0;   sub(/^verifiable_by:[ \t]*/, "", v)
+                                    gsub(/[][,]/, " ", v); gsub(/  +/, " ", v)
+                                    sub(/^ +/, "", v); sub(/ +$/, "", v); vb=v; has=1 }
+    }
+    END { printf "%s|%s|%s|%s|%s\n", mid, sen, vb, has+0, file }' "$f" >> "$MAT"
+done
+
+# claims.md 的四列，只认 claim_id 形如 cNN 的行（文件里另有两张说明用的表）
+awk -F'|' '/^\|/ {
+    for (i=2; i<NF; i++) gsub(/^[ \t]+|[ \t]+$/, "", $i)
+    if ($2 ~ /^c[0-9]+$/) printf "%s|%s|%s|%s\n", $2, $4, $5, $3
+  }' claims.md > "$CLM"
+
+# recommenders.md 的候选人表（5 列 ⇒ NF==7）与「主张 → 推荐人分配」表（2 列 ⇒ NF==4）。
+# 🔴 #49 删掉「能证实什么」列后候选人表从 6 列降到 5 列，NF 从 8 降到 7 —— `NF>=7` 恰好卡在边界，
+#    余量为零。实测再删一列（4 列 ⇒ NF==6）：REC 变空，两条素材全部报「verifiable_by 悬空外键」
+#    —— **响亮失败，不是静默失败**（不同于 #43 那颗大写 `R` 闸口地雷）。
+#    根治要契约持有列 schema（§1.1 现在不持有）→ 已投递 #46 / #47 的契约追平线，本处不就地改。
+awk -F'|' '/^\|/ {
+    for (i=2; i<NF; i++) gsub(/^[ \t]+|[ \t]+$/, "", $i)
+    if ($2 ~ /^r[0-9]+$/ && NF>=7) print $2
+  }' recommenders.md > "$REC"
+awk -F'|' '/^\|/ {
+    for (i=2; i<NF; i++) gsub(/^[ \t]+|[ \t]+$/, "", $i)
+    if (NF==4 && $2 ~ /^r[0-9]+$/ && $3 ~ /^c[0-9]+$/) printf "%s|%s\n", $2, $3
+  }' recommenders.md > "$ASG"
+
+echo
+echo "=== 素材 frontmatter 三键完整性（#38 定稿名单）==="
+# ⚠️ 只判「键在不在、值域对不对、外键悬不悬空」。判不了「这条素材具体不具体」——那是采集时 agent 的事。
+awk -F'|' -v REC="$REC" '
+  BEGIN { while ((getline r < REC) > 0) if (r != "") known[r]=1 }
+  {
+    mid=$1; sen=$2; vb=$3; has=$4; file=$5
+    bad=""
+    if (mid !~ /^m[0-9]+$/)              bad=bad" material_id 缺失或不是 mNN"
+    else {
+      base=file; sub(/^.*\//, "", base)
+      if (index(base, mid "-") != 1)     bad=bad" material_id 与文件名前缀不一致（id 要能靠 glob 解析）"
+    }
+    if (sen !~ /^(yes|no)$/)             bad=bad" sensitive 缺失或不是 ASCII 二元 yes/no"
+    if (has != 1)                        bad=bad" 缺 verifiable_by 键（空列表要写成 []，不是不写）"
+    else if (vb != "") {
+      k=split(vb, ids, " ")
+      for (i=1; i<=k; i++)
+        if (!(ids[i] in known))          bad=bad" verifiable_by 悬空外键 " ids[i]
+    }
+    if (bad == "") printf "  ✓ %s — sensitive=%s verifiable_by=[%s]\n", file, sen, vb
+    else         { printf "  ✗ %s —%s\n", file, bad; nbad++ }
+  }
+  END { if (!nbad) print "  ✓ 全部素材三键齐全、值域合法、外键可解析" }' "$MAT"
+
+echo
+echo "=== 素材正文三问形状（🔴 只判形状，判不了内容）==="
+# 三个固定小标题（CONTRACT.md §1.1 形状规则）。标题齐全而底下写的是感想，本检查一样放行。
+# 🔴 第七个「中文撞 shell 工具」的坑，本节实测撞到（macOS /bin/sh = GNU bash 3.2.57）：
+#    双引号里 `$var` **紧邻**一个多字节字符时，展开结果被截断成一个替换字符。
+#      "「$h」"   → 「�          ✗
+#      "「${h}」" → 「## 我做了什么」  ✓
+#    ⚠️ 与 §4.5 已记的那族不同源：**没有任何 locale 能修它**（LC_ALL=en_US.UTF-8 显式设进去照旧坏），
+#    修法是**给变量加花括号**。`"$m2 $h"`（后面跟空格）不受影响，所以它只在拼接处发作。
+for f in materials/m*.md; do
+  [ -f "$f" ] || continue
+  miss=""
+  for h in "## 时间" "## 我做了什么" "## 结果"; do
+    grep -qx "$h" "$f" || miss="$miss \`${h}\`"
+  done
+  [ -n "$miss" ] && echo "  ✗ $f 缺小标题:$miss" || echo "  ✓ $f"
+done
+echo "  ⚠️ 通过 ≠ 这几条素材够具体 —— 判「具体」的是采集时的 agent，不是本脚本。"
+
+echo
+echo "=== 缺口三分类（缺素材 / 缺人 / 缺放行；#17 结案后修正的同一张表）==="
+awk -F'|' -v MAT="$MAT" -v REC="$REC" '
+  BEGIN {
+    while ((getline m < MAT) > 0) { n=split(m, a, "|"); sen[a[1]]=a[2]; vb[a[1]]=a[3] }
+    while ((getline r < REC) > 0) if (r != "") cand[++nc]=r
+  }
+  {
+    cid=$1; mats=$2; voice=$3; text=$4
+    if (mats == "") { printf "  🔴 缺素材   %s [voice=%s] %s\n", cid, voice, text; g1++; next }
+    # 这条主张的全部候选证实人 = 其素材 verifiable_by 的并集
+    who=""; release=0; clean=0
+    k=split(mats, ms, " ")
+    for (i=1; i<=k; i++) {
+      v=vb[ms[i]]
+      if (v == "") continue
+      j=split(v, rs, " ")
+      for (x=1; x<=j; x++) {
+        if (!index(" " who " ", " " rs[x] " ")) who=who " " rs[x]
+        if (sen[ms[i]] ~ /^no$/) clean=1; else release=1
+      }
+    }
+    sub(/^ /, "", who)
+    if (who == "")      { printf "  🟠 缺人     %s [voice=%s] %s — 有素材（%s），但没有任何候选人能证实\n", cid, voice, text, mats; g2++ }
+    else if (!clean && release) { printf "  🟡 缺放行   %s [voice=%s] %s — 能证实的素材全是 sensitive=yes，需用户逐条放行\n", cid, voice, text; g3++ }
+    else                { printf "  ✓  可支撑   %s [voice=%s] %s — 可证实人: %s\n", cid, voice, text, who; ok++ }
+  }
+  END {
+    printf "  合计 %d 条主张：可支撑 %d ｜ 缺素材 %d ｜ 缺人 %d ｜ 缺放行 %d\n", ok+g1+g2+g3, ok+0, g1+0, g2+0, g3+0
+    print  "  解法方向三者不同：缺素材 → 补素材；缺人 → 再找一位推荐人；缺放行 → 用户逐条放行（#17 成对确认）"
+  }' "$CLM"
+
+echo
+echo "=== 覆盖缺口视图（#12 §10：哪些主张没有任何候选推荐人能证实）==="
+# 它替代了被 #12 §10 否掉的「推荐人排序建议」——这是事实不是判断，且自然回答「该再找谁」。
+awk -F'|' -v MAT="$MAT" '
+  BEGIN { while ((getline m < MAT) > 0) { n=split(m, a, "|"); vb[a[1]]=a[3] } }
+  {
+    cid=$1; mats=$2; text=$4; who=""
+    k=split(mats, ms, " ")
+    for (i=1; i<=k; i++) if (vb[ms[i]] != "") who=who " " vb[ms[i]]
+    if (who == "") { printf "  🔴 %s %s\n", cid, text; gap++ }
+  }
+  END { if (!gap) print "  ✓ 每条主张都至少有一位候选人能证实"
+        else printf "  合计 %d 条主张无人可证 —— 这就是「该再找谁」的输入\n", gap }' "$CLM"
+
+echo
+echo "=== 🔴 pack 门槛（两条合取：(a) 他本人能证实 且 (b) 可进 pack）==="
+# #12 §7 + #17 结案后修正。⚠️「已放行」不是落盘字段（#17 走会话内成对确认），
+#    故 sensitive=yes 一律判成「缺放行」——保守方向，不会把未放行的敏感素材放进 pack。
+if [ ! -s "$ASG" ]; then
+  echo "  （「主张 → 推荐人分配」表当前为空，无行可判）"
+else
+  awk -F'|' -v MAT="$MAT" -v CLM="$CLM" '
+    BEGIN {
+      while ((getline m < MAT) > 0) { n=split(m, a, "|"); sen[a[1]]=a[2]; vb[a[1]]=a[3] }
+      while ((getline c < CLM) > 0) { n=split(c, b, "|"); mats[b[1]]=b[2]; text[b[1]]=b[4] }
+    }
+    {
+      rid=$1; cid=$2; pass=0; blocked=""
+      k=split(mats[cid], ms, " ")
+      for (i=1; i<=k; i++) {
+        if (!index(" " vb[ms[i]] " ", " " rid " ")) continue      # (a) 不满足
+        if (sen[ms[i]] ~ /^no$/) { pass=1; hit=ms[i]; break }     # (a)+(b) 同时满足
+        blocked=blocked " " ms[i]                                  # (a) 满足、(b) 待放行
+      }
+      if (pass)            printf "  ✓ %s × %s — 素材 %s 同时满足 (a)(b)\n", rid, cid, hit
+      else if (blocked!="") printf "  🟡 %s × %s — 素材%s 他能证实，但 sensitive=yes ⇒ 缺放行\n", rid, cid, blocked
+      else if (mats[cid]=="") printf "  🔴 %s × %s — 零素材，两条合取都无从谈起 ⇒ 分配不出去\n", rid, cid
+      else                 printf "  🔴 %s × %s — 有素材（%s），但没有一条他能证实 ⇒ 缺人\n", rid, cid, mats[cid]
+    }' "$ASG"
+fi
