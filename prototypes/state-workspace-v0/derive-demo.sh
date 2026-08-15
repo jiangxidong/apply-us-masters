@@ -49,6 +49,44 @@ echo "  已确认 $done_n / $total"
 [ "$done_n" -lt "$total" ] && echo "  🔴 未过闸 — 推荐信流程阻塞"
 
 echo
+echo "=== 「主张 → 支撑素材」对照表（派生视图，不落盘）==="
+# claims.md 的四列：$2=claim_id $3=断言 $4=materials $5=voice（前导 | 产生空的 $1）
+# 只认 claim_id 形如 cNN 的行 —— 文件里另有两张说明用的表，靠这条判据滤掉。
+awk -F'|' '/^\|/ {
+    for (i=2; i<NF; i++) gsub(/^[ \t]+|[ \t]+$/, "", $i)
+    if ($2 !~ /^c[0-9]+$/) next
+    n++
+    if ($4 == "") { gap++; printf "  🔴 %s [voice=%s] %s — 零素材缺口\n", $2, $5, $3 }
+    else            printf "  ✓  %s [voice=%s] %s — 素材 %s\n", $2, $5, $3, $4
+  } END {
+    printf "  合计 %d 条主张，其中 %d 条无素材支撑\n", n+0, gap+0
+    if (gap) print "  ⚠️ 零素材主张合法（全局集允许），但不得进入任何成稿"
+  }' claims.md
+
+echo
+echo "=== 🔴 硬约束：成稿引用的主张必须有素材支撑 ==="
+# 空 materials 的 claim_id 集合，比对每篇 canonical frontmatter 的 claims:
+awk -F'|' '/^\|/ {
+    for (i=2; i<NF; i++) gsub(/^[ \t]+|[ \t]+$/, "", $i)
+    if ($2 ~ /^c[0-9]+$/ && $4 == "") print $2
+  }' claims.md > /tmp/.edu-empty-claims.$$
+for f in essays/canonical/*.md; do
+  case "$f" in */README.md) continue ;; esac   # README 不是渲染物
+  used=$(awk -F'[][]' '/^claims:/ {gsub(/,/, " ", $2); print $2}' "$f")
+  [ -z "$used" ] && { echo "  ⚠️ $f 没有 claims: —— 文书是从主张清单里选，不是发明主张"; continue; }
+  bad=""
+  for c in $used; do
+    grep -qx "$c" /tmp/.edu-empty-claims.$$ && bad="$bad $c"
+  done
+  if [ -n "$bad" ]; then
+    echo "  ✗ $f 引用了零素材主张:$bad"
+  else
+    echo "  ✓ $f — $(echo $used | tr ' ' ',')"
+  fi
+done
+rm -f /tmp/.edu-empty-claims.$$
+
+echo
 echo "=== 素材门槛（硬约束 3–5 条）==="
 n=$(ls materials/*.md 2>/dev/null | grep -vc README)
 echo "  当前 $n 条 / 门槛 3 条"

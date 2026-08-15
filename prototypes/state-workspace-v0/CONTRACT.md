@@ -51,7 +51,7 @@
 |---|---|---|---|---|
 | 1 | `apply.md` | frontmatter + 正文 | **工作区标识 + 申请季** | **冷启动**（创建）；此后**只有换季时**改 `season`。⚠️ 不放完成度、不放待核实计数——那些是派生视图 |
 | 2 | `profile.md` | frontmatter + 正文 | **申请人 canonical 事实**；学历条目是 `institution_id` 的**定义处** | **冷启动 / 画像**；其他阶段只读 |
-| 3 | `programs.md` | Markdown 表，**13 列** | **项目池**（选校决策面） | **选校** ⚠️ `status` 列的写入权见 §1.5 注 ① |
+| 3 | `programs.md` | Markdown 表，**13 列**（🔴 样例只有 9 列，见下） | **项目池**（选校决策面） | **选校** ⚠️ `status` 列的写入权见 §1.5 注 ① |
 | 4 | `claims.md` | Markdown 表，4 列 | **主张集**（全局唯一，文书与推荐信共用） | 🔴 **两阶段写**：**冷启动 / 画像**落初稿，**文书**打磨 |
 | 5 | `channels/<channel_key>.md` | Markdown，**分节** | **约束层**（逐申请渠道的 rendering rules） | 🔴 **按节归属，见 §1.2**（5 个阶段 owner） |
 | 6 | `materials/*.md` | Markdown，**七字段** | **文书素材**（素材门槛在此判定）；推荐信线是第二个消费方 | **文书**（+ 推荐信？见 §1.5 注 ②） |
@@ -71,10 +71,20 @@
 加第七个 `敏感`，**ASCII 二元 `yes` / `no`**（遵 §4.5）。敏感素材**默认不进给第三方的包**——
 这是 #12 的 pack 门槛两条合取里的第二条（第一条是「这个人能证实它」）。
 
+🔴 **`programs.md` 的 13 列在样例里只落了 9 列**——`tier_basis` / `tier_void_if` / `pseudo_safer`
+（[#11](https://github.com/jiangxidong/EduApplication/issues/11) 在 #4 的 9 列上加的判断层）不在 `sample-workspace/programs.md` 里。
+**这一处不能照抄补齐**：样例里一条 `✓` 事实都没有，填 `tier_basis` 撞
+[ADR 0005](../../docs/adr/0005-basis-points-at-an-existing-checked-fact.md)，留空则按 #11 的机械规则三行都得改成 `undecided`。
+→ [#31](https://github.com/jiangxidong/EduApplication/issues/31) 裁决。`derive-demo.sh` 的列数完整性检查现断言 9 列，跟着一起改。
+
 **`claims.md` 的四列**：`claim_id` / 断言（中文自由文本，禁 `|`）/ `materials`（支撑素材 id 列表，空格分隔；
 **空 = 缺素材缺口**）/ `voice`（`self` / `referee` / `both`）。
 「哪篇文书用了哪些主张」这条边**只存在消费端**：`essays/canonical/*.md` 的 frontmatter 写 `claims: [c01, c03]`，
 `claims.md` **不设 `used_in` 列**（两端都存必漂移）。见 [ADR 0006](../../docs/adr/0006-claims-are-one-shared-truth-source.md)。
+
+🔴 **七字段里的 `已用于` 在样例里有意留空**——它每写一篇文书就要被改写一次，按 §1.5 的镜像判别式该杀，
+但 #10 给了它一字段两用途。是删是留 → [#30](https://github.com/jiangxidong/EduApplication/issues/30) 裁决。
+另注：frontmatter 的 `usable_for`（可以用在哪类文书，是判断）**不是**「已用于」（实际用过哪几篇，是事实），两者不能互相顶替。
 
 **`recommenders/drafts/` 的门控**：没有推荐人本人的起草授权声明，**这个目录就不该存在**。两道闸：
 **写入闸**（准备包阶段，创建前必须先读到 `recommenders.md` 里的授权声明）+

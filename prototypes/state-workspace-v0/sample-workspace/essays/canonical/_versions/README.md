@@ -8,4 +8,7 @@
 
 有哪些历史版本，`ls` 一下就知道 —— 不在这里记镜像状态（写下来就要靠改写维持为真）。
 
+**本样例里这个目录是空的**：三篇 canonical 都还是 `version: 1`、`supersedes: null`，从未开过新版，
+所以没有历史版本可存。空 ≠ 漏填——**不预建空文件**，同 `packets/` 与 `documents/`。
+
 何时该开新版本、两版怎么对比 → [#10](https://github.com/jiangxidong/EduApplication/issues/10)。
