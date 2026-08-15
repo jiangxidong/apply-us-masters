@@ -86,7 +86,6 @@ season: 2027fall
 ## 费用与资格（从 programs.md 下沉至此 —— evidence 列只担保 deadline）
 
 - `待核实` 学费口径（UIUC 研究生按 program + residency 分档，Bursar 页单列）
-- `待核实` STEM OPT 资格（须查项目 CIP code 对照 DHS STEM 清单）
 - `待核实` 申请费金额；**UIUC 有多种免申请费路径**（先提交后付费，逾期未付会退回未提交）
 
 ## AI 使用政策
@@ -120,3 +119,7 @@ season: 2027fall
 
 - `✓ https://siebelschool.illinois.edu/admissions/graduate/degree-program-options` 同一张表：**MS in Computer Science** 的 Thesis Required = **Yes**、Research Required = **Yes**、Admission Cycle = **Fall only**；**MCS（Master of Computer Science）** 三项分别为 **No / No / Spring & Fall**
 - → 在 UIUC，`MS in Computer Science` 是**带论文的研究型硕士**，不是 coursework master；本行 `program` 填的正是它 → 归 #55。**分档结论不受影响**：两个学位的 3.2 相同
+
+#### 费用与资格
+
+- `待核实` CIP code（用于判 STEM OPT 资格；STEM 归属是派生视图，渲染时对照 DHS 名单现算，不落盘）

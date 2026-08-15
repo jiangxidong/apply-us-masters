@@ -56,7 +56,6 @@ season: 2027fall
 ## 费用与资格（从 programs.md 下沉至此 —— evidence 列只担保 deadline）
 
 - `待核实` MEng 学费口径（按学年还是按学分）
-- `待核实` STEM OPT 资格（须查项目 CIP code 对照 DHS STEM 清单）
 - `待核实` 申请费金额；是否有 fee waiver
 
 ## AI 使用政策
@@ -75,3 +74,4 @@ season: 2027fall
 #### 费用与资格
 
 - `待核实` 申请费金额
+- `待核实` CIP code（用于判 STEM OPT 资格；STEM 归属是派生视图，渲染时对照 DHS 名单现算，不落盘）

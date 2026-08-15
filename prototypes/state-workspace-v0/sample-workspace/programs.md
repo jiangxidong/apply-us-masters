@@ -2,7 +2,7 @@
 
 **主键 = `program_key`**（`<school>--<college>--<program>`）。每行一个项目 —— 最小分叉粒度是项目，不是学校。
 
-**`evidence` 列只担保 `deadline` 一项。** 学费、门槛、STEM 资格、申请费在 `channels/<channel_key>.md`，各带各的标记。
+**`evidence` 列只担保 `deadline` 一项。** 学费、门槛、CIP 分类、申请费在 `channels/<channel_key>.md`，各带各的标记。
 **判断层四列（`tier_basis` / `tier_void_if` / `pseudo_safer` / `status_note`）一律不被 `evidence` 担保**——它们是判断，永远拿不到 `✓`。
 
 `tier` / `status` 是 ASCII 枚举，中文标签属展示层。**取值与判别式全在 `CONTEXT.md`，本文件不复述**——
