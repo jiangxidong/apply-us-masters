@@ -318,6 +318,8 @@ _Avoid_: 假保底（同一概念的旧名，中文名以本条为准）、保�
 
 🔴 **前提句，不可省**（[#12](https://github.com/jiangxidong/EduApplication/issues/12)，由 [#30](https://github.com/jiangxidong/EduApplication/issues/30) 补落）：**「镜像」的前提是别处有源；没有源的可变内容是判断，不是镜像。** 少了这句，判别式会把 `recommenders.md` 的「主张 → 推荐人分配」和 `tier_basis` 一起判死——那两处都会被改写，但都**不是任何别处内容的镜像，它们就是真相源**（[#11](https://github.com/jiangxidong/EduApplication/issues/11)、#12 各判过一次）。此前本行只有单向的「不许存」半句，而前提句只写在状态层契约里，`main` 上读不到。
 
+🔴 **限定句，同样不可省**（[#32](https://github.com/jiangxidong/EduApplication/issues/32)）：**镜像 ⇔ 这段内容存在一个唯一正确的取值，而那个取值在工作区内的别处。** 上一句管的是「有没有源」，这一句管的是「这段字有没有正确答案」——少了它，判别式对 `essays/canonical/` 是**逐字自毁**的：canonical 渲染物本来就是「把主张写成人话」的产物，长文整篇都在复述 `claims.md` 的主张，措辞一改就得跟着改，按字面读它整篇是镜像、该删。散文没有唯一正确取值（措辞是手艺），表格单元格有。⚠️ **不要读成「散文豁免」**——「不写素材几条、不写闸口几比几」禁的正是散文；切口开在有没有唯一正确取值上，不开在体裁上。**「工作区内」也是限定的一部分**：`✓ <url>` 指向站外，站外页面不是工作区的真相源。自测：两个 agent 各写一遍，差异算 bug 还是算文风？**算 bug ⇒ 是镜像。**
+
 **一条关系边存在哪一端**（例如「哪篇文书用了哪些主张」写在文书 frontmatter 而不写在 `claims.md`）是**归属问题，归状态层契约**——按 [ADR 0011](docs/adr/0011-the-glossary-defines-words-the-contract-holds-the-values.md) 的消费方判据，agent 读它的时刻是「决定一条事实落进哪个文件」，不是「命名领域概念」。通则与逐条落位见 [ADR 0006](docs/adr/0006-claims-are-one-shared-truth-source.md) 的补充节。
 
 **缺口** — `—`
