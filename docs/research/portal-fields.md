@@ -334,7 +334,70 @@ UQ 的 `Submit your application` 页在「提交后可在 portal 做什么」列
 
 ## Part B — UK 英国
 
-> 调研中。平台栈结论继承自同 issue 的另一份调研 `docs/research/uk-apply-timeline-deposit.md`（分支 `research/country-delta`），本节不重复取证。
+**平台栈来源说明**：四校平台结论来自同 issue 的另一份调研 `docs/research/uk-apply-timeline-deposit.md`（分支 `research/country-delta`）——UCL = Tribal SITS:Vision (Portico) + Flywire｜Manchester = Oracle PeopleSoft｜Leeds = Microsoft Power Apps / Dynamics 365｜Coventry = Salesforce Experience Cloud + Convera。本节**只对亲自 GET 过的页面写字面取证串**，其余直接引用该文件的结论，不复述我未亲眼见过的证据。
+
+### B.0 英国与澳洲最大的结构差异：登录前没有表单可看
+
+澳洲 StudyLink Connect（UQ / Adelaide）可以公开 GET 到完整的注册表单，因此 AU 部分能拿到真实的 `maxlength` / `required` 属性。**英国四校没有一所能做到这一点。** UCL 的 Portico 登录页只暴露两个可见输入框，页面上没有任何 Register / Create account 链接；Leeds 是 Power Apps SPA、Coventry 是 Salesforce Lightning、Manchester 是 PeopleSoft 登录墙。
+
+**产品含义**：英国这边的字段约束基本只能来自官方 how-to-apply 页与 checklist，**因此 TSV 中英国行的 `limit` 列大量是 `未确认(登录墙后)`——这是取证边界，不是漏查**。任何「自动填表 / portal 状态抓取」功能在英国都拿不到登录前的字段契约。
+
+---
+
+### B.1 UCL（Tribal SITS:Vision / Portico）
+
+**平台取证（本次亲自 GET）**
+
+| 项 | 字面取证串 | 出处 |
+|---|---|---|
+| 页面标题 | `<title>IPP login screen</title>`（IPP = SITS 的 Institution Postgraduate Portal 模块） | `https://evision.ucl.ac.uk/urd/sits.urd/run/siw_ipp_lgn.login` |
+| URL 路径 | `/urd/sits.urd/run/siw_ipp_lgn.login` —— `sits.urd` + `siw_` 前缀是 SITS:Vision 的标志性路径 | 同上 |
+| 表单字段命名法 | `MUA_CODE.DUMMY.MENSYS.1`（MUA = SITS 用户账号表）、`SURNAME.TAB_DUMMY.CAMS.1`、`FORENAME.TAB_DUMMY.CAMS.1`、`IPP_CODE.IPP.SRS.1`——`表列.表名.模块.序号` 是 SITS 独有的命名约定 | 同上 HTML |
+| 品牌串 | HTML 内含 `SITS`、`e:Vision`、`tribal` | 同上 |
+
+**⚠️ 推荐信机制 —— 产品红线，UCL 是本次调研中最明确的一例**
+
+完整链路（全部来自 `selecting-your-references` 官方页原文）：
+
+1. 学生在申请表 references 区填推荐人信息，**必须用院校/机构邮箱**（原文举例 `john.smith@university.ac.uk` 而非 `johnsmith@hotmail.com`），用私人邮箱会拖慢审理。
+2. **`When you submit your application, your referee(s) will automatically be sent an email asking them to write a reference for you and submit it using a reference portal link.`**
+   → 触发时点是**提交申请那一刻**，自动发出，不是手动点"发送"、也不是保存即发。
+3. **学生自己上传推荐信被明确禁止**：`Please do not email any references as we cannot accept references from applicants.` 推荐信只能由推荐人经 reference portal link 提交。
+4. 提交后（如需付费则付费后）学生才拿到 applicant portal，可以查状态、重发请求、换推荐人。**在此之前招生办不代为重发或改推荐人邮箱。**
+5. 自 12 月 8 日起，reference portal link 有效期 **30 个自然日**；过期须由学生自行重发，重发后再给 30 天，可无限次重发直至 reference deadline（课程关闭后第 10 个工作日 17:00 UK time）。
+
+> 🔴 **红线判定**：UCL 的 `referee_1_email` 是一个「填入 + 提交 = 系统以申请人名义向第三方发信」的字段。AI 绝不能代填推荐人邮箱并触发提交。这不是「推荐信正文由谁写」的问题，而是**发信动作本身的授权归属**问题——即使推荐人真实存在、即使学生口头同意过，触发方也必须是学生本人。
+> 顺带一个可用的产品设计点：UCL 官方自己反复强调 `contact your nominated referee(s) before starting your application`，产品可以把「已确认推荐人愿意写」做成提交前的人工确认闸口。
+
+**文件上传规格（UCL 是本次英国部分唯一给出硬指标的）**
+
+- **`Files must be less than 5MB. Allowed file types: .pdf (preferred), .docx, .jpeg, or .jpg.`**
+- **不得加密或设密码**：`Do not password-protect or encrypt files. Admissions selectors will not be able to access them.`（这条在 how-to-apply 页与 transcript 页各出现一次，措辞一致）
+- **翻译件必须分两个文件**：`you will be asked to upload English language and original language transcripts as two separate documents` —— 不可把原件和译文合成一个 PDF。
+- **不得自行翻译**：`prepared by your institution or a registered translator. You must not translate the documents yourself.`
+- **公开页未提及文件命名规则**（记为未确认）。
+- **认证件（certified copy）**：UCL 公开页**未要求**申请阶段提交 certified copy，与澳洲部分校形成对比。
+
+**中国大陆学历的专属分支**（产品必须硬编码）
+- 需 毕业证 + **成绩证明**（官方页直接用中文写出「成绩证明」四字），且须载明 overall percentage average、**issued on or after the date of graduation**。
+- 在读生：上传成绩证明 + 经院校签字盖章的英文翻译，**可合并为一个文件**传到 Education 页的 additional documents 区。
+- 已毕业者：不需要另传成绩证明。
+- 若院校不出具成绩证明，UCL 会自行按 transcript 推算加权平均。
+
+**个人陈述的双上限（典型的「约束层不可复用」样本）**
+- 表内直接输入：**3,000 字符（含空格）**
+- 改为上传文件：可超过 3,000 字符，但 **不得超过 two sides of A4，12 号字，单倍行距**
+- → 同一份内容，两种完全不同计量单位的上限（字符数 vs 版面页数）。准备包若只存「一份 3000 字符的 PS」，换成上传通道就浪费了额度；只存两页 A4 版，又填不进表内框。
+
+**其他 UCL 特有约束**
+- **一个 academic cycle 最多申请 2 个授课型硕士课程。**
+- **提交后只能改**：name / contact details / referees' details / passport details（需签证者）。**`you cannot replace or add additional documents once you have submitted your application`** —— 文件一次定生死，这对「AI 辅助准备包」的价值判断是正面的（提交前把文件备齐的收益极高）。
+- 申请费：标准 **£90**；Slade School of Fine Art 全部课程 **£35**；Business Analytics (with Management Science) MSc / Finance MSc / Management MSc **£160**。均不可退，含申请失败情形。
+- 英语成绩**可后补**：`If you cannot provide this evidence when you submit your application, your application will still be considered.`
+- Portfolio 类课程：**不要在申请时上传**——`should only be provided once requested by the Faculty of the Built Environment`。
+- 部分课程要 GRE，UCL institution code **3344**，quantitative ≥ 162。
+
+---
 
 ---
 
