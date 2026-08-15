@@ -61,7 +61,7 @@
 | 3 | `programs.md` | Markdown 表，**13 列**（🔴 样例只有 9 列，见下） | **项目池**（选校决策面） | **选校** ⚠️ `status` 列的写入权见 §1.5 注 ① |
 | 4 | `claims.md` | Markdown 表，4 列 | **主张集**（全局唯一，文书与推荐信共用） | 🔴 **两阶段写**：**冷启动 / 画像**落初稿，**文书**打磨 |
 | 5 | `channels/<channel_key>.md` | Markdown，**分节** | **约束层**（逐申请渠道的 rendering rules） | 🔴 **按节归属，见 §1.2**（5 个阶段 owner） |
-| 6 | `materials/*.md` | Markdown，**七字段** | **文书素材**（素材门槛在此判定）；推荐信线是第二个消费方 | **文书**（+ 推荐信？见 §1.5 注 ②） |
+| 6 | `materials/*.md` | Markdown，字段名单见下（**不计数**） | **文书素材**（素材门槛在此判定）；推荐信线是第二个消费方 | **文书**（+ 推荐信？见 §1.5 注 ②） |
 | 7 | `essays/canonical/*.md` | Markdown + frontmatter | **文书 canonical 渲染物**（当前版） | **文书** |
 | 8 | `essays/canonical/per-program/<program_key>.md` | frontmatter + 散文 | **逐项目 why-this-program 内容**（不可再生） | **文书**（按 §1.4 前缀继承） |
 | 9 | `essays/canonical/_versions/*.md` | Markdown | 历史版本，只增不改 | **文书** |
@@ -74,9 +74,16 @@
 **五个主键**，全部 ASCII（遵 §4.5）：`program_key` / `channel_key` / `recommender_id`（`r1`…）/
 `institution_id`（定义权在 `profile.md`，`documents/` 只引用）/ `claim_id`（`c01`…）。
 
-**`materials/*.md` 的七字段**：#10 定的六字段外，[#17](https://github.com/jiangxidong/EduApplication/issues/17)
-加第七个 `敏感`，**ASCII 二元 `yes` / `no`**（遵 §4.5）。敏感素材**默认不进给第三方的包**——
-这是 #12 的 pack 门槛两条合取里的第二条（第一条是「这个人能证实它」）。
+**`materials/*.md` 的字段**：🔴 **一律列名，不写「N 字段」**（[#30](https://github.com/jiangxidong/EduApplication/issues/30)）——
+「六字段 / 七字段」曾在三处票面上并存三种计数，正是 [#24](https://github.com/jiangxidong/EduApplication/issues/24)
+在文件上杀掉的那个病（「表的行数就是文件数，任何文件都不带序号」）。
+
+已确定在名单内的：`敏感`（[#17](https://github.com/jiangxidong/EduApplication/issues/17)，**ASCII 二元 `yes` / `no`**，遵 §4.5）。
+敏感素材**默认不进给第三方的包**——这是 #12 的 pack 门槛两条合取里的第二条（第一条是「这个人能证实它」）。
+已确定**不在**名单内的：`已用于`（#30 裁决，见下）。
+
+⚠️ **完整名单尚未裁决** → [#38](https://github.com/jiangxidong/EduApplication/issues/38)：#10 的六个语义字段与样例
+frontmatter 的 `material_id` / `type` / `usable_for` / `concrete` 是**两套互不相交的词汇**，本文件与样例都没把两者对应起来。
 
 🔴 **`programs.md` 的 13 列在样例里只落了 9 列**——`tier_basis` / `tier_void_if` / `pseudo_safer`
 （[#11](https://github.com/jiangxidong/EduApplication/issues/11) 在 #4 的 9 列上加的判断层）不在 `sample-workspace/programs.md` 里。
@@ -89,9 +96,17 @@
 「哪篇文书用了哪些主张」这条边**只存在消费端**：`essays/canonical/*.md` 的 frontmatter 写 `claims: [c01, c03]`，
 `claims.md` **不设 `used_in` 列**（两端都存必漂移）。见 [ADR 0006](../../docs/adr/0006-claims-are-one-shared-truth-source.md)。
 
-🔴 **七字段里的 `已用于` 在样例里有意留空**——它每写一篇文书就要被改写一次，按 §1.5 的镜像判别式该杀，
-但 #10 给了它一字段两用途。是删是留 → [#30](https://github.com/jiangxidong/EduApplication/issues/30) 裁决。
-另注：frontmatter 的 `usable_for`（可以用在哪类文书，是判断）**不是**「已用于」（实际用过哪几篇，是事实），两者不能互相顶替。
+🔴 **`已用于` 已删**（[#30](https://github.com/jiangxidong/EduApplication/issues/30) 裁决，[ADR 0006](../../docs/adr/0006-claims-are-one-shared-truth-source.md) 补充节）。
+通则：**一条关系边只存在它那个已经落盘的消费端，两端都不存。** 素材侧因此不设 `已用于`，同 `claims.md` 不设 `used_in`。
+
+两个用途都不需要它：**防跨推荐人雷同**的轴是**主张**不是素材（#12 §5 自己写着「直接分素材是分错了层」），
+边已落在 `recommenders.md` 的「主张 → 推荐人分配」上；**防跨校开头雷同**在架构上不成立——
+#10 §8 定了跨校 canonical + delta 且 delta 只剩 `why this program`，开头段属于 canonical、**跨校本来就是同一份**，
+「前 3 校都拿 X 素材开头」是设计的必然结果不是缺陷。**不新增任何派生视图，也不留可再生缓存**
+（`packets/` 的可再生豁免建立在「没人从它读回去」上，索引不满足这个前提）。
+
+另注：frontmatter 的 `usable_for`（可以用在哪类文书）与被删掉的 `已用于`（实际用过哪几篇）**是两回事，不是前者顶替了后者**。
+`usable_for` 自身过不过得了镜像判别式（文书类型清单逐渠道住在 `channels/` 的 `文书规格`）→ #38 一并裁。
 
 **`recommenders/drafts/` 的门控**：没有推荐人本人的起草授权声明，**这个目录就不该存在**。两道闸：
 **写入闸**（准备包阶段，创建前必须先读到 `recommenders.md` 里的授权声明）+
