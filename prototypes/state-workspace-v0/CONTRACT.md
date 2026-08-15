@@ -25,42 +25,163 @@
 
 ---
 
-## 1. 文件清单
+## 1. 文件清单与归属
 
-| 路径 | 格式 | 真相源身份 | 写入归属（owner） |
+> 🔒 **这应当是全产品唯一一张「路径 / 节 → 阶段」表**（[#23](https://github.com/jiangxidong/EduApplication/issues/23) §7，
+> [ADR 0008](../../docs/adr/0008-the-owner-binds-to-a-section-not-a-file.md)）。
+> [#9](https://github.com/jiangxidong/EduApplication/issues/9) 的表已降级为「阶段 → skill」映射、**不再出现任何路径字面量**；
+> 按 #23 的原话，`CONTEXT.md` 只定义词、不承载表。
+>
+> ⚠️ **但此刻事实并非如此**：`main` 上的 `CONTEXT.md`（317 行起）也存了一份完整的十节表，含 owner 列——
+> #23 落盘时自己写的。「唯一」现在是**决议**，不是**现状**。
+> 转 [#26](https://github.com/jiangxidong/EduApplication/issues/26) 裁决，本次合并不就地拍板（见 §1.5 ④）。
+>
+> **owner 列一律填阶段，不填 skill。** 七个阶段：**冷启动 / 画像 / 选校 / 文书 / 材料 / 推荐信 / 准备包**
+> （见 [`CONTEXT.md`](../../CONTEXT.md) 的「阶段」词条）。`材料` / `推荐信` / `准备包` 眼下同属 `assemble-packet`，
+> 但填 skill 会让这张表在重拆 skill 时失效——而绑阶段的全部意义就是那时它一行不动。
+
+### 1.1 十四个文件
+
+> 🔴 **下表的 `#` 是行号，不是文件的编号。任何文件都不带序号，「第 N 个文件」这种说法一律作废。**
+> [#18](https://github.com/jiangxidong/EduApplication/issues/18) 与 [#12](https://github.com/jiangxidong/EduApplication/issues/12)
+> 都自称「第 12 个文件」而两者都不是——序号排的是「谁先被想到」，那个顺序没人维护得了，**它本身就是漂移机制**。
+> 两票里的那句措辞就此作废（原文留在已关闭的票上，读到时以本表为准），**此后引用文件一律用路径**。
+
+| # | 路径 | 格式 | 真相源身份 | owner 阶段 |
+|---|---|---|---|---|
+| 1 | `apply.md` | frontmatter + 正文 | **工作区标识 + 申请季** | **冷启动**（创建）；此后**只有换季时**改 `season`。⚠️ 不放完成度、不放待核实计数——那些是派生视图 |
+| 2 | `profile.md` | frontmatter + 正文 | **申请人 canonical 事实**；学历条目是 `institution_id` 的**定义处** | **冷启动 / 画像**；其他阶段只读 |
+| 3 | `programs.md` | Markdown 表，**13 列** | **项目池**（选校决策面） | **选校** ⚠️ `status` 列的写入权见 §1.5 注 ① |
+| 4 | `claims.md` | Markdown 表，4 列 | **主张集**（全局唯一，文书与推荐信共用） | 🔴 **两阶段写**：**冷启动 / 画像**落初稿，**文书**打磨 |
+| 5 | `channels/<channel_key>.md` | Markdown，**分节** | **约束层**（逐申请渠道的 rendering rules） | 🔴 **按节归属，见 §1.2**（5 个阶段 owner） |
+| 6 | `materials/*.md` | Markdown，**七字段** | **文书素材**（素材门槛在此判定）；推荐信线是第二个消费方 | **文书**（+ 推荐信？见 §1.5 注 ②） |
+| 7 | `essays/canonical/*.md` | Markdown + frontmatter | **文书 canonical 渲染物**（当前版） | **文书** |
+| 8 | `essays/canonical/per-program/<program_key>.md` | frontmatter + 散文 | **逐项目 why-this-program 内容**（不可再生） | **文书**（按 §1.4 前缀继承） |
+| 9 | `essays/canonical/_versions/*.md` | Markdown | 历史版本，只增不改 | **文书** |
+| 10 | `documents/<槽位>/…` | 原始文件 | **材料 canonical**（信息量最大的一侧），**七槽位见 §1.3** | **材料** |
+| 11 | `recommenders.md` | Markdown | **推荐人身份五块**（候选 / 逐校机制 / 分配 / 起草授权 / 提交事实，红线区） | **推荐信** |
+| 12 | `recommenders/drafts/<recommender_id>.md` | Markdown | **C 档推荐信草稿**（🔴 受起草授权声明门控） | **准备包**（新增顶层路径，按 §1.4 显式指派） |
+| 13 | `packets/<program_key>/**` | 由 [#8](https://github.com/jiangxidong/EduApplication/issues/8) 定 | **可再生产物**，删了能重建 | **准备包** |
+| 14 | `log.md` | Markdown，append-only | **跨会话交接** | 每个阶段结束时追加（见 §1.5 注 ③） |
+
+**五个主键**，全部 ASCII（遵 §4.5）：`program_key` / `channel_key` / `recommender_id`（`r1`…）/
+`institution_id`（定义权在 `profile.md`，`documents/` 只引用）/ `claim_id`（`c01`…）。
+
+**`materials/*.md` 的七字段**：#10 定的六字段外，[#17](https://github.com/jiangxidong/EduApplication/issues/17)
+加第七个 `敏感`，**ASCII 二元 `yes` / `no`**（遵 §4.5）。敏感素材**默认不进给第三方的包**——
+这是 #12 的 pack 门槛两条合取里的第二条（第一条是「这个人能证实它」）。
+
+**`claims.md` 的四列**：`claim_id` / 断言（中文自由文本，禁 `|`）/ `materials`（支撑素材 id 列表，空格分隔；
+**空 = 缺素材缺口**）/ `voice`（`self` / `referee` / `both`）。
+「哪篇文书用了哪些主张」这条边**只存在消费端**：`essays/canonical/*.md` 的 frontmatter 写 `claims: [c01, c03]`，
+`claims.md` **不设 `used_in` 列**（两端都存必漂移）。见 [ADR 0006](../../docs/adr/0006-claims-are-one-shared-truth-source.md)。
+
+**`recommenders/drafts/` 的门控**：没有推荐人本人的起草授权声明，**这个目录就不该存在**。两道闸：
+**写入闸**（准备包阶段，创建前必须先读到 `recommenders.md` 里的授权声明）+
+**存在性闸**（入口阶段 / [#15](https://github.com/jiangxidong/EduApplication/issues/15)，发现目录存在但无授权声明 → 报错）。
+只做写入闸不够——[#12](https://github.com/jiangxidong/EduApplication/issues/12) 把它设计成「文件系统层面物理可查」，
+只归 owner 自查就退回成「相信写它的人」。
+
+### 1.2 `channels/<channel_key>.md` 的十个法定节
+
+一个文件有几个写入者**不需要辩护**；需要辩护的只有**一个节两个写入者**与**一条事实没有写入者**，且都禁止（ADR 0008）。
+归属判据是**消费方**：哪个阶段的决策依赖这条事实，哪个阶段就负责取证并落盘；多个阶段消费时归**最早**的，后到者只读。
+
+| 序 | 法定节 | 谁的决策依赖它 | owner 阶段 |
 |---|---|---|---|
-| `apply.md` | frontmatter + 正文 | **工作区标识 + 申请季** | 冷启动阶段创建；此后**只有换季时**被改。⚠️ 不放完成度、不放待核实计数——那些是派生视图 |
-| `profile.md` | frontmatter + 正文 | **申请人 canonical 事实** | 冷启动/画像阶段；其他阶段只读 |
-| `programs.md` | Markdown 表，9 列 | **项目池**（选校决策面） | 选校阶段；投递阶段只改 `status` 列 |
-| `channels/<channel_key>.md` | Markdown | **约束层**（逐申请渠道的 rendering rules） | 选校阶段落盘骨架，准备包阶段补全 |
-| `essays/materials/*.md` | Markdown | **文书素材**（素材门槛在此判定） | 文书阶段 |
-| `essays/canonical/*.md` | Markdown | **文书 canonical 渲染物**（当前版） | 文书阶段 |
-| `essays/canonical/_versions/*.md` | Markdown | 历史版本，只增不改 | 文书阶段 |
-| `documents/**` | 原始文件 | **材料 canonical**（信息量最大的一侧） | 材料阶段 |
-| `recommenders.md` | Markdown | **推荐人 + 逐校机制状态**（红线区） | 推荐信阶段 |
-| `packets/<program_key>/**` | 由 #8 定 | **可再生产物**，删了能重建 | 准备包阶段 |
-| `log.md` | Markdown，append-only | **跨会话交接** | 每个阶段结束时追加 |
+| 1 | `平台与账号` | 选校（能不能申）+ 准备包（建号） | **选校**（最早） |
+| 2 | `硬约束` | 选校 | **选校** |
+| 3 | `学历门槛` | 选校（分档锚点，ADR 0004） | **选校** |
+| 4 | `费用与资格` | 选校 | **选校** |
+| 5 | `AI 使用政策` | 选校（算最严档位）+ 文书 | **选校**（最早） |
+| 6 | `项目内容` | 文书（why 段的具名事实） | **文书** |
+| 7 | `文书规格` | 文书（含 why 段的拼接配方） | **文书** |
+| 8 | `材料上传` | 材料 | **材料** |
+| 9 | `推荐信机制` | 推荐信 | **推荐信** |
+| 10 | `冻结点` | 准备包 | **准备包** |
 
-> 🔴 **本表停在 11 行，实际已是 14 个文件，落后四张票**（下一个动 `#4` 契约的 session 请**四处一起**吃进去；
-> 逐条回填评论都在 [#4](https://github.com/jiangxidong/EduApplication/issues/4) 上）：
->
-> | 变更 | 来自 |
-> |---|---|
-> | `essays/canonical/per-program/<program_key>.md` —— 逐项目文书段 | [#18](https://github.com/jiangxidong/EduApplication/issues/18) |
-> | `essays/materials/` **提到根 `materials/`**（推荐信线成为第二个消费方，`essays/` 前缀在说谎）+ 新增 `recommenders/drafts/<recommender_id>.md`（受起草授权门控，无授权则该目录不该存在） | [#12](https://github.com/jiangxidong/EduApplication/issues/12) |
-> | `documents/**` 获得七槽位内部结构；`profile.md` 新增主键 `institution_id` | [#19](https://github.com/jiangxidong/EduApplication/issues/19) |
-> | 新增 `claims.md`（工作区根，Markdown 表）—— 主张是全局一等对象，文书与推荐信共用同一集合 | [#21](https://github.com/jiangxidong/EduApplication/issues/21) |
->
-> ⚠️ #18 与 #12 都自称「第 12 个文件」，别按票面数——**14 是把四张票合起来数出来的**。
->
-> `claims.md` 的四列：`claim_id`（ASCII 主键，形如 `c01`）/ 断言（中文自由文本，禁 `|`）/
-> `materials`（支撑素材 id 列表，空格分隔；**空 = 缺素材缺口**）/ `voice`（`self` / `referee` / `both`）。
-> 「哪篇文书用了哪些主张」这条边**存在消费端**：`essays/canonical/*.md` 的 frontmatter 写 `claims: [c01, c03]`，
-> `claims.md` **不设 `used_in` 列**（两端都存必漂移）。定义见 [`CONTEXT.md`](../../CONTEXT.md) 与
-> [ADR 0006](../../docs/adr/0006-claims-are-one-shared-truth-source.md)。
+**节名取自上面这张封闭词表，标题按前缀匹配。**
+`## 材料上传 —— ⚠️ 与 Cornell 直接冲突` 合法，匹配到 `材料上传`——那些后缀是**跨渠道冲突的现场记录**，
+不该为了机械匹配丢掉。词表内**禁止任何两项互为前缀**（现有十项两两都不互为前缀）。
+
+**`## 项目级差异` 也在封闭词表内，但不带 owner**——它是**覆盖层，不是第 11 个类别**。
+结构 `## 项目级差异` → `### <program_key>` → `#### <法定节名>`，归属规则一条：**同名节同一 owner，不论层级**
+（前缀匹配天然递归到 `####`）。🔴 机械检查必须为它开一个显式分支，否则每个 channel 文件都会被判成无主节。
+
+**只建自己 owner 的节，不预建空节。** 节的**缺席本身是信息**（该渠道没有这类特殊约束）；
+预建会把「没查」与「不存在」压成同一形态，而区分这两者正是「待核实后缀」存在的全部意义。节按上表顺序排列。
+
+> ⚠️ 样例 `sample-workspace/channels/*.md` 里 UIUC 有 `学历门槛` 而另两校没有、Columbia 有 `硬约束` 而另两校没有，
+> **是有意的**，验收时别当成漏填去补齐。
+
+### 1.3 `documents/` 的七个槽位
+
+**一个槽位 = 一个一级目录 = 一个敏感级。** 目录形状取「按槽位分层、院校在下」——
+反过来会让「槽位自带敏感级」当场失效（得下钻一层才知道能不能读）。
+
+```
+documents/
+  transcript/<institution_id>/page-NN.pdf   高分辨率彩色、逐页单文件
+  legend/<institution_id>.pdf               评分说明；UIUC 必填且逐院校，必须能独立取出
+  degree/<institution_id>.pdf               学位证 / 毕业证
+  translation/<institution_id>/…            翻译件；公证 / 认证等级记在文件旁的 .md
+  english/                                  语言成绩；送分状态记在 profile.md
+  cv/                                       简历——canonical 不是渲染物（排版措辞从 profile.md 重建不出来）
+  identity/                                 🔴 唯一禁读槽位
+```
+
+**分槽位必须是路径级**：agent 得在**读之前**就知道该不该读，而内容类型只有读了才知道。
+`identity/` 是禁读区——**只做存在性与规格检查，绝不让任何内容进上下文**（允许 `ls` / `stat` / `file` / `pdfinfo`
+这类只碰元数据的操作；禁止 Read 读 PDF·图片、`pdftotext`、OCR、截图、缩略图）。
+🔴 **判据是「读了也没用」，不是「敏感」**：成绩单**不进**禁读区——算 GPA、填学历列表都得读内容。
+Cornell 的 SSN 涂黑要求因此落成「**落槽位时**提醒」，不是「不读」——凡提醒能提前到打开文件之前，就必须提前，
+因为误读不可补救（内容会落进运行时的会话记录，那是工作区之外、产品删不掉的第二份副本）。
+
+**槽位不带规格维**：规格逐渠道（Cornell 要合并清晰 / UIUC 要 <200dpi 灰度，物理上互斥），槽位跨渠道，
+维度不对齐——规格一律住 `channels/` 的 `材料上传`。文件**自身**属性（翻译件是否公证）仍记在旁边的 `.md`，
+它答的是「这是什么」，不是「学校要什么」。
+
+**槽位清单是产品侧常量**（单向阀：repo → 工作区可以流，反向绝不），不落工作区、不建空目录。
+
+**兜底**：不属于任何槽位的文件**留在原地 + 记进 `log.md`**（唯一的镜像豁免——它是历史观察值），
+只列名、不打开，归类前按最严处理。否掉 `unsorted/`（位置断言分类 = 镜像）与「每次重问」。
+
+### 1.4 后续新增路径如何获得 owner
+
+**混合规则**（[#23](https://github.com/jiangxidong/EduApplication/issues/23) §7.1）：
+
+- **已有目录内新增** → 自动继承**最近祖先目录**的 owner（`essays/canonical/per-program/` 因此自动归文书阶段）
+- **新增顶层路径** → **必须显式指派，并在同一次提交更新本表**（`recommenders/drafts/` 走这条）
+
+纯「每次都显式指派」不够：它把责任全押在写票的人身上，而 #12 与 #18 各漏过一次。所以规则配机械执法——
+孤儿检查脚本的第 1 条就是「契约里出现的每个路径都能解析到一个 owner 阶段（自身或祖先目录）」。
+
+### 1.5 待裁决（本次合并**不就地拍板**）
+
+[#24](https://github.com/jiangxidong/EduApplication/issues/24) 的边界是**只合并、不做新决策**。合并现场查出四处需要裁决，
+原样保留并转票：①②③ → [#25](https://github.com/jiangxidong/EduApplication/issues/25)，④ → [#26](https://github.com/jiangxidong/EduApplication/issues/26)。
+
+前三处的共性：分支上的原表写于 ADR 0008 之前，与「节粒度 + 七阶段」对不上。
+
+① **`programs.md` 的 `status` 列**：原表写「投递阶段只改 `status` 列」，但**「投递」不是七个阶段之一**
+（`CONTEXT.md` 里「投递名单」是不落盘的派生视图）。而 `applying → submitted` 这一跳物理上发生在准备包阶段之后。
+
+② **`materials/*.md` 的 owner**：#12 的回填写的是「文书阶段 **+** 推荐信阶段」两个 owner，
+但 #23 只审查并认可了两个多写入者文件（`channels/` 与 `claims.md`），`materials/` 是**未经审查的第三个**。
+
+③ **`log.md` 由每个阶段追加**：字面上撞「一个不含节结构的文件有且只有一个阶段可以写它」。
+它 append-only、从不被改写，大概率是正当豁免——但豁免没被写下来过。
+
+④ **§1.2 这张十节表本身存了两份**：`main` 的 `CONTEXT.md`（317 行起）与本节各一份，
+而 #23 §7 的原话是「唯一一张」且「`CONTEXT.md` 只定义词，不承载表」——**决议与它自己的落盘不一致**。
+横跨 `main` 与 `prototype/state-layer` 两个分支，哪边就地拍板都会静默覆盖一条已锁决议。→ #26
+
+---
 
 **不落盘的派生视图**（每次现算现打，绝不存文件）：
-待核实清单、deadline 日历、完成度自检、每校材料缺口、**「主张 → 支撑素材」对照表**。
+待核实清单、缺口清单、deadline 日历、完成度自检、每校材料缺口、推荐信闸口、素材门槛、
+选校清单、投递名单、**「主张 → 支撑素材」对照表**、**推荐人 support pack**（每**推荐人**一份，不跟 `program_key` 走，
+因此**不落 `packets/`**）、**推荐人覆盖缺口**、**pack 门槛**、**请求推荐邮件草稿**（一次性、发出即完成、不迭代）。
 
 > 存一份就是第二个真相源。竞品坑 #9：合并单文件与散文件同时被安装 → 同一事实索引两遍，检索互相稀释。
 > `euro-grad-apply` 的 README 自己推荐的安装路径就有这个坑。
@@ -68,22 +189,40 @@
 **判别式**（这一条能一刀切开所有边界情形）：
 > **这行字为了保持为真，需不需要被改写？需要 → 它是镜像，删掉；不需要 → 它是事实，留着。**
 
+> 🔴 **补一句前提**（来自 [#12](https://github.com/jiangxidong/EduApplication/issues/12)）：
+> **「镜像」的前提是别处有源；没有源的可变内容是判断，不是镜像。**
+> `recommenders.md` 的「主张 → 推荐人分配」会被改写，但它不是任何别处内容的镜像——它就是真相源。
+> 同 [#11](https://github.com/jiangxidong/EduApplication/issues/11) 的 `tier_basis`：**判断必须落盘**，否则跨会话失效。
+
 所以工作区里**任何文件都不写「当前状态」**——不写素材几条、不写闸口几比几、不写目录空不空。
 
 **唯一豁免：`log.md`。** 它 append-only 且每段带日期，**从不被改写**，
 所以它记的是「2026-08-15 那天观察到素材 2 条」这个**历史观察值**，不是镜像。
 历史观察值不会失真，镜像会。
 
+> 🔴 **但 append-only 对隐私是最坏形态**（[#17](https://github.com/jiangxidong/EduApplication/issues/17)）。
+> append-only **不软化**（软化了它就不可信），规则改在写入侧：
+> **`log.md` 只记动作与指针，绝不记内容。** 写「2026-08-15 采集素材 2 条 → `materials/`」，不写素材本身；
+> 写「确认了 Columbia 的成绩单合并要求」，不写成绩单上的数字。与上面的镜像判别式同源。
+
 ---
 
 ## 2. 两层数据结构（直接落 #6 的 D.4 结论）
 
 ```
-内容层（canonical）           约束层（rendering rules）        产物
-profile.md                    channels/columbia-seas.md
-essays/canonical/*     ──渲染──>  （字数/格式/合并/分辨率/     ──> packets/<program_key>/
-documents/**                      冻结点/推荐信机制）
+内容层（canonical）                  约束层（rendering rules）              产物
+profile.md                           channels/<channel_key>.md
+claims.md                            ├ 平台与账号 / 硬约束 / 学历门槛
+materials/*                          ├ 费用与资格 / AI 使用政策
+essays/canonical/*          ──渲染──> ├ 项目内容 / 文书规格            ──> packets/<program_key>/
+essays/canonical/per-program/*       ├ 材料上传 / 推荐信机制
+documents/**（七槽位）                └ 冻结点
+recommenders.md                        ＋ ## 项目级差异（覆盖层）
 ```
+
+⚠️ `recommenders/drafts/` **不在这张图里** —— 草稿是迭代物，用户会改、推荐人会回改，不是任何东西的渲染物。
+同理 support pack 是渲染物但**每推荐人一份**（不跟 `program_key` 走），所以**不落 `packets/`**，
+`packets/` 的可再生源清单因此**维持原样、不含 `recommenders.md`**。
 
 **核心原则**：**准备包不存「已经按某校要求做好的成品」，只存 canonical 内容 + 每校渲染规则。**
 
@@ -148,7 +287,7 @@ deadline 在项目页、学费在 Bursar 页、STEM 资格在 CIP code 对照的
 「哪些约束是查过的、哪些是推定的」将无法机械汇总 ——
 Columbia SEAS 那条「AI 政策未查到，暂按 GSAS 从严」就没法被自动提醒。
 
-### 换季降级（`apply.md` 的 `season` 一改就全表触发）
+### 换季降级（**惰性执行**，不是全表触发）
 
 ```
 ✓ https://…/deadlines     →     待核实（2026fall 核过：https://…/deadlines）
@@ -156,6 +295,19 @@ Columbia SEAS 那条「AI 政策未查到，暂按 GSAS 从严」就没法被自
 
 标记状态仍是二元的（`待核实`），但**保留上季链接**——降级必须可逆。
 抹掉链接就把「重新核实」变成「重新从零查」，违反 D.4 的方向性原则。
+
+🔴 **执行方式是惰性的，不是一改 `season` 就全表触发**（[#23](https://github.com/jiangxidong/EduApplication/issues/23)）。
+全表触发构成**跨 owner 的写** —— `programs.md` 与 `channels/` 的十个节分属三个阶段，没有任何一个阶段有权改别人的节。
+
+> 换季**只改 `apply.md` 的 `season`**。各阶段**下次进入时**按文件 frontmatter 的 `season` 比对，
+> 就地降级**自己 owner 的节**，并同步该文件的 `season`。派生视图渲染时按 `season` 比对，不等即视为待核实。
+
+`channels/*.md` 的 frontmatter **已有 `season` 字段**（样例是 `season: 2027fall`），无需新增。
+未被访问的节保持上季标记 —— **比假装重查过更诚实**。
+
+🔴 **换季只做证据降级与状态回退，不触发任何清理，不提示删除任何文件**（[#17](https://github.com/jiangxidong/EduApplication/issues/17)）。
+换季是**二申路径**，是申请季**初**的动作；清理服务的是申请完就走的人，那个人永远不会换季。
+清理的主触发是用户显式的「申请季收尾」动作，与本节无关。
 
 ---
 
@@ -180,8 +332,15 @@ $ printf '冲刺\n匹配\n保底\n' | sort -u
 **因此两条硬规则：**
 
 1. **`programs.md` 里任何会被统计的列（`tier` / `status`）只放 ASCII 枚举值。**
-   `tier` = `reach` / `match` / `safer`，`status` = `considering` / `shortlist` / `applying` / `submitted` / …
-   中文标签（冲刺 / 匹配 / safer）是**展示层**的事 —— 措辞归 [#11](https://github.com/jiangxidong/EduApplication/issues/11)。
+   `tier` = `reach` / `match` / `safer` / `undecided` / `ineligible`（**五档**，[#22](https://github.com/jiangxidong/EduApplication/issues/22) 补上最后一档），
+   `status` = `considering` / `shortlist` / `applying` / `submitted` / `dropped` / …
+   中文标签（冲刺 / 匹配 / 较稳 / 待判 / 未达门槛）是**展示层**的事 —— 措辞归 [#11](https://github.com/jiangxidong/EduApplication/issues/11)。
+
+   > `ineligible` = 该项目**全部公开维度中至少一个已取证未达标**。与 `undecided` 的切分必须跟着枚举一起落，否则必混：
+   > **「还没考托福」= `undecided`**（不知道是否满足）；**「考了 95、要求 100」= `ineligible`**（知道不满足）。
+   > 它不能塞进 `undecided`（#11 的机械判别式是「`tier_basis` 空 ⇒ 必须 `undecided`」，而未达标的行 `tier_basis` 恰恰填得满），
+   > 也不能走 `status=dropped`（[ADR 0002](../../docs/adr/0002-one-program-pool-one-status-axis.md)：`status` 是**用户对项目做什么**，硬申一个差 0.3 的项目是合法选择）。
+   > 唯一新增的机械规则：**`tier = ineligible` ⇒ `tier_basis` 非空**。`tier_void_if` 列**语义不变**（它本就中性，不区分方向）。
    自由文本列（`school` / `program` / `evidence`）可以是中文，因为它们只被 `grep` / `awk` 正则匹配，不被聚合。
 
 2. **禁止 `uniq` 与 `sort -u`。** 计数走 `awk '{c[$0]++} END{for(k in c) print c[k], k}'`，
@@ -228,7 +387,7 @@ points.md        ─────────────────────
 | [#11 选校推荐的输出契约](https://github.com/jiangxidong/EduApplication/issues/11) | `programs.md` 的**列清单**、分档措辞、假保底标注、匹配理由怎么写。⚠️ 加的列一律不被 `evidence` 担保（§4） | 文件路径、主键形态、`evidence` 只担保 deadline、换季语义 |
 | [#8 网申准备包的交付形态](https://github.com/jiangxidong/EduApplication/issues/8) | `packets/<program_key>/` 里**装什么**、怎么用、完成度怎么自检 | 它落在哪、它是**可再生**的（删了能从 canonical + rules 重建） |
 | [#10 文书双模式](https://github.com/jiangxidong/EduApplication/issues/10) | 何时开新版本、多版本怎么对比、素材门槛怎么判 | 三个渲染物文件名 + `_versions/` 命名约定 |
-| [#9 skill 拆几个](https://github.com/jiangxidong/EduApplication/issues/9) | 阶段怎么切、路由怎么写 | **每个文件的 owner**（第 1 节表格最后一列）——这就是 skill 之间的交接面 |
+| [#9 skill 拆几个](https://github.com/jiangxidong/EduApplication/issues/9) | **阶段 → skill** 的映射（#23 修订后：#9 的表里**不再出现任何路径字面量**） | **路径 / 节 → 阶段**（§1.1 与 §1.2）——归属表，这就是阶段之间的交接面。⚠️ #23 定它「唯一」，但现状是两份，见 §1.5 ④ |
 | [#13 领域词汇表](https://github.com/jiangxidong/EduApplication/issues/13) | 「项目池」「待核实」「申请季」的精确定义 | 它们在文件里长什么样 |
 
 ---

@@ -51,5 +51,5 @@ current_status: 在职
 
 ## 不放在这里的东西
 
-护照扫描、成绩单原件、个人陈述素材 → `documents/`、`essays/materials/`。
+护照扫描、成绩单原件、个人陈述素材 → `documents/`、`materials/`。
 本文件只存**结构化的、会被反复引用的事实**。

@@ -6,7 +6,7 @@
 ⚠️ **「谁能证实」不在判据里**（[#13](https://github.com/jiangxidong/EduApplication/issues/13) 定稿）——可验证性是素材的**独立属性**，供 `recommenders.md` 选人用。
 无人可证的自学项目、个人作品**照样是合格素材**，把它塞进判据会把它们错判为不合格。
 
-当前条数与是否达标：跑 `../../derive-demo.sh` 现算。**不写在这里** —— 写下来就要靠改写维持为真。
+当前条数与是否达标：跑 `../derive-demo.sh` 现算。**不写在这里** —— 写下来就要靠改写维持为真。
 
 判定与采集方式（访谈式、批量问、可跳过已知项）归
 [#10 文书的双模式与素材门槛怎么共存](https://github.com/jiangxidong/EduApplication/issues/10)。

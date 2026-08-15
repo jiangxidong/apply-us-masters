@@ -50,6 +50,6 @@ echo "  已确认 $done_n / $total"
 
 echo
 echo "=== 素材门槛（硬约束 3–5 条）==="
-n=$(ls essays/materials/*.md 2>/dev/null | grep -vc README)
+n=$(ls materials/*.md 2>/dev/null | grep -vc README)
 echo "  当前 $n 条 / 门槛 3 条"
 [ "$n" -lt 3 ] && echo "  ⚠️ 未达标"
