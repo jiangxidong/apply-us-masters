@@ -12,7 +12,7 @@
 
 **`✓` 比想象中难拿，全表 `待核实` 是常态而非异常。** 美国研究生院大量 deadline 藏在 PDF 与 JS 渲染的表格里，取回失败率不低。这是这条判别式的真实代价，不是实现缺陷。
 
-**用户成为 `✓` 的第二条合法来源。** 因为 `✓` 断言的是「事实取自这一页」而非「agent 看过这一页」，用户自己查到并贴出链接即可打 `✓`，责任随之转移。这一条是产品在受限运行时下仍然可用的**唯一出路**——没有它，[#11](https://github.com/jiangxidong/EduApplication/issues/11) 的定稿闸门（`status ∈ {applying, submitted}` 且 `deadline = 待核实` → 报错）会让任何项目都推不到 `applying`。于是地图锁定的那句「查不到，这是你要自己核实的清单」得到了字面实现：**降级不降标准，只把取证劳动转移回用户**。
+**用户成为 `✓` 的第二条合法来源。** 因为 `✓` 断言的是「事实取自这一页」而非「agent 看过这一页」，用户自己查到并贴出链接即可打 `✓`，责任随之转移。这一条是产品在受限运行时下仍然可用的**唯一出路**——没有它，[#11](https://github.com/jiangxidong/EduApplication/issues/11) 的定稿闸门（`status ∈ {applying, submitted}` 且 `deadline = 待核实` → 报错）会让任何项目都推不到 `applying`。于是地图锁定的那句「查不到，这是你要自己核实的清单」得到了字面实现：**取不回来不等于标准放宽，只是把取证劳动转移回用户**。
 
 **三道已锁的硬闸门一条都不用软化，本决定不修改任何已锁契约。** [#11](https://github.com/jiangxidong/EduApplication/issues/11) 的定稿闸门、[#18](https://github.com/jiangxidong/EduApplication/issues/18) 的 why 段两级闸门、[#16](https://github.com/jiangxidong/EduApplication/issues/16) 的 `tier_basis` 准入测试全都锚在「有没有可核实事实」上，而不是锚在「agent 有没有能力去查」上——它们天然吸收了取回失败这种情形。取回不到时 why 段走「文件缺失 = 警告放行」那一级（**先不写**才是正确后果），分档退化成全 `undecided`（「凑不齐不凑」「写不满就不写」），都是正确输出。
 
