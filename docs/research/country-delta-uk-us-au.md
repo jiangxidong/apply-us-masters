@@ -1011,74 +1011,95 @@ Melbourne 是唯一给出明确机制的：
 
 ---
 
-# 附录：本文件新增内容的一手来源 URL 汇总
+# 附录：来源清单（按核验强度分两级）
+
+> **本附录严格区分两类**，因为本轮抓取里有相当一部分页面是脚本批量取回的，
+> **原始请求 URL 没有随文件保存**。对这类页面，本文件**只给本地抓取文件路径，不给 URL**——
+> 凭文件名反推 URL 属于编造，宁可留空。
+
+## A 级：URL 已核验
+（来源：firecrawl 抓取元数据的 `sourceURL`、页面 HTML 的 `rel="canonical"` / `og:url`、或本轮抓取脚本里的 URL 清单）
 
 **美国**
-- Columbia SEAS 申请要求（材料清单 / 截止日表 / 面试 / 多份申请政策 / 申请费与 waiver）：https://www.engineering.columbia.edu/admissions-aid/graduate-admissions/how-apply/application-requirements
-- Columbia SEAS 招生 FAQ（押金 / 官方成绩单与 CHESICC / 语言分数 / GPA 换算 / verification process）：https://www.engineering.columbia.edu/admissions-aid/graduate-admissions/admissions-faqs
-- Columbia CS MS 申请 FAQ（GPA 3.5 / I-20 资金证明时点）：https://www.cs.columbia.edu/education/ms/appfaq/
-- Columbia SEAS 申请入口（Technolutions Slate 取证）：https://apply.engineering.columbia.edu/
-- Cornell Graduate School 缴费：https://gradschool.cornell.edu/admissions/application-steps/pay-fees/
-- Cornell Graduate School 语言要求：https://gradschool.cornell.edu/admissions/application-steps/required-tests/english-language-proficiency-requirement-2/
-- Cornell Graduate School 成绩单：https://gradschool.cornell.edu/admissions/application-steps/transcripts/
-- Cornell Academic Statement of Purpose：https://gradschool.cornell.edu/admissions/application-steps/statements-of-purpose/
-- Cornell Personal Statement：https://gradschool.cornell.edu/admissions/application-steps/personal-statements/
-- Cornell 录取生 FAQ（enrollment deposit / defer / NetID）：https://gradschool.cornell.edu/admissions/admitted-students/admissions-and-admitted-student-faq-2/
-- Cornell CS M.Eng. 申请（截止日 / 审理节奏 / 推荐信 / 押金与资金证明）：https://www.cs.cornell.edu/master-engineering-computer-science/apply
-- Cornell 申请系统（CollegeNET ApplyWeb 取证）：https://www.applyweb.com/cornellg/
-- UIUC Graduate College 完成申请（申请费 / 文书字数 / FERPA / 多项目申请）：https://grad.illinois.edu/admissions/application-instructions/completing-your-graduate-application
-- UIUC Graduate College 最低要求：https://grad.illinois.edu/admissions/graduate-admissions-minimum-requirements
-- UIUC Graduate College 申请前须知：https://grad.illinois.edu/admissions/application-instructions/you-begin
-- UIUC 国际申请人（语言分数 / Limited vs Full Status / EPT / 豁免国清单）：https://grad.illinois.edu/admissions/international-applicants
-- UIUC 按国别最低要求 · 中国：https://grad.illinois.edu/admissions/instructions/country/china
-- UIUC Siebel School MCS 申请信息：https://siebelschool.illinois.edu/academics/graduate/professional-mcs
-- Northeastern CoE 研究生招生（MS 申请费豁免 / 推荐信 / SOP / 语言分数 / Global Pathways）：https://coe.northeastern.edu/academics-experiential-learning/graduate-school-of-engineering/graduate-admissions/
-- Northeastern Khoury 硕士申请（截止日 / GPA / WES 不需要 / Duolingo 不接受）：https://www.khoury.northeastern.edu/apply/masters-apply/
-- Northeastern OGS 资金证明（I-20）：https://international.northeastern.edu/ogs/new-students/financial-requirements/
-- UT Dallas 国际生研究生招生（申请费 / 语言考试 / 三年制学位 / 不接受外部学历评估）：https://graduate-admissions.utdallas.edu/international/
-- Liaison GradCAS（集中申请服务的官方定位）：https://www.liaisonedu.com/centralized-application-service/gradcas/
+| 内容 | URL |
+|---|---|
+| Columbia SEAS 申请要求（材料清单 / 截止日表 / 录像面试 / 每学期只能申 1 个 / 申请费与 waiver） | https://www.engineering.columbia.edu/admissions-aid/graduate-admissions/how-apply/application-requirements |
+| Columbia SEAS 招生 FAQ（押金 / 官方成绩单与 CHESICC / 语言分数 / GPA 换算 / verification process） | https://www.engineering.columbia.edu/admissions-aid/graduate-admissions/admissions-faqs |
+| Columbia CS MS 申请 FAQ（GPA 3.5 / I-20 资金证明时点） | https://www.cs.columbia.edu/education/ms/appfaq/ |
+| Columbia SEAS 申请入口（Technolutions Slate 取证） | https://apply.engineering.columbia.edu/ |
+| Cornell Graduate School 缴费（$105 / fee waiver 流程） | https://gradschool.cornell.edu/admissions/application-steps/pay-fees/ |
+| Cornell Graduate School 语言要求（只收 IELTS/TOEFL / Tier A/B / 豁免） | https://gradschool.cornell.edu/admissions/application-steps/required-tests/english-language-proficiency-requirement-2/ |
+| Cornell Graduate School 成绩单（10MB 上限 / WES 作投递渠道 / NACES / AICE） | https://gradschool.cornell.edu/admissions/application-steps/transcripts/ |
+| Cornell Academic Statement of Purpose（1–2 页） | https://gradschool.cornell.edu/admissions/application-steps/statements-of-purpose/ |
+| Cornell Personal Statement（与 ASOP 分工） | https://gradschool.cornell.edu/admissions/application-steps/personal-statements/ |
+| Cornell 录取生 FAQ（enrollment deposit / defer） | https://gradschool.cornell.edu/admissions/admitted-students/admissions-and-admitted-student-faq-2/ |
+| Cornell CS M.Eng. 申请（硬截止 / 审理节奏 / 2 封推荐信 / 押金与资金证明） | https://www.cs.cornell.edu/master-engineering-computer-science/apply |
+| UIUC 完成申请（$90 / 文书字数 / FERPA / 多项目申请与费用） | https://grad.illinois.edu/admissions/application-instructions/completing-your-graduate-application |
+| UIUC 研究生录取最低要求（GPA 3.0 / conditional admission） | https://grad.illinois.edu/admissions/graduate-admissions-minimum-requirements |
+| UIUC 申请前须知（国际生资金证明 / 多项目申请） | https://grad.illinois.edu/admissions/application-instructions/you-begin |
+| UIUC 国际申请人（Limited vs Full Status / EPT / 豁免国清单 / 不收 MyBest） | https://grad.illinois.edu/admissions/international-applicants |
+| UIUC 按国别最低要求 · 中国（B Average / 80%） | https://grad.illinois.edu/admissions/instructions/country/china |
+| UIUC Siebel School MCS 申请信息（GPA 3.2 建议 / 不要推荐信） | https://siebelschool.illinois.edu/academics/graduate/professional-mcs |
+| Northeastern CoE 研究生招生（MS 申请费豁免 / 2 封推荐信 / SOP / 语言分数 / Global Pathways） | https://coe.northeastern.edu/academics-experiential-learning/graduate-school-of-engineering/graduate-admissions/ |
+| Northeastern Khoury 硕士申请（截止日 / GPA / WES 不需要 / 不收 Duolingo） | https://www.khoury.northeastern.edu/apply/masters-apply/ |
+| UT Dallas 国际生研究生招生（$75 / 语言考试 / 三年制学位 / 不接受外部学历评估） | https://graduate-admissions.utdallas.edu/international/ |
+| Liaison GradCAS（集中申请服务的官方定位） | https://www.liaisonedu.com/centralized-application-service/gradcas/ |
 
 **澳洲**
-- HESF（Higher Education Standards Framework (Threshold Standards) 2021）官方 PDF：本地存于 `scratchpad/raw/au-scrapes/hesf.pdf`（Federal Register of Legislation）
-- ESOS Framework / National Code 2018 / CRICOS / TPS：https://www.education.gov.au/esos-framework
-- UNSW 国际生招生信息（NOSC 配额 / offer round 三日期表 / 按国籍的最后轮次 / IADP / defer）：https://www.unsw.edu.au/study/international-students/admissions-info
-- UNSW 接受 offer（押金 → eCoE）：https://www.unsw.edu.au/study/help/offer
-- UNSW Student Fee Policy & Procedure 官方 PDF（押金按 visa risk rating / 50% 反悔费 / 退款豁免 / Bengaluru Schedule 1）：本地存于 `scratchpad/au/unsw-feepolicy.pdf`
-- University of Melbourne 国际生 Terms and Conditions 官方 PDF（AUD $17,000 押金）：本地存于 `scratchpad/au/um-tc.pdf`
-- Melbourne 审理时长承诺 / lapse date / reconsideration：https://study.unimelb.edu.au/how-to-apply/indicative-turn-around-times
-- Melbourne Handbook · MC-IT 入学要求（WAM 65% 与按院校调整）：https://handbook.unimelb.edu.au/2026/courses/mc-it/entry-participation-requirements
-- UQ 响应 offer（押金 + OSHC → CoE，Flywire）：https://study.uq.edu.au/admissions/postgraduate-coursework/respond-your-offer
-- Adelaide University 接受 offer（First Tuition Payment + OSHC → CoE，1–2 个工作日）：https://adelaide.edu.au/study/international-students/how-to-apply/accepting-your-offer/
-- RMIT 申请费（按国籍名单）：https://www.rmit.edu.au/study-with-us/international-students/apply-to-rmit-international-students/application-fee
-- RMIT 申请日期（三日期 + 面试轨）：https://www.rmit.edu.au/study-with-us/international-students/apply-to-rmit-international-students/application-dates
-- RMIT 理解你的 offer（full / conditional / packaged / SSVF）：https://www.rmit.edu.au/study-with-us/international-students/apply-to-rmit-international-students/accept-your-offer/understand-your-offer
-- RMIT 接受 offer（押金构成 / Convera / CoE 5 个工作日）：https://www.rmit.edu.au/study-with-us/international-students/accept-your-offer
-- RMIT CoE（conditional CoE / CoE 维护义务）：`scratchpad/au/rmit-coe.html`（RMIT International 学生 CoE 页）
-- RMIT 入学季（Semester 1/2/3）：https://www.rmit.edu.au/study-with-us/international-students/intakes-in-australia-for-international-students
-- UTAS 关键日期：https://www.utas.edu.au/study/apply/key-dates
-- UTAS 接受 offer（押金 + 医保 → eCoE）：`scratchpad/au/utas-accepting.md`
-- 其余澳洲平台 / agent / GS / 上传 / 认证 / 推荐信取证：见 `scratchpad/au-notes.md` §9 来源 URL 汇总
+| 内容 | URL |
+|---|---|
+| ESOS Framework / National Code 2018 / CRICOS / TPS / PRISMS | https://www.education.gov.au/esos-framework |
+| UNSW 国际生招生信息（NOSC 配额 / offer round 三日期表 / 按国籍最后轮次 / IADP / defer） | https://www.unsw.edu.au/study/international-students/admissions-info |
+| UNSW 接受 offer（押金 → eCoE） | https://www.unsw.edu.au/study/help/offer |
+| Melbourne 审理时长承诺 / lapse date / reconsideration 通道 | https://study.unimelb.edu.au/how-to-apply/indicative-turn-around-times |
+| Melbourne Handbook · MC-IT 入学要求（WAM 65% 与按院校调整） | https://handbook.unimelb.edu.au/2026/courses/mc-it/entry-participation-requirements |
+| UQ 响应 offer（押金 + OSHC → CoE，Flywire） | https://study.uq.edu.au/admissions/postgraduate-coursework/respond-your-offer |
+| Adelaide University 接受 offer（First Tuition Payment + OSHC → CoE，1–2 个工作日） | https://adelaide.edu.au/study/international-students/how-to-apply/accepting-your-offer/ |
+| RMIT 申请费（按国籍名单，中国不在名单） | https://www.rmit.edu.au/study-with-us/international-students/apply-to-rmit-international-students/application-fee |
+| RMIT 申请日期（三日期 + 面试轨） | https://www.rmit.edu.au/study-with-us/international-students/apply-to-rmit-international-students/application-dates |
+| RMIT 理解你的 offer（full / conditional / packaged / SSVF） | https://www.rmit.edu.au/study-with-us/international-students/apply-to-rmit-international-students/accept-your-offer/understand-your-offer |
+| RMIT 接受 offer（押金构成 / Convera / CoE 5 个工作日） | https://www.rmit.edu.au/study-with-us/international-students/accept-your-offer |
+| RMIT 入学季（Semester 1/2/3 与课程可用性） | https://www.rmit.edu.au/study-with-us/international-students/intakes-in-australia-for-international-students |
+| 其余澳洲平台 / agent / GS / 上传 / 认证 / 推荐信取证的 URL | 见 `scratchpad/au-notes.md` §9「来源 URL 汇总」（已逐条核验） |
 
-**英国（本文件新增引用的部分，其余见 `uk-apply-timeline-deposit.md`）**
-- UCL 语言要求分级（Level 1–5）：https://www.ucl.ac.uk/prospective-students/graduate/english-language-requirements
-- UCL Computer Science MSc（PS 一页 A4 / 两封推荐信 / 6–8 周决策）：https://www.ucl.ac.uk/prospective-students/graduate/taught-degrees/computer-science-msc
-- UCL 个人陈述（3,000 字符 / 两页 A4）：https://www.ucl.ac.uk/prospective-students/graduate/how-apply/personal-statement
-- UCL 成绩单与中国成绩证明：https://www.ucl.ac.uk/prospective-students/graduate/how-apply/transcripts
-- UCL PGCE（ENIC 明确拒收 / 推荐信系统邀请时点）：https://www.ucl.ac.uk/ioe/courses/teacher-training
-- Manchester MSc Advanced Computer Science 入学要求（China 87% / high-ranking institutions / CV >3 年）：https://www.manchester.ac.uk/study/masters/courses/list/06915/msc-advanced-computer-science/entry-requirements/
-- Manchester 授课型 CS 申请材料（两封学术推荐信 / statement of aims 半页 A4 / CV）：https://www.cs.manchester.ac.uk/study/postgraduate-taught/how-to-apply/
-- Alliance MBS 国际入学要求（China 80–85% / 院校层级进入评估要素）：https://www.alliancembs.manchester.ac.uk/study/masters/entry-requirements/
-- Alliance MBS 申请文件（推荐信按需索取 / CV >2 年工作经验）：https://www.alliancembs.manchester.ac.uk/study/masters/how-to-apply/
-- Manchester MBA（UK NARIC 作参照 / top 25% of class）：https://www.alliancembs.manchester.ac.uk/study/mba/
-- Leeds 硕士申请材料（CV / 两位推荐人联系方式 / 按需联系）：https://www.leeds.ac.uk/masters/doc/apply-masters
-- Leeds 中国资格与院校清单制度：https://www.leeds.ac.uk/admissions-qualifications/doc/china
-- Leeds 接受的中国院校清单（研究生招生，分四份）：https://www.leeds.ac.uk/international-applying/doc/accepted-chinese-institutions-postgraduate-admissions
-- Leeds University Business School 接受的中国院校清单（中英双语具名全表）：https://business.leeds.ac.uk/masters/doc/accepted-chinese-institutions
-- Leeds LUBS 申请（PS 500 词 / 两位学术推荐人）与语言要求：https://business.leeds.ac.uk/masters/doc/how-to-apply
-- Leeds EPS 申请（PS 非标配 / CV 用途）：https://eps.leeds.ac.uk/faculty-engineering-physical-sciences/doc/apply
-- Coventry 语言考试与 pre-sessional：https://www.coventry.ac.uk/international-students-hub/apply/english-language-requirements/
-- Coventry MSc Data Science 课程页（IELTS 6.5 / 单项 5.5）：https://www.coventry.ac.uk/course-structure/pg/ees/data-science-msc/
-- UK ENIC（Statement of Comparability 定位与 £69.60 定价）：https://www.enic.org.uk/
+**英国**
+| 内容 | URL |
+|---|---|
+| Leeds 接受的中国院校清单（研究生招生总入口，分四份） | https://www.leeds.ac.uk/international-applying/doc/accepted-chinese-institutions-postgraduate-admissions |
+| Leeds University Business School 接受的中国院校清单（中英双语具名全表，918 行中文校名） | https://business.leeds.ac.uk/masters/doc/accepted-chinese-institutions |
+| UK ENIC（Statement of Comparability 定位与 £69.60 定价） | https://www.enic.org.uk/ |
+| 其余英国四校的申请入口 / 申请费 / 时间线 / offer / 押金 URL | 见 [`uk-apply-timeline-deposit.md`](./uk-apply-timeline-deposit.md)（已逐条核验） |
 
-> ⚠️ 少数条目上方标注为「本地存于 `scratchpad/...`」的，是本次抓取时经脚本批量取回、
-> 但原始 URL 未随文件保存的情况；文件本身在 scratchpad 中可复核，**URL 未经二次确认，不作为可引用来源**。
+## B 级：URL 未核验——只给本地抓取文件路径
+
+以下内容在本文件中被引用，**原文可在本地抓取物中逐字复核**，但**本轮未保存其请求 URL**。
+后续若要对外引用，**必须先重新抓取并记录 URL**。
+
+| 内容 | 本地文件 |
+|---|---|
+| HESF 1.1 Admission 逐字条款 | `scratchpad/raw/au-scrapes/hesf.pdf` / `hesf.txt` |
+| Melbourne 国际生 Terms and Conditions（AUD $17,000 押金） | `scratchpad/au/um-tc.pdf` / `um-tc.md` |
+| UNSW Student Fee Policy & Procedure（押金按 visa risk rating / 50% 反悔费 / 退款豁免 / Bengaluru Schedule 1） | `scratchpad/au/unsw-feepolicy.pdf` / `unsw-feepolicy.txt` |
+| RMIT CoE 页（conditional CoE / CoE 维护义务 / CoE 签发条件） | `scratchpad/au/rmit-coe.html` / `rmit-coe-main.txt` |
+| UTAS 关键日期（2026 / 2027 两周期并列） | `scratchpad/au/utas-appdates.md` |
+| UTAS 接受 offer（押金 + 医保 → eCoE） | `scratchpad/au/utas-accepting.md` |
+| Northeastern OGS 资金证明（I-20 逐条规格与可/不可接受资金来源） | `scratchpad/ogs_financial-requirements.txt` |
+| Cornell 申请系统（CollegeNET ApplyWeb 取证） | `scratchpad/us/cornell/p_www_applyweb_com_instructions_cornellg.html` |
+| UCL 语言要求分级（Level 1–5 与 IELTS/TOEFL 映射） | `scratchpad/ucl/english.md` |
+| UCL Computer Science MSc（PS 一页 A4 / 两封推荐信 / 6–8 周决策） | `scratchpad/ucl/cs-msc.md` |
+| UCL 个人陈述（3,000 字符 / 两页 A4） | `scratchpad/ucl/ps.md`、`scratchpad/uk/ucl-pg-personal-statement.txt` |
+| UCL 成绩单与中国「成绩证明」要求 | `scratchpad/ucl/transcript.txt` |
+| UCL PGCE（ENIC 明确拒收 / 推荐信系统邀请时点） | `scratchpad/ucl/pgce.txt` |
+| UCL Management MSc 附加材料（4 × 4,000 字符 essay + 面试） | `scratchpad/ucl/addreq.txt` |
+| Manchester MSc ACS 入学要求（China 87% / high-ranking institutions / CV >3 年） | `scratchpad/man/acs-entry.txt` |
+| Manchester 授课型 CS 申请材料（两封学术推荐信 / statement of aims 半页 A4 / CV） | `scratchpad/man/cs-apply.txt` |
+| Alliance MBS 国际入学要求（China 80–85% / 院校层级进入评估要素） | `scratchpad/man/ambs-intl.txt` |
+| Alliance MBS 申请文件（推荐信按需索取 / CV >2 年工作经验） | `scratchpad/man/ambs-docs.txt` |
+| Manchester MBA（UK NARIC 作参照 / top 25% of class） | `scratchpad/man/mba.txt` |
+| Leeds 硕士申请材料（CV / 两位推荐人联系方式 / 按需联系） | `scratchpad/leeds/apply-masters.txt` |
+| Leeds 中国资格与「使用院校清单」制度声明 | `scratchpad/leeds/china.txt` |
+| Leeds LUBS 申请（PS 500 词 / 两位学术推荐人）与语言要求 | `scratchpad/leeds/lubs-apply2.txt`、`scratchpad/leeds/lubs-eng2.txt` |
+| Leeds EPS 申请（PS 非标配 / CV 用途） | `scratchpad/leeds/eps-apply.txt` |
+| Coventry 语言考试与 pre-sessional（IELTS 门槛与语言班时长） | `scratchpad/cov/engtests.txt`、`scratchpad/cov/presess.txt` |
+| Coventry 研究生申请（推荐信 / IELTS 6.5） | `scratchpad/cov/pg-app.txt`、`scratchpad/cov/ds.txt` |
+| Coventry 护理（ENIC Certificate of Comparability） | `scratchpad/cov/nursing.txt` |
