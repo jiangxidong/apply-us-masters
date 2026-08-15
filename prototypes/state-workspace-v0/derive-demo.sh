@@ -43,8 +43,10 @@ done
 
 echo
 echo "=== 🔴 推荐信闸口（未过闸不得进入任何涉及推荐人邮箱的步骤）==="
-total=$(grep -c '^- \[.\] R' recommenders.md)
-done_n=$(grep -c '^- \[x\] R' recommenders.md)
+# 闸口行的 id 已按 CONTRACT §1.1 的 recommender_id（`r1`…）归一为小写（#43）。
+# ⚠️ 这两个 pattern 原来写死大写 `R`，归一后会双双数到 0，而 `0 -lt 0` 为假 —— 闸口会静默消失。
+total=$(grep -c '^- \[.\] r[0-9]' recommenders.md)
+done_n=$(grep -c '^- \[x\] r[0-9]' recommenders.md)
 echo "  已确认 $done_n / $total"
 [ "$done_n" -lt "$total" ] && echo "  🔴 未过闸 — 推荐信流程阻塞"
 
