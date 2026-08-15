@@ -54,6 +54,18 @@ packets/<program_key>/
 ⚠️ **用 `cksum` 不用 `mtime`**：实测 `git checkout` 会把全部文件的 mtime 刷成同一个值，
 新克隆的仓库里 mtime 恒定失配，等于「每次都重生成」，检测不出任何东西。
 
+🔴 **在落后于契约的分支上跑 `trace-packet.sh` 检查 [4]，输出是无信息的**
+（[ADR 0017](../../../../docs/adr/0017-a-check-that-compares-against-a-forkable-copy-is-vacuous.md)，[#46](https://github.com/jiangxidong/EduApplication/issues/46)）。
+指纹比对的是**本树里的**真相源，而 feature 分支自带一份随分叉一起冻住的真相源副本——
+包和它的参照物被同一次分叉冻在一起，所以它们当然一致。
+
+实测：本分支停在 merge-base `237aae8` 时，两个包 **14 行指纹全绿**；
+合入 `prototype/state-layer`（`ca3a509`，含 #31 的 13 列、#32 的 `points.md` 改写、#21 的 `claims.md`）之后，
+同一个脚本报出 **12 行 🔴**。翻转的唯一变量是参照物换成了权威版本。
+
+→ **在本分支上做任何与包有关的工作之前，先 `git merge prototype/state-layer`。**
+契约与样例的唯一写入方是 `state-layer`；本分支只往前跟，不在这里改契约。
+
 ### ② 二元标记编码成「有没有 ⬜」
 
 **包里不出现 `✓`，也不出现「待核实」这四个字。** 那两个词是真相源的词汇，转述进包就是镜像
