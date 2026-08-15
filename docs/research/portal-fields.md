@@ -399,6 +399,64 @@ UQ 的 `Submit your application` 页在「提交后可在 portal 做什么」列
 
 ---
 
+### B.2 University of Manchester（Oracle PeopleSoft Campus Solutions）
+
+**平台取证（本次亲自 GET）**
+
+| 项 | 字面取证串 | 出处 |
+|---|---|---|
+| 版权声明 | `Copyright © 2000, 2025, Oracle and/or its affiliates.`（另有 `Copyright (C) 1988, 2025, Oracle` 与 2013 版各一处） | `https://pgapplication.manchester.ac.uk/psc/apply/EMPLOYEE/SA/c/CIBAA_MNU.UMOAA_LOGIN_CMP.GBL` |
+| 产品名 | HTML 内 `PeopleSoft` 出现 4 次 | 同上 |
+| URL 结构 | `/psc/apply/EMPLOYEE/SA/c/CIBAA_MNU.UMOAA_LOGIN_CMP.GBL`、`/psp/apply/` —— PeopleSoft 的 psc/psp portal servlet 路径 | 同上 |
+| 登录墙形态 | 直接 GET 组件 URL 被重定向到 `/psc/apply/?cmd=login&errorPg=ckreq&languageCd=ENG`，返回页 `<title>An error has occurred.</title>`，**无任何可见输入框、无 Register 链接** | 同上 |
+
+**⚠️ 曼大最重要的结构性发现：不存在「曼大的申请材料清单」**
+
+同一所学校，三份官方页面对推荐信/个人陈述的要求互相冲突：
+
+| 来源 | 推荐信 | 个人陈述 |
+|---|---|---|
+| **AMBS**（商学院 supporting documents 页） | 申请时**不要**，初审后校方可能来函索取 | **要** statement of purpose，不超过一页 |
+| **MSc Advanced Computer Science**（课程页） | **不要** | **不要**（原文 `References and personal statements are not required for your application to this programme.`） |
+| **CS 系** how-to-apply 页 | 全日制 MSc **要 2 封学术推荐信**；modular 且毕业满 2 年可用 1 封 industrial reference | 未提；modular 路径要 `statement of aims`（约半页 A4） |
+
+**这三处口径无法调和，本次未能解决。** 产品含义很硬：**曼大不能按「学校」建材料库，必须按「学校 × 院系（甚至 × 课程）」建库**。任何"曼大要什么材料"的单一答案都是错的。
+
+**⚠️ 推荐信机制 —— 与 UCL 恰好相反的两个方向**
+
+1. **AMBS 是校方发信给学生**：`we may contact you to request an academic reference so please keep a lookout for a reference request email` —— reference request email 的**收件人是申请人本人**，不是推荐人。这条路径上**不存在**「系统以申请人名义给推荐人发信」的动作，因此不触发 UCL 那条红线。
+2. **CS 系允许推荐信另行邮寄**：`references can be emailed separately if preferred`。
+   → 对照 UCL：`Please do not email any references as we cannot accept references from applicants.`
+   **两校政策直接相反。** 这条差异必须逐校硬编码，跨校套用会直接导致材料被拒收或流程走错。
+
+**文件上传规格 —— 曼大给的是「行为规格」而非「技术规格」**
+
+- 单文件大小上限、允许格式：**公开页完全未给**（记未确认）。这点比 UCL 差。
+- 但曼大给了三条别校没有的**上传行为规则**：
+  1. `Each supporting document should be uploaded separately and not combined into one document.` —— 禁止合并 PDF。
+  2. 🌟 `You should also provide a relevant title for each document which clearly states what that file contains.` —— **本次三国八校调研中唯一明文提出文件命名/标题要求的学校。**
+  3. `Please also refrain from uploading any irrelevant documents not requested below.` —— 禁止塞无关材料。
+- **一处自相矛盾的例外**：英语豁免证明（visa/CAS/BRP/院校信）明确允许 `uploaded within the same file as your CV`，与上面第 1 条「每份分开传」并存。
+- **认证件**：申请阶段**明确不要原件**——`You do not need to send original copies of your degree certificate and transcripts during the application process`，录取后 9 月注册时才带原件。与澳洲部分校要求申请阶段即交 certified copy 相反。
+- **提交后可以补件**：走邮箱 `pgadmissions.ambs@manchester.ac.uk`，须写明 ID number。⚠️ 与 UCL「提交后不得替换或补传任何文件」相反。
+
+**申请费（英国三校里规则最细的）**
+- **£60，只对 8 门商学院课程收**：MSc Accounting／Accounting and Finance／Business Analytics and AI／Digital Marketing／Finance／International Business and Management／Marketing／Management。未列入的课程**不收费**。
+- 必须**在 portal 内先付才能提交**（`You can't submit your application without paying the application fee`），不接受银行转账，**每门课各付一次**。
+- **免申请费**：已申请 Chevening／印尼 LPDP，或符合 Manchester Master's Bursary Scheme，但须交奖学金申请证明。
+
+**中介（agent）政策 —— 又一处与澳洲相反**
+- 曼大**允许中介代为提交申请**，且代申时**申请费由中介支付**，校方不给学生单独的付款链接。
+- 对照 UNSW：`No. You must personally complete the application to study at UNSW.`
+- 英国这边**未见**澳洲那种「按国籍强制走中介」的门槛。
+
+**其他**
+- 自费国际生须先付 **£2,500 学费押金**才签发 CAS（部分申请人更高）。
+- 英语成绩**不可后补**：`We will not make a decision on your application until you submit evidence of your English language ability.` ⚠️ 与 UCL 的「缺英语成绩仍会被审理」相反。
+- 课程特有件：finance 类在读生须交 **Final Year Modules** 清单；境外院校学历须交 **University Grading Scale**；MSc Organisational Psychology 须交 **BPS GBC** 资格证明。
+
+---
+
 ---
 
 ## Part C — US 美国
