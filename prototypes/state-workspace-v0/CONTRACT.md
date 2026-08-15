@@ -523,7 +523,7 @@ owner 的绑定单位是「该文件格式自己的结构单元」，**表格的
 | 9 | `evidence` | `✓ <url>` / `待核实`（可带封闭后缀）—— 它**自己就是**标记 | — | ❌（被 `grep` 匹配） |
 | 10 | `tier_basis` | 一句话，禁 `\|`，禁换行 | ❌ | ❌ |
 | 11 | `tier_void_if` | 一句话，禁 `\|`，禁换行 | ❌ | ❌ |
-| 12 | `pseudo_safer` | ASCII `yes` / `no` / `unknown` | ❌ | ✅ |
+| 12 | `pseudo_safer` | ASCII `yes` / `no` / `unknown`，语义见 `CONTEXT.md`「伪保底」 | ❌ | ✅ |
 | 13 | `status_note` | 一句话，禁 `\|`，禁换行；`status=dropped` 时**必填** | ❌ | ❌ |
 
 🔴 **列序是契约的一部分，不只是排版。** 判断层四列**追加在末尾**，因此 §4.5 解析约定下的
@@ -534,8 +534,14 @@ owner 的绑定单位是「该文件格式自己的结构单元」，**表格的
 一个 `$10 == ""` 的机械判断退化成语义判断，而 `tier_basis` 空与非空**正是一条机械判别式的输入**
 （`tier_basis` 空 ⇒ `tier` 必须是 `undecided`）。空格不影响 `awk` 的 `NF` 计数（已实测）。
 
-⚠️ **`pseudo_safer` 判不出来时填 `unknown`，不填 `no`。** `no` 断言「已判定它不是伪保底」，
-而伪保底要写满「名义门槛低 + 方向申请量集中 + 作废条件」才谈得上判定；没做过判定就填 `no` 是凭空断言。
+⚠️ **`pseudo_safer` 判不出来时填 `unknown`，不填 `no`**（[ADR 0014](../../docs/adr/0014-pseudo-safer-annotates-the-users-prior-not-the-tier.md)）。
+`no` 断言「**已看过两半信号并判定为否**」；默认值是 `unknown`，把没看过的行填 `no` 会让这一列当场作废。
+伪保底的两半（名义门槛低 / 方向极挤）**各自要有 `channels/` 里一条 `✓` 事实行**，
+**不复用 `tier_basis` / `tier_void_if`**——ADR 0014 推翻了 #11「复用」那半句，它的作废条件**不落盘**（可从两条 `✓` 现算）。
+
+🔴 **第三条机械判别式**：`pseudo_safer = yes` ⇒ **`tier ≠ safer`**（ADR 0014）。
+伪保底纠正的是**用户的先验**，不是产品的分档——让它推翻一个由第二条线得来的 `safer`，
+正是 [ADR 0009](../../docs/adr/0009-safer-is-defined-by-the-programs-second-published-line.md) 把标定权交给学校时堵上的洞。
 
 ## 5. 文书的两个正交轴
 
