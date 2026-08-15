@@ -192,6 +192,7 @@ _Avoid_: 选校表、候选池
 | **B · 录取群体分布** | `typically` / `average` / `median` / `middle 50%` | **录取结果** | 落在其中 = `match`；越过**公布区间的上界** = `safer` |
 
 ⚠️ 触发措辞只判定第二条线的**类型**，**不判定一条线是不是「第二条」**——那取决于项目是否另有更低的最低线。UT Dallas 的 `"3.0 or better is expected"` 用了类型 A 措辞，但它是该项目**唯一**的线 → 无第二条线可跨。
+⚠️ **措辞与实质冲突时按实质判**——触发措辞是**线索**，不是判据。类型的定义是语义的（这句话在描述「谁有资格申请」还是「谁被录取了」），不是词表的。UIUC Siebel School 的项目对照表列头写 `Undergraduate GPA (Recommended, 4.0 scale)`（类型 A 措辞），但学校**自己的 FAQ 给这个数字下了定义**：`Our website states the average GPA of admitted students. It is not a minimum.` → 描述的是录取结果，**判类型 B**（[#45](https://github.com/jiangxidong/EduApplication/issues/45) 实测）。代价是实打实的：读成类型 A，跨过 3.2 就得出 `safer`；读成类型 B，正确答案是 `match`。**见到 `recommended` / `preferred` 时，再查一次学校有没有在别处解释过这个数字。**
 ⚠️ 类型 B 通往 `safer` **必须有离散度**（公布区间）；只给单个中位数或下界时**不判** `safer`。跨过「录取者典型下界」只证明你和大多数被录的人一样，那是 `match` 的定义。
 _Avoid_: 明显超过、余量、安全线
 
