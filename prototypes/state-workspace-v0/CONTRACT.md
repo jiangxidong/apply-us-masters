@@ -41,13 +41,17 @@
 | `packets/<program_key>/**` | 由 #8 定 | **可再生产物**，删了能重建 | 准备包阶段 |
 | `log.md` | Markdown，append-only | **跨会话交接** | 每个阶段结束时追加 |
 
-> 🔴 **本表已落后三张票，尚未逐行重排**（下一个动 `#4` 契约的 session 请一并处理）：
+> 🔴 **本表停在 11 行，实际已是 14 个文件，落后四张票**（下一个动 `#4` 契约的 session 请**四处一起**吃进去；
+> 逐条回填评论都在 [#4](https://github.com/jiangxidong/EduApplication/issues/4) 上）：
 >
-> | 变更 | 来自 | 状态 |
-> |---|---|---|
-> | `essays/materials/` **提到根 `materials/`** —— 推荐信线成为第二个消费方，`essays/` 前缀在说谎 | [#12](https://github.com/jiangxidong/EduApplication/issues/12) | 表里仍写旧路径 |
-> | 新增**第 12 个文件** `recommenders/drafts/<recommender_id>.md`，受起草授权门控（无授权则该目录不该存在） | [#12](https://github.com/jiangxidong/EduApplication/issues/12) | 表里没有 |
-> | 新增**第 13 个文件** `claims.md`（工作区根，Markdown 表）—— 主张是全局一等对象，文书与推荐信共用同一集合 | [#21](https://github.com/jiangxidong/EduApplication/issues/21) | 表里没有 |
+> | 变更 | 来自 |
+> |---|---|
+> | `essays/canonical/per-program/<program_key>.md` —— 逐项目文书段 | [#18](https://github.com/jiangxidong/EduApplication/issues/18) |
+> | `essays/materials/` **提到根 `materials/`**（推荐信线成为第二个消费方，`essays/` 前缀在说谎）+ 新增 `recommenders/drafts/<recommender_id>.md`（受起草授权门控，无授权则该目录不该存在） | [#12](https://github.com/jiangxidong/EduApplication/issues/12) |
+> | `documents/**` 获得七槽位内部结构；`profile.md` 新增主键 `institution_id` | [#19](https://github.com/jiangxidong/EduApplication/issues/19) |
+> | 新增 `claims.md`（工作区根，Markdown 表）—— 主张是全局一等对象，文书与推荐信共用同一集合 | [#21](https://github.com/jiangxidong/EduApplication/issues/21) |
+>
+> ⚠️ #18 与 #12 都自称「第 12 个文件」，别按票面数——**14 是把四张票合起来数出来的**。
 >
 > `claims.md` 的四列：`claim_id`（ASCII 主键，形如 `c01`）/ 断言（中文自由文本，禁 `|`）/
 > `materials`（支撑素材 id 列表，空格分隔；**空 = 缺素材缺口**）/ `voice`（`self` / `referee` / `both`）。
