@@ -1,0 +1,21 @@
+# `✓` 由一次「取回」挣得，不由运行时的联网能力决定
+
+产品锁定过一条红线：「绝不凭记忆报 deadline」，执行手段是在 frontmatter 里声明 `allowed-tools`。[#9](https://github.com/jiangxidong/EduApplication/issues/9) 查明这条保障是 **Claude Code 独有**——Codex 没有 per-skill `allowed-tools` 的对应物，且它的 `web_search` 默认值是 `cached`（"uses an OpenAI-maintained index without external web access"）。也就是说，在两个目标运行时之一上，红线在**默认配置下**就已经失守。
+
+最自然的补救是**探测运行时的联网能力档位**，探到 `cached` / `disabled` 就关掉 `✓`。实测下来这条路是坏的：档位在配置文件里**不可见**（本机 `~/.codex/config.toml` 根本没有 `web_search` 键，跑的是默认值），要判断就得硬编码「哪个版本的默认是什么」——正是本产品判为「会腐烂」的那类知识；而且 CLI 的 `-c web_search=live` 与 profile 都能覆盖文件，探测结果本身就可能是假的；顺带还要读一个含明文密钥的全局配置，与 [#17](https://github.com/jiangxidong/EduApplication/issues/17) 的读取线直接冲突。
+
+决定：**把闸门从「运行时能力」下沉到「每条事实的取证动作」。** `✓ <url>` 的准入条件是——该 URL 的**页面正文**在本次会话中进过上下文（一次**取回**），**或**用户提供了该事实与该链接。搜索结果摘要不算取回。运行时能力**不再是任何闸门的输入**；产品里根本不存在「联网档位」这个实体，因而也不为它造词。
+
+行为探测仍然做，但**只做预警、不做闸门**：在首次需要产出 `✓` 事实之前实际取一次，失败就告知用户后果与出路，然后照常干活——探测结果不否决后续的真实尝试，用户中途修好网络不需要任何机制去发现。探测结果**绝不落盘**：联网能力是运行时属性、不是申请人资产，落进工作区就是派生视图判别式里的「镜像」（换台机器就成假话）。
+
+## Consequences
+
+**`✓` 比想象中难拿，全表 `待核实` 是常态而非异常。** 美国研究生院大量 deadline 藏在 PDF 与 JS 渲染的表格里，取回失败率不低。这是这条判别式的真实代价，不是实现缺陷。
+
+**用户成为 `✓` 的第二条合法来源。** 因为 `✓` 断言的是「事实取自这一页」而非「agent 看过这一页」，用户自己查到并贴出链接即可打 `✓`，责任随之转移。这一条是产品在受限运行时下仍然可用的**唯一出路**——没有它，[#11](https://github.com/jiangxidong/EduApplication/issues/11) 的定稿闸门（`status ∈ {applying, submitted}` 且 `deadline = 待核实` → 报错）会让任何项目都推不到 `applying`。于是地图锁定的那句「查不到，这是你要自己核实的清单」得到了字面实现：**降级不降标准，只把取证劳动转移回用户**。
+
+**三道已锁的硬闸门一条都不用软化，本决定不修改任何已锁契约。** [#11](https://github.com/jiangxidong/EduApplication/issues/11) 的定稿闸门、[#18](https://github.com/jiangxidong/EduApplication/issues/18) 的 why 段两级闸门、[#16](https://github.com/jiangxidong/EduApplication/issues/16) 的 `tier_basis` 准入测试全都锚在「有没有可核实事实」上，而不是锚在「agent 有没有能力去查」上——它们天然吸收了取回失败这种情形。取回不到时 why 段走「文件缺失 = 警告放行」那一级（**先不写**才是正确后果），分档退化成全 `undecided`（「凑不齐不凑」「写不满就不写」），都是正确输出。
+
+**[ADR 0001](0001-evidence-stays-binary-with-a-closed-suffix.md) 的封闭原因后缀词表不扩充。** 「因为取不回来所以没核实」不新增后缀：后缀的判别式是「用户的下一步不同」，而它的下一步与 `（无）`「还没查」完全相同（去官网查）。更硬的理由是，那会把**运行时状态刻进用户的长期资产文件**，换个运行时重跑就变成假话，而这个词表要被机械汇总。
+
+**残余风险：在 Codex 上这条红线没有运行时执行手段。** 约束从工具门控挪到了产物形态（这正是对「Codex 无 `allowed-tools`」的正确回应，因为工具门控本就是两个运行时不对等的那一面），但一个漂移的模型仍可凭记忆写出 `✓ <url>` 行，产品拦不住。明确**否决**了「扩展 `log.md` 记取证动作再自检」的方案——用 agent 自己写的日志验证 agent 自己的行为是循环论证，只是把假话搬了个地方。唯一真正可验的手段落在回归测试上：[#14](https://github.com/jiangxidong/EduApplication/issues/14) 必须包含一项「无联网环境下 dry-run 三档虚拟档案，断言产物里不出现任何 `✓`」。
