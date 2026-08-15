@@ -281,7 +281,7 @@ LC_ALL=en_US.UTF-8 awk '/^#{2,4} /{ t=$0
 节名因此必须**锚定在头部**。剥离只放行行首那一串**非文字**装饰（`🔴` / `⚠️` / `🔒` / 全角空格 / `**` / `——`），
 锚点一步不动：`## ⚠️ 与 Cornell 冲突 —— 材料上传` 剥离后仍以 `与` 开头，**照旧 FAIL**——这正是要保住的。
 
-🔴 **行首标记不封词表。** 本契约的三张封闭词表（法定节名 / `待核实` 后缀 / `tier`）都是因为**要被机械汇总**才封的；
+🔴 **行首标记不封词表。** 本契约**实持一张**封闭词表——法定节名；`待核实` 后缀归 [ADR 0001](../../docs/adr/0001-evidence-stays-binary-with-a-closed-suffix.md)（全表在 `CONTEXT.md`「证据」），`tier` 归 `CONTEXT.md`「分档」（[#26](https://github.com/jiangxidong/EduApplication/issues/26) / [ADR 0011](../../docs/adr/0011-the-glossary-defines-words-the-contract-holds-the-values.md) 已判，§4.5 与 §4.6 第 6 行都已自陈）。**别再写「三张」这个计数**（[#59](https://github.com/jiangxidong/EduApplication/issues/59)）。三者都是因为**要被机械汇总**才封的；
 行首标记不参与任何汇总，是纯装饰。封表买不到任何机械能力，只换来一个维护面：谁哪天写了 `🚨`，检查当场 FAIL。
 
 **节序自由。** 原「节按上表顺序排列」**已取消**（[#28](https://github.com/jiangxidong/EduApplication/issues/28)），
@@ -684,7 +684,7 @@ $ awk 'BEGIN{ print ("中文" ~ /^阶段$/) }'
 
 **解析约定**：Markdown 表用 `awk -F'|'` 解析，前导 `|` 会产生一个空的 `$1`，**第 N 列是 `$(N+1)`**。
 
-跑 `./derive-demo.sh` 可以复现全部派生视图。
+跑 `./derive-demo.sh` 可以复现其中大部分派生视图（**不是全部**——`deadline 日历` / `完成度自检` / `每校材料缺口` / `请求推荐邮件草稿` 在脚本的 14 个小节里没有任何对应，[#59](https://github.com/jiangxidong/EduApplication/issues/59) 实测）。
 
 ---
 
@@ -705,7 +705,7 @@ owner 的绑定单位是「该文件格式自己的结构单元」，**表格的
 | 4 | `program` | 自由文本，可中文 | ❌ | ❌ |
 | 5 | `channel_key` | ASCII，外键 → `channels/<channel_key>.md` | ❌ | ❌（被 join） |
 | 6 | `tier` | ASCII 枚举，**取值全表在 `CONTEXT.md`「分档」** | ❌ 永不担保（判断） | ✅ |
-| 7 | `deadline` | 日期，或 `待核实`（可带 §4 的封闭后缀） | ✅ **唯一被担保的一列** | ❌ |
+| 7 | `deadline` | 日期，或 `待核实`（可带 [ADR 0001](../../docs/adr/0001-evidence-stays-binary-with-a-closed-suffix.md) 的封闭后缀） | ✅ **唯一被担保的一列** | ❌ |
 | 8 | `status` | ASCII 枚举，**取值全表在 `CONTEXT.md`「状态」** | ❌ | ✅ |
 | 9 | `evidence` | `✓ <url>` / `待核实`（可带封闭后缀）—— 它**自己就是**标记 | — | ❌（被 `grep` 匹配） |
 | 10 | `tier_basis` | 一句话，禁 `\|`，禁换行 | ❌ | ❌ |
