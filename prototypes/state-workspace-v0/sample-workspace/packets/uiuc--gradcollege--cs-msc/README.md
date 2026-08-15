@@ -92,7 +92,7 @@ source_fingerprint:
 ⚠️ 这两条**并不互斥**（[#14](https://github.com/jiangxidong/EduApplication/issues/14) 更正）——
 一份合并的灰度低分辨率 PDF 两校都收。canonical 存高分辨率彩色逐页单文件的理由是
 **降级可逆、升级不可逆**，不是「一份成品满足不了两校」。
-本产品目前真正互斥的那一对在第 5 段：**Cornell 禁简历 vs UIUC 简历条件必填**。
+第 5 段那一对（Cornell 默认禁简历 vs UIUC 默认要简历）是**默认值相反**，也不是互斥——两边都带条件。
 
 ⚠️ **本段的学校约束可能不全**，见文末缺口表第 1 行。
 

@@ -2,15 +2,26 @@
 
 形态由 [#8 网申准备包的交付形态](https://github.com/jiangxidong/EduApplication/issues/8) 定。
 两个样例包：`cornell--gradschool--cs-meng/` 与 `uiuc--gradcollege--cs-msc/`。
-**故意取这一对**——它们身上有本产品目前唯一一处**真正无法调和**的约束：
-🔴 **Cornell 明令禁止附加材料（`Publications, award certificates, resumes, theses`，连简历都不收），
-而 UIUC 的 `cv_upload` 是条件必填。** 一所禁交、一所必交，同一个 `documents/cv/` 槽位，没有交集。
+**故意取这一对**——它们在同一个 `documents/cv/` 槽位上**默认值相反**：
+🔴 **Cornell 默认禁交**（`Publications, award certificates, resumes, theses` —— `不允许(除非 field 事先批准)`），
+**UIUC 默认要交**（`cv_upload` —— `条件必填(多数项目)`）。
 一个包渲染对了不说明任何事，两个同时对才说明设计真的在读 `channels/`。
 
-⚠️ **成绩单规格不是这样的例子**（[#14](https://github.com/jiangxidong/EduApplication/issues/14) 已更正）：
+⚠️ **两边都是条件式的，所以严格说不是「无法同时满足」**：Cornell 的 field 事先批准了就能交，
+UIUC 少数项目不要。**别把它说成互斥**——那会重蹈下面这条被更正过的错。
+真正无条件的那一侧在池外：**Columbia SEAS 的简历是 `必填`，没有条件**，
+它与 Cornell 的默认禁交放在一起才是最硬的一对。
+
+产品要的不是「互斥」这个性质，是**默认值相反且两个默认都是操作性的**：
+渲染一份通用成品，要么教 Cornell 用户违反默认，要么让 Columbia / UIUC 用户漏交必填件。
+
+⚠️ **成绩单规格也不是互斥的例子**（[#14](https://github.com/jiangxidong/EduApplication/issues/14) 已更正）：
 Cornell 要「合并 + 清晰」、UIUC 要「<200dpi 灰度」，方向相反但**并不互斥**——
-一份合并的灰度低分辨率 PDF 同时满足两校。两层结构的正当性来自**降级不可逆**，
-不是来自「存在无法同时满足的约束」。别再照旧说法转述。
+一份合并的灰度低分辨率 PDF 同时满足两校。
+
+🔴 **两层结构的正当性一律锚在「降级不可逆」上，不锚在任何互斥断言上。**
+互斥断言脆——它总能被一个「除非…」条款推翻，而本仓库已经在这上面栽过两次
+（#14 更正成绩单那次，和 #8 结案时把简历这一对说成互斥那次）。
 
 ## 形态
 
@@ -85,5 +96,12 @@ packets/<program_key>/
 2. 每条 `← channels/<key>.md § <节名>` 指针可解析到真实存在的节
 3. 每个渲染物的 `rendered_from` 真相源存在
 4. `source_fingerprint` 与当前真相源一致（陈旧包检测，规则 ①）
+
+## ⚠️ 这个脚本不在 CI 里
+
+`trace-packet.sh` 只活在 `prototype/application-packet` 分支，**没有任何自动执行**——
+同 [#35](https://github.com/jiangxidong/EduApplication/issues/35) 查出的孤儿检查（ADR 0008 的七条从未实现）。
+规则 ②（包里零 `✓` / 零「待核实」）与规则 ③（缺的约束不就地补）**在别的分支上没有任何东西在执行它们**。
+读到这里的下一个 session 别默认检查跑过了——自己跑一遍。
 
 **不预建空目录**：竞品坑 —— `taught-master` 的 examples 02–05 是空表头骨架，装了也没人能用。
