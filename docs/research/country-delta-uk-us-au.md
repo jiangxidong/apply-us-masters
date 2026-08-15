@@ -222,7 +222,7 @@ Northeastern / UIUC / UT Dallas 的 enrollment deposit：**未找到**。
 >
 > **明确不接受**：`Investment portfolios (Examples: stocks, bonds, mutual funds)` / `Retirement plans` / `Public provident funds` / `Available lines of credit` / `Wire transfers` / `Deeds to real estate` / `Leases with rental income` / `Salary agreements or paystubs` / `Income tax forms` / `Material items (examples: livestock, land, jewelry, fur)`
 
-来源：https://international.northeastern.edu/ogs/new-students/financial-requirements/ ｜2026-08-14｜**estimate of expenses for academic year 2026-2027**
+来源：`scratchpad/ogs_financial-requirements.txt`（Northeastern Office of Global Services · Financial Requirements）｜2026-08-14｜页面自述 **estimate of expenses for academic year 2026-2027**｜⚠️ **原始 URL 未随抓取保存，见附录 B 级**
 
 > ### 🔴 结论：英国的「交押金 → 拿 CAS」在美国**没有对应物**。
 > 美国是两条**互不相交**的链：
@@ -392,7 +392,7 @@ Semester 3 2026（节选）：申请截止 **28 August 2026**，接受截止 **1
 | 2027 | **2 Jul** | Semester 2 非配额本科与研究生课程最后截止（11:59 pm AEST） |
 | 2026 | 30 Sep | 部分**配额**课程首轮截止；另一些课程"Late applications for these courses **will not** be accepted" |
 
-来源：https://www.utas.edu.au/study/apply/key-dates ｜2026-08-14｜**2027 与 2026 两个周期并列公布**
+来源：`scratchpad/au/utas-appdates.md`（University of Tasmania · Key dates）｜2026-08-14｜页面自述 **2027 与 2026 两个周期并列公布**｜⚠️ **原始 URL 未随抓取保存，见附录 B 级**
 
 > ⚠️ 该表为**校级综合**日程（本科 + 研究生同表），未单独标注国际生。
 > **UTAS 国际生是否另有更早的截止日：未找到。**
@@ -675,7 +675,7 @@ UCL 用 5 档制，课程页只写档位，档位到分数的映射在校级页�
 | Level 5 | Overall 8.0，每项 ≥ 8.0 |
 
 UCL Computer Science MSc 的课程页只写一句：`"The English language level for this course is: **Level 2**"`。
-来源：https://www.ucl.ac.uk/prospective-students/graduate/english-language-requirements ｜2026-08-14
+来源：`scratchpad/ucl/english.md`（UCL 校级 English language requirements）＋ `scratchpad/ucl/cs-msc.md`（课程页 Level 2）｜2026-08-14｜⚠️ **原始 URL 未随抓取保存，见附录 B 级**
 
 其余英国样本：
 - **Manchester CS MSc**：`"IELTS: overall score of 7.0 with no sub-test below 6.5."` ／ `"TOEFL iBT: at least 100 overall with no sub-test less than 22."`
@@ -745,7 +745,7 @@ Leeds 把清单**按学院分成四份**：Business School 一份、School of Co
 > AMBS：`"China: We typically require a 4-year bachelor's degree with a minimum average of **between 80-85%** from a well ranked institution. **Requirements vary dependent on the institution of study and the courses applied to.**"`
 > 并明确把院校层级写进评估要素清单：`"Note that all of the information you submit within your application, including your personal statement, academic references, English Language ability, **and the standing of the institution you are studying in** are all used to make a decision on your application."`
 
-来源：https://www.manchester.ac.uk/study/masters/courses/list/06915/msc-advanced-computer-science/entry-requirements/ ｜https://www.alliancembs.manchester.ac.uk/study/masters/entry-requirements/ ｜2026-08-14
+来源：`scratchpad/man/acs-entry.txt`（MSc Advanced Computer Science 入学要求）＋ `scratchpad/man/ambs-intl.txt`（Alliance MBS 国际入学要求）｜2026-08-14｜⚠️ **原始 URL 未随抓取保存，见附录 B 级**
 
 > **⚠️ 对产品最关键的一句**：Leeds 的清单是**可穷举、可缓存、可查询**的结构化数据；
 > Manchester 的规则是**不可穷举**的（「well ranked」没有定义、名单不公开）。
