@@ -1,6 +1,11 @@
 # 状态层文件契约 v0（原型）
 
-> ⚠️ **术语以 main 分支的 `CONTEXT.md` 为准**（[#13](https://github.com/jiangxidong/EduApplication/issues/13) 已定稿）。本文件与之冲突处一律以 `CONTEXT.md` 为准。
+> ⚠️ **边界按范围拆，不按文件拆**（[ADR 0011](../../docs/adr/0011-the-glossary-defines-words-the-contract-holds-the-values.md)）：
+> **词的定义**（词的含义、中文名 ↔ ASCII 标识符、词与词的边界）以 `main` 分支的 [`CONTEXT.md`](../../CONTEXT.md) 为准
+> （[#13](https://github.com/jiangxidong/EduApplication/issues/13) 已定稿）；
+> **v1 的取值与归属**（有哪些文件、哪些节、哪些槽位，各归哪个阶段，长在什么路径上）以**本文件**为准。
+> 原来这里写的是「本文件与之冲突处一律以 `CONTEXT.md` 为准」——那句话与 §1「本表是唯一一张归属表」互相指对方，
+> 读到哪份都能自证，[#26](https://github.com/jiangxidong/EduApplication/issues/26) 拆掉了这个环。
 >
 > **这是原型，不是定稿。** 服务于 [#4 状态层的文件契约长什么样](https://github.com/jiangxidong/EduApplication/issues/4)。
 > 样例工作区见 `sample-workspace/`，里面填的是**虚构申请人 + 三所真实美国项目的真实约束**（取自 #6 的 303 行字段调研）。
@@ -32,9 +37,11 @@
 > [#9](https://github.com/jiangxidong/EduApplication/issues/9) 的表已降级为「阶段 → skill」映射、**不再出现任何路径字面量**；
 > 按 #23 的原话，`CONTEXT.md` 只定义词、不承载表。
 >
-> ⚠️ **但此刻事实并非如此**：`main` 上的 `CONTEXT.md`（317 行起）也存了一份完整的十节表，含 owner 列——
-> #23 落盘时自己写的。「唯一」现在是**决议**，不是**现状**。
-> 转 [#26](https://github.com/jiangxidong/EduApplication/issues/26) 裁决，本次合并不就地拍板（见 §1.5 ④）。
+> ✅ **「唯一」现在是现状，不再只是决议**（[#26](https://github.com/jiangxidong/EduApplication/issues/26) /
+> [ADR 0011](../../docs/adr/0011-the-glossary-defines-words-the-contract-holds-the-values.md)）。
+> `main` 上的 `CONTEXT.md` 曾存了第二份完整十节表（含 owner 列，#23 落盘时自己写的），已删除——
+> 词表本身、owner 列、排序与写入规则**整个归本节**，`CONTEXT.md` 的「节」词条只留机制（什么是节 / 封闭词表 /
+> 禁止互为前缀 / 前缀匹配）。指针环按**范围**拆：**词的定义以 `CONTEXT.md` 为准，v1 的取值与归属以本文件为准。**
 >
 > **owner 列一律填阶段，不填 skill。** 七个阶段：**冷启动 / 画像 / 选校 / 文书 / 材料 / 推荐信 / 准备包**
 > （见 [`CONTEXT.md`](../../CONTEXT.md) 的「阶段」词条）。`材料` / `推荐信` / `准备包` 眼下同属 `assemble-packet`，
@@ -185,6 +192,9 @@ LC_ALL=en_US.UTF-8 awk '/^#{2,4} /{ t=$0
 
 ### 1.3 `documents/` 的七个槽位
 
+> 🔒 **本节是「槽位 → 目录形状 / 逐院校 / 敏感级」的唯一权威**（ADR 0011）。`CONTEXT.md` 的「槽位」词条只留
+> **中文 ↔ 标识符**两列——那是「三重身份」总则的内容，不随路径结构变；这三维随路径结构变，是镜像。
+
 **一个槽位 = 一个一级目录 = 一个敏感级。** 目录形状取「按槽位分层、院校在下」——
 反过来会让「槽位自带敏感级」当场失效（得下钻一层才知道能不能读）。
 
@@ -241,9 +251,11 @@ Cornell 的 SSN 涂黑要求因此落成「**落槽位时**提醒」，不是「
 ③ **`log.md` 由每个阶段追加**：字面上撞「一个不含节结构的文件有且只有一个阶段可以写它」。
 它 append-only、从不被改写，大概率是正当豁免——但豁免没被写下来过。
 
-④ **§1.2 这张十节表本身存了两份**：`main` 的 `CONTEXT.md`（317 行起）与本节各一份，
-而 #23 §7 的原话是「唯一一张」且「`CONTEXT.md` 只定义词，不承载表」——**决议与它自己的落盘不一致**。
-横跨 `main` 与 `prototype/state-layer` 两个分支，哪边就地拍板都会静默覆盖一条已锁决议。→ #26
+④ ~~**§1.2 这张十节表本身存了两份**~~ — **已结**（[#26](https://github.com/jiangxidong/EduApplication/issues/26) /
+[ADR 0011](../../docs/adr/0011-the-glossary-defines-words-the-contract-holds-the-values.md)）。
+`CONTEXT.md` 那份已删；判据是**镜像判别式 + 消费方判据**（见 ADR 0011），本节是唯一权威。
+连带落位的还有两处：`documents/` 七槽位**拆列**——中文 ↔ 标识符留 `CONTEXT.md`，目录形状 / 逐院校 / 敏感级归 §1.3；
+`tier` 五档**方向相反**，归 `CONTEXT.md`（五个档各自就是词），§4.5 只留规则与举例。
 
 ---
 
@@ -415,15 +427,16 @@ LC_ALL=C             →  [<3 个乱码字节> 推荐信机制 —— 风险 A�
 **因此两条硬规则：**
 
 1. **`programs.md` 里任何会被统计的列（`tier` / `status`）只放 ASCII 枚举值。**
-   `tier` = `reach` / `match` / `safer` / `undecided` / `ineligible`（**五档**，[#22](https://github.com/jiangxidong/EduApplication/issues/22) 补上最后一档），
-   `status` = `considering` / `shortlist` / `applying` / `submitted` / `dropped` / …
-   中文标签（冲刺 / 匹配 / 较稳 / 待判 / 未达门槛）是**展示层**的事 —— 措辞归 [#11](https://github.com/jiangxidong/EduApplication/issues/11)。
+   `tier` 取 `reach` / `safer` / … （**五档**），`status` 取 `considering` / `submitted` / … ——
+   **完整枚举与每一档在断言什么，归 [`CONTEXT.md`](../../CONTEXT.md) 的「分档」「状态」词条**，本节不复述。
+   中文标签是**展示层**的事，措辞归 [#11](https://github.com/jiangxidong/EduApplication/issues/11)。
 
-   > `ineligible` = 该项目**全部公开维度中至少一个已取证未达标**。与 `undecided` 的切分必须跟着枚举一起落，否则必混：
-   > **「还没考托福」= `undecided`**（不知道是否满足）；**「考了 95、要求 100」= `ineligible`**（知道不满足）。
-   > 它不能塞进 `undecided`（#11 的机械判别式是「`tier_basis` 空 ⇒ 必须 `undecided`」，而未达标的行 `tier_basis` 恰恰填得满），
-   > 也不能走 `status=dropped`（[ADR 0002](../../docs/adr/0002-one-program-pool-one-status-axis.md)：`status` 是**用户对项目做什么**，硬申一个差 0.3 的项目是合法选择）。
-   > 唯一新增的机械规则：**`tier = ineligible` ⇒ `tier_basis` 非空**。`tier_void_if` 列**语义不变**（它本就中性，不区分方向）。
+   > ⚠️ 这里**故意只举两个值、不写全**——写全了本节就变成第二个权威，而 `tier` 的方向与归属表相反：
+   > owner 是契约的内容，而 `reach` / `safer` **各自就是词**（[ADR 0011](../../docs/adr/0011-the-glossary-defines-words-the-contract-holds-the-values.md)）。
+   >
+   > 唯一留在本文件的 `tier` 规则，是它作为**落盘约束**的那一条：**`tier = ineligible` ⇒ `tier_basis` 非空**
+   > （[#22](https://github.com/jiangxidong/EduApplication/issues/22)）。`tier_void_if` 列**语义不变**（它本就中性，不区分方向）。
+   > `undecided` 与 `ineligible` 的切分是**词的含义**，见「分档」词条。
    自由文本列（`school` / `program` / `evidence`）可以是中文，因为它们只被 `grep` / `awk` 正则匹配，不被聚合。
 
 2. **禁止 `uniq` 与 `sort -u`。** 计数走 `awk '{c[$0]++} END{for(k in c) print c[k], k}'`，
