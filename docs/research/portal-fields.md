@@ -16,6 +16,8 @@ Part B（UK 三校）/ Part C（US 三校）/ Part D 跨国复用分析 / Part E
 **`source_type` 允许值（枚举已锁定，勿新造）**
 `live public form`（登录前真实 HTML 表单，limit 取自 `maxlength`/`required` 属性）｜`official how-to-apply page`｜`official checklist`｜`official PDF application guide`｜`login-walled — not confirmable`
 
+**`type` 列的一个约定**：`type=rule` 表示该行记录的是**上传规则 / 系统行为 / 政策禁令**（如"禁止合并 PDF"、"提交后不可修改"、"禁止申请人转交推荐信"），**不是申请人要填的字段**。做字段复用度统计时必须先 `awk -F'\t' '$6!="rule"'` 排除这 39 行，否则会污染结果。
+
 **取证边界（三国一致）**：所有 portal 页面**仅 GET 读取登录前公开页，未注册、未登录、未 POST、未填写任何字段**。登录墙后的字段一律不猜——改用官方 how-to-apply 页 / checklist / PDF 指引，并在 `source_type` 列如实标注来源档次；确实无法确认的记 `未确认(登录墙后)`。
 
 **阅读顺序建议**：赶时间就直接看 **Part D「跨国字段复用分析」**——那是决定"准备包能不能省力"的一节，Part A/B/C 是其取证底稿。
@@ -761,13 +763,25 @@ Cornell 要 **Academic Statement of Purpose** 和 **Personal Statement** 两份*
 复用度用 TSV 的 `normalized_key` 列**机械计算**，不靠肉眼归类：
 
 ```sh
-# 每个 key 覆盖多少所学校（先按「学校 × 字段」去重，避免同一学校同一字段跨 section 重复计数）
-tail -n +2 docs/research/portal-fields.tsv | cut -f1,5 | sort -u | cut -f2 | sort | uniq -c | sort -rn
+# 只统计「字段行」，排除 type=rule 的规则/系统行为行
+tail -n +2 docs/research/portal-fields.tsv | awk -F'\t' '$6!="rule"' \
+  | cut -f1,5 | sort -u | cut -f2 | sort | uniq -c | sort -rn
 ```
 
-**一处必须声明的口径**：统计时把几组概念同义的 key 合并计算——`personal_statement_upload` / `statement_of_purpose` / `academic_statement` 并入 `personal_statement`；`translation_upload` 并入 `transcript_translation_upload`；`referee_details_cs` / `referee_details_eps` 并入 `referee_details`。**TSV 原文保留各自的原始 key**（因为它们的约束确实不同），合并只发生在本节的统计里。
+**规模**：303 行 = **264 行字段** + **39 行 `type=rule`**（后者是上传规则、系统行为、政策禁令等，不是申请人要填的字段，计入复用度会污染统计）。264 行字段共 **100 个不同 key**，合并同义 key 后 **94 个**，其中 **50 个只出现在一所学校（53%）**。
 
-原始规模：**131 个不同的 `normalized_key`，其中 80 个只出现在一所学校**（约 61%）。
+**口径声明一：同义 key 合并。** 统计时把 `personal_statement_upload` / `statement_of_purpose` / `academic_statement` 并入 `personal_statement`；`translation_upload` 并入 `transcript_translation_upload`；`referee_details_cs` / `referee_details_eps` 并入 `referee_details`。**TSV 原文保留各自的原始 key**（它们的约束确实不同），合并只发生在本节统计里。
+⚠️ 这一合并会**掩盖一个重要事实**：Cornell 与 UIUC 各要**两份互相独立的文书**（Cornell = Academic Statement of Purpose + Personal Statement；UIUC = academic statement + 一组短答题），不是一份。D.3 的八校对照表可还原这一点。
+
+> ### 🔴 口径声明二：**未记录 ≠ 不存在**
+>
+> 本 TSV 是「我从公开页读到并记录下来的字段」，**不是各校字段的完整清单**。某个 key 没有出现在某校名下，绝大多数情况只说明**我没有为该校写这一行**，不代表该校没有这个字段。
+>
+> 典型例子：`email` 只出现在 AU/US 名下、`password` 只出现在 AU/UK 名下——**英国 portal 当然收邮箱，Cornell 与 UIUC 当然有账号密码**，只是它们的注册表在登录墙后、我拿不到，因而没有写行。
+>
+> **本次唯一可以正面断言的"字段不存在"**：Columbia SEAS 的 Register Account 表**没有密码字段**——因为我读了那张表的完整 HTML，全表只有 email / first / last / birthdate 四个输入，Slate 走邮件确认链接建号。这是**经核验的缺席**；其余一切缺席都只是"未记录"。
+>
+> 因此下文 D.2 的国别清单，只应读作"**这些字段在该国被观察到、在另两国未被观察到**"，其中**国别政策类**（GS、CoE、OSHC、FERPA、英国 share code 等）才是真正的国别差异；通用字段的国别归属基本都是记录密度的产物。
 
 ---
 
@@ -775,7 +789,7 @@ tail -n +2 docs/research/portal-fields.tsv | cut -f1,5 | sort -u | cut -f2 | sor
 
 #### 第 1 层：跨三国可复用（11 个 key）
 
-以下 11 个 key **在 AU / UK / US 三国都出现**，是准备包唯一可以按"通用件"设计的部分：
+以下 11 个 key **在 AU / UK / US 三国都被观察到**，是准备包唯一可以按"通用件"设计的部分：
 
 | key | 覆盖学校数 |
 |---|---|
@@ -792,23 +806,31 @@ tail -n +2 docs/research/portal-fields.tsv | cut -f1,5 | sort -u | cut -f2 | sor
 
 > ⚠️ **只有"这些字段都存在"是可复用的，它们的取值约束不可复用。** 见 D.3。
 
-#### 第 2 层：国别级可复用（同国多校共有，另两国完全没有）
+#### 第 2 层：国别级差异（同国多校被观察到、另两国未被观察到）
 
-这一层决定产品能不能做"国家模板"。
+**这一层要按 D.1 口径声明二谨慎读。** 下面把两类东西分开：
 
-- **AU 独有（16 个）**：`genuine_student_declaration`、`genuine_student_statement`（GS 真实学生要求）、`coe_confirmation_of_enrolment`（CoE）、`oshc_selection`（海外学生医保）、`citizenship_status` / `citizenship_country`（注册阶段即问国籍，用于触发强制中介门槛）、`agent_name`、`transcript_delivery_method`（My eQuals / Parchment 等电子成绩单渠道）、`credit_request_yn` / `credit_advanced_standing_request`（学分抵免）、`flywire_terms_consent`（第三方支付商条款）、`single_name_flag`（单名申请人）、`existing_student_id`、`email_confirm` / `password_confirm`、`referee_report_upload`
-- **UK 独有（4 个）**：`registration_form_absent`（三校登录前均无公开表单——这条本身就是国别特征）、`reference_upload_by_student`（学生能否自交推荐信，英国三校政策直接相反）、`tuition_deposit`（学费押金 → CAS）、`contact_details`
-  另有一个未进入"多校"统计但强烈国别相关的：`previous_uk_visa_documents`（Visa / **Share code** / BRP / CAS）——**澳美两国完全没有这类字段**。
-- **US 独有（5 个）**：`ferpa_waiver_checkbox`（FERPA 1974 放弃查阅推荐信权）、`official_transcript_post_admit`（官方成绩单一律录取后才交）、`test_scores_self_reported`（自报分数 + 事后核验）、`reference_third_party_service`（Interfolio 等第三方递信服务）、`platform_evidence`
-  另有 `us_status_document_upload`（绿卡 / 庇护 / 难民 / 假释身份文件）、`ssn_redaction_rule`（SSN 脱敏）。
+**（a）真正的国别政策字段——产品必须为每个国家单独建一组**
 
-**结论**：**国家模板是成立的**，而且三国各有一组不可省略的国别字段。产品应做"三套国别骨架"，而不是一套全球骨架。
+- **AU（16 个）**：`genuine_student_declaration`、`genuine_student_statement`（GS 真实学生要求）、`coe_confirmation_of_enrolment`（CoE）、`oshc_selection`（海外学生医保）、`citizenship_status` / `citizenship_country`（注册阶段即问国籍，用于触发强制中介门槛）、`agent_name`、`transcript_delivery_method`（My eQuals / Parchment 等电子成绩单渠道）、`credit_request_yn` / `credit_advanced_standing_request`（学分抵免）、`flywire_terms_consent`（第三方支付商条款）、`single_name_flag`（单名申请人）、`existing_student_id`、`email_confirm` / `password_confirm`、`referee_report_upload`
+- **UK**：`tuition_deposit`（学费押金 → CAS）；以及虽只在一校观察到但强烈国别相关的 `previous_uk_visa_documents`（Visa / **Share code** / BRP / CAS）——**澳美两国完全没有这类字段**。
+- **US**：`ferpa_waiver_checkbox`（FERPA 1974 放弃查阅推荐信权）、`test_scores_self_reported`（自报分数 + 事后核验）；以及 `us_status_document_upload`（绿卡 / 庇护 / 难民 / 假释身份文件）、`ssn_redaction_rule`（SSN 脱敏）。
 
-#### 第 3 层：单校独有（80 个 key，约占 61%）
+**结论：国家模板成立**，三国各有一组不可省略的国别字段；但**全球统一模板不成立**。
 
-样本：`draft_expiry_200_days`（Leeds 草稿 200 天过期）、`reference_import_previous`（UIUC 推荐信导入）、`referee_filler_placeholder`（Cornell 占位值）、`file_naming_requirement`（曼大文件标题）、`scan_quality_rule`（Leeds 四角）、`ssn_redaction_rule`（Cornell 脱敏）、`video_interview`（Columbia 强制录像面试）、`gbc_evidence_upload`（曼大 BPS GBC）、`later_year_entry_qualification`（Leeds 非一年级入读）、`transcript_legend_upload`（UIUC 评分说明）……
+**（b）不是国别差异，是取证形态差异——不要当成字段结论**
 
-> **这 61% 是准备包"省不了力"的部分**，也是产品真正的工作量所在。
+`registration_form_absent`（UK 三校）、`platform_evidence`（Cornell / UIUC）、`registration_form_minimal`（Columbia）这几个 key 记录的是"**登录前能看到什么**"，是我为不同学校选择的不同记录方式，**不是这些国家的字段特征**。它们已在本次统计中被归为 `type=rule` 并排除。
+`contact_details` 同理——它只出现在 UCL 与曼大名下，但**十所学校都收联系方式**。
+
+真正成立的取证形态结论只有一条，且它是**平台特征而非国别特征**：
+> **能公开 GET 到带真实 `maxlength` / `required` 的注册表单的，只有 AU 的 StudyLink Connect（UQ / Adelaide）与 US 的 Slate（Columbia SEAS）。** UK 三校（SITS / PeopleSoft / Power Pages）与 UIUC 的 Slate 实例都拿不到。
+
+#### 第 3 层：单校独有（50 个 key，约占 53%）
+
+样本：`draft_expiry_200_days`（Leeds 草稿 200 天过期）、`reference_import_previous`（UIUC 推荐信导入）、`referee_filler_placeholder`（Cornell 占位值）、`video_interview`（Columbia 强制录像面试）、`gbc_evidence_upload`（曼大 BPS GBC）、`later_year_entry_qualification`（Leeds 非一年级入读）、`transcript_legend_upload`（UIUC 评分说明）、`gs_funding_source`（澳洲 GS 资金来源）……
+
+> **这 53% 是准备包"省不了力"的部分**，也是产品真正的工作量所在。且这是**下界**——登录墙后还有大量未观察到的单校字段。
 
 ---
 
@@ -987,7 +1009,9 @@ UCL 官方自己反复强调 `contact your nominated referee(s) before starting 
 
 ### D.7 本节的取证边界
 
+- 🔴 **未记录 ≠ 不存在**（详见 D.1 口径声明二）。本 TSV 记录的是"我从公开页读到的字段"，不是各校字段全集。本次**唯一经核验的"字段不存在"**是 Columbia SEAS 注册表没有密码字段。
 - 本节所有统计只覆盖**本 TSV 内的 10 所学校**，不能外推为"三国标准"。
+- 单校独有字段占比 53% 是**下界**：登录墙后必然还有大量未被观察到的单校字段，真实比例只会更高。
 - `limit` 列中大量 `未确认(登录墙后)` 是**取证边界，不是漏查**：AU 的 StudyLink 与美国 Slate 的注册页能公开 GET 到真实 `maxlength`，而 UK 三校与美国的申请表主体全部在登录墙后。
 - 所有"两校要求相反"的判断，均以**双方官方页面的逐字原文**为据，已在各校小节列出出处。
 
