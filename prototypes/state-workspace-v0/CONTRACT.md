@@ -1,5 +1,7 @@
 # 状态层文件契约 v0（原型）
 
+> ⚠️ **术语以 main 分支的 `CONTEXT.md` 为准**（[#13](https://github.com/jiangxidong/EduApplication/issues/13) 已定稿）。本文件与之冲突处一律以 `CONTEXT.md` 为准。
+>
 > **这是原型，不是定稿。** 服务于 [#4 状态层的文件契约长什么样](https://github.com/jiangxidong/EduApplication/issues/4)。
 > 样例工作区见 `sample-workspace/`，里面填的是**虚构申请人 + 三所真实美国项目的真实约束**（取自 #6 的 303 行字段调研）。
 
@@ -30,7 +32,7 @@
 | `apply.md` | frontmatter + 正文 | **工作区标识 + 申请季** | 冷启动阶段创建；此后**只有换季时**被改。⚠️ 不放完成度、不放待核实计数——那些是派生视图 |
 | `profile.md` | frontmatter + 正文 | **申请人 canonical 事实** | 冷启动/画像阶段；其他阶段只读 |
 | `programs.md` | Markdown 表，9 列 | **项目池**（选校决策面） | 选校阶段；投递阶段只改 `status` 列 |
-| `channels/<channel_key>.md` | Markdown | **约束层**（逐申请单元的 rendering rules） | 选校阶段落盘骨架，准备包阶段补全 |
+| `channels/<channel_key>.md` | Markdown | **约束层**（逐申请渠道的 rendering rules） | 选校阶段落盘骨架，准备包阶段补全 |
 | `essays/materials/*.md` | Markdown | **文书素材**（素材门槛在此判定） | 文书阶段 |
 | `essays/canonical/*.md` | Markdown | **文书 canonical 渲染物**（当前版） | 文书阶段 |
 | `essays/canonical/_versions/*.md` | Markdown | 历史版本，只增不改 | 文书阶段 |
