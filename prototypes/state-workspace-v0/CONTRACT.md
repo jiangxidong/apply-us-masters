@@ -62,7 +62,7 @@
 | 4 | `claims.md` | Markdown 表，4 列 | **主张集**（全局唯一，文书与推荐信共用） | 🔴 **按行单向移交**：**冷启动 / 画像**只 append 新行，**文书**此后全权（见下） |
 | 5 | `channels/<channel_key>.md` | Markdown，**分节** | **约束层**（逐申请渠道的 rendering rules） | 🔴 **按节归属，见 §1.2**（5 个阶段 owner） |
 | 6 | `materials/*.md` | frontmatter **三键** `material_id` / `sensitive` / `verifiable_by` ＋ 正文（形状规则见下，**一律列名不计数**） | **文书素材**（素材门槛在此判定）；推荐信线是第二个消费方，**只读** | **文书**（见 §1.5 注 ②） |
-| 7 | `essays/canonical/*.md` | Markdown + frontmatter | **文书 canonical 渲染物**（当前版） | **文书** |
+| 7 | `essays/canonical/*.md` | Markdown + frontmatter **二键**（名单见下） | **文书 canonical 渲染物**（当前版） | **文书** |
 | 8 | `essays/canonical/per-program/<program_key>.md` | frontmatter + 散文 | **逐项目 why-this-program 内容**（不可再生） | **文书**（按 §1.4 前缀继承） |
 | 9 | `essays/canonical/_versions/*.md` | Markdown | 历史版本，只增不改 | **文书** |
 | 10 | `documents/<槽位>/…` | 原始文件 | **材料 canonical**（信息量最大的一侧），**七槽位见 §1.3** | **材料** |
@@ -194,7 +194,26 @@
 >
 > ⚠️ **本票只裁了正文，没有重扫 frontmatter。** [ADR 0014](../../docs/adr/0014-a-semantic-slot-is-not-a-stored-field.md)
 > 的消费方判据自己写着「别处的 frontmatter（`essays/canonical/*.md`、`apply.md`、`profile.md`）都该按它重扫一遍，
-> **这次没有重扫**」；`word_count` / `target` 正卡在那上面 → [#50](https://github.com/jiangxidong/EduApplication/issues/50)。
+> **这次没有重扫**」。
+> ✅ **[#50](https://github.com/jiangxidong/EduApplication/issues/50) 已重扫**：六键降为**二键**（`version` / `claims`），名单见下。
+
+#### `essays/canonical/*.md` 的 frontmatter 名单（v1 定稿）
+
+| 键 | 取值 | 消费方 |
+|---|---|---|
+| `version` | 整数 | `packets/<program_key>/essays/*.md` 的 `source_version:`（**已落盘**，见 `prototype/application-packet` 的三个渲染物） |
+| `claims` | `claim_id` 列表 | `derive-demo.sh` 的两个派生视图；这条边**只存这一处**（[ADR 0006](../../docs/adr/0006-claims-are-one-shared-truth-source.md)、[#32](https://github.com/jiangxidong/EduApplication/issues/32)） |
+
+**删掉的四个键，理由各不相同**（[#50](https://github.com/jiangxidong/EduApplication/issues/50)）：
+
+- `word_count` —— 零消费方；源就在同一文件的正文里，改一版即假；且它是**当前状态**，不是契约。
+- `target` —— 与 [ADR 0014](../../docs/adr/0014-a-semantic-slot-is-not-a-stored-field.md) 判 `usable_for` 出局的同一条：文书规格**逐渠道**住 `channels/`，源在别处 ⇒ 镜像。且样例里已经漂了——Columbia 的「250–1000 词，**超出不罚**」在 `target:` 里丢掉了那个限定。
+- `render_form` —— 键值 ≡ 文件名去掉 `.md`，三篇实测全等。**形态由文件名承载**（§5）。
+- `supersedes` —— 零消费方；`_versions/README.md` 自陈它是「这个目录为空」的另一面。
+
+🔴 **`version` 险些被这次重扫杀掉，救它的是跨分支 grep。** 它的消费方**落在另一个分支的已落盘产物上**。重扫一律跨分支查：同 `sensitive` 那条「消费方**尚未实现** ≠ 没有消费方」，本条是「消费方**不在本分支** ≠ 没有消费方」。
+
+🔴 **本名单只管三个渲染物**（`long.md` / `short-250.md` / `points.md`）。`essays/canonical/README.md` 与 `_versions/README.md` **不是渲染物**、没有 frontmatter，不受本名单约束——键名单挂在 `essays/canonical/*.md` 这个 glob 上，而那个 glob 字面上罩住了两个 README。`materials/*.md` 的名单有同一个洞（`materials/README.md`），两处读法一并按此定死。
 
 🔴 **写入权按「行」单向移交**（[#25](https://github.com/jiangxidong/EduApplication/issues/25)，[ADR 0008](../../docs/adr/0008-the-owner-binds-to-a-section-not-a-file.md) 限定 2）——
 **冷启动 / 画像**：只 append 新行，写 `claim_id` / `断言` / `voice`，`materials` 留空
@@ -540,6 +559,17 @@ deadline 在项目页、学费在 Bursar 页、STEM 资格在 CIP code 对照的
 「哪些约束是查过的、哪些是推定的」将无法机械汇总 ——
 Columbia SEAS 那条「AI 政策未查到，暂按 GSAS 从严」就没法被自动提醒。
 
+🔒 **`channels/` 的 bullet 分两类，判据是「校方那边有没有一个答案」**（[#50](https://github.com/jiangxidong/EduApplication/issues/50)）：
+
+- **事实行** —— 断言「校方那边有一个答案」，**必带证据标记**（`✓ <url>` 或 `待核实`）。
+- **判断行** —— 本工作区自己的推论 / 渲染配方，**顶层 `- → ` 起头、不带任何标记**。现货：Columbia 与 Cornell 的 `- → 渲染来源` 行。
+
+🔴 **切口切在「顶层 bullet 的首行」，不切在「有没有 `→`」。** `→` 在样例里绝大多数是**事实行下面的缩进续行**（三个 channel 文件共 8 条），那些续行的标记在**上一行**，本来就不该自带；按「`→` 开头」写会把 Cornell 那条「→ 涂黑要在**扫描之前**做」当场判成不合规，而它是对的。**缩进续行不独立分类，随它所属的那条 bullet**；`> ` 引用块照旧走本节上文的「标记不进散文」。
+
+🔴 **两个错误答案各错在哪**：给判断行打 `✓` 是**凭空造出处**（[ADR 0007](../../docs/adr/0007-a-checkmark-is-earned-by-a-fetch-not-by-a-capability.md) 与停手线取证类）；给它打 `待核实` 会造出一个**永远核不掉的条目**去污染待核实清单——原因后缀那张表（[ADR 0001](../../docs/adr/0001-evidence-stays-binary-with-a-closed-suffix.md)）**四项全都假定校方那边有答案**。
+
+**不为它新增机械检查**，理由同 §1.2 拒绝为「同一条事实」加检查。
+
 ### 换季降级（**惰性执行**，不是全表触发）
 
 ```
@@ -713,7 +743,8 @@ points.md        ─────────────────────
 ```
 
 - **渲染物轴**：`long.md`（完整长文）/ `short-250.md`（250 词版）/ `points.md`（可拆短答题的要点）
-  —— 三者不是同一篇的长短，是**三种形态**。Columbia 要长文，UIUC 要 4 道短答题，Cornell 要两篇独立文书。
+  —— 三者不是同一篇的长短，是**三种形态**（「渲染物」的定义见 `CONTEXT.md` 词条；[ADR 0011](../../docs/adr/0011-the-glossary-defines-words-the-contract-holds-the-values.md)：词的定义归词表，取值归契约）。Columbia 要长文，UIUC 要 4 道短答题，Cornell 要两篇独立文书。
+  🔴 **形态由文件名承载**（`long.md` / `short-250.md` / `points.md`），**frontmatter 不另存形态键**——文件名即形态标识（[#50](https://github.com/jiangxidong/EduApplication/issues/50)）。
 - **版本轴**：当前版永远在稳定路径 `essays/canonical/<name>.md`（所以 rendering rules 可以直接引用）；
   开新版前先把当前版拷进 `_versions/<name>.vN.md`，然后原地改。
 

@@ -66,6 +66,8 @@ season: 2027fall
 
 - `✓ 同上` **Academic Statement**：500–1000 词，**具体字数由项目定**（→ 项目级差异）
 - `✓ 同上` **Personal Statement**：**不是一篇文章**，是 **4 道短答题 × 每题 250 词（2 必答 + 2 选答）**
+- → 渲染来源：`essays/canonical/long.md`（Academic Statement，按 1000 词上限裁；本项目上限见 `## 项目级差异`）
+- → 渲染来源：`essays/canonical/points.md`（Personal Statement 四道短答题，一节一题）
 
 > **这是 canonical 必须有 `points.md` 的原因**：为 Columbia 写好的 1000 词长文在这里**连形态都对不上**，
 > 截成 250 词也不行 —— 需要的是可拆成四段独立回答的**要点**，不是摘要。
@@ -100,7 +102,7 @@ season: 2027fall
 
 #### 文书规格
 
-- `待核实` Academic Statement 的**本项目**具体字数（Graduate College 给的是 500–1000 词区间，由项目收窄）
+- `待核实` Academic Statement 的**本项目**具体字数（Graduate College 给的是一个区间，由项目收窄——区间取值见 `## 文书规格`）
 - `待核实` 4 道短答题中哪 2 道是必答
 
 #### 学历门槛

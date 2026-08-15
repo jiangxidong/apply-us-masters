@@ -38,6 +38,7 @@ season: 2027fall
 - `✓ 同上` **Personal Statement**：另一篇，与上一篇互相独立
 - → 渲染来源：`essays/canonical/long.md`（学术线）+ `essays/canonical/points.md`（个人线要点重组）
   ⚠️ **不能把 Columbia 的那一篇原样复用**——它是一篇，这里要两篇且分工不同
+  🔴 **切法**：`long.md` 裁到两页、**去掉个人动机段**——那段进 Personal Statement。
 
 ## 🔴 推荐信机制 —— 风险 A + 两个反直觉例外
 

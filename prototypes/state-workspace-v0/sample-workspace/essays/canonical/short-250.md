@@ -1,9 +1,5 @@
 ---
-render_form: short-250
 version: 1
-supersedes: null
-target: 需要 250 词硬上限的场合
-word_count: 248
 claims: [c02, c03]
 ---
 

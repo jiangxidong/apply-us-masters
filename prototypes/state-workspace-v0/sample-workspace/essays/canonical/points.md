@@ -1,8 +1,5 @@
 ---
-render_form: points
 version: 1
-supersedes: null
-target: UIUC personal statement（4 题 × 250 词，2 必 2 选）等短答题结构
 claims: [c02, c03]
 ---
 
