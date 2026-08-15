@@ -119,6 +119,8 @@ _Avoid_: 个人资料、背景、简历
 **文书素材** — `material`
 一段可被文书引用的真实经历，是**主张的支撑物**。素材库是状态层的一等公民，不是文书的草稿纸。
 每条素材带**敏感**标记（`敏感` / ASCII 二元，[#17](https://github.com/jiangxidong/EduApplication/issues/17)）：由 agent 提议、**用户可下调**。标 `yes` 的素材，其**原文永不直接进任何产物**——引用时须逐条确认「原文 → 拟用表述」。向用户本人复述不受此限。
+🔴 **素材的字段一律列名，不写「N 字段」**（[#30](https://github.com/jiangxidong/EduApplication/issues/30)）。「六字段 / 七字段」曾在三处票面上并存三种计数，删掉 `已用于` 会立刻产生第四种——同 [#24](https://github.com/jiangxidong/EduApplication/issues/24) 在文件上杀掉的病（「表的行数就是文件数，任何文件都不带序号」）。**v1 的字段名单归状态层契约**（[ADR 0011](docs/adr/0011-the-glossary-defines-words-the-contract-holds-the-values.md)：词汇表定义词，契约持有取值）。
+⚠️ **素材的字段名单眼下有两套互不相交的词汇**，repo 里没有任何一处把它们对应起来（#10 的六个语义字段 vs 样例 frontmatter 的 `material_id` / `type` / `usable_for` / `concrete`）。**哪一套是 schema 尚未裁决** → [#38](https://github.com/jiangxidong/EduApplication/issues/38)。
 
 **具体素材** — `—`
 能答**三问**的素材：**什么时候** / **你做了什么动作** / **结果是什么**。三问答不全的是感想，不是素材。
@@ -287,7 +289,11 @@ _Avoid_: 匹配理由（那是「依据」+「作废条件」的渲染，不是�
 
 **派生视图** — `—`
 从真相源现算现打、**绝不落盘**的东西：待核实清单、缺口清单、选校清单、投递名单、完成度自检、deadline 日历、「主张 → 支撑素材」对照表。
-判别式：**这行字为了保持为真，需不需要被改写？需要 → 它是镜像，不许存。**
+判别式：**这行字为了保持为真，需不需要在别处改动时被改写？需要 → 它是镜像，不许存；不需要 → 它是事实或判断，留着。**
+
+🔴 **前提句，不可省**（[#12](https://github.com/jiangxidong/EduApplication/issues/12)，由 [#30](https://github.com/jiangxidong/EduApplication/issues/30) 补落）：**「镜像」的前提是别处有源；没有源的可变内容是判断，不是镜像。** 少了这句，判别式会把 `recommenders.md` 的「主张 → 推荐人分配」和 `tier_basis` 一起判死——那两处都会被改写，但都**不是任何别处内容的镜像，它们就是真相源**（[#11](https://github.com/jiangxidong/EduApplication/issues/11)、#12 各判过一次）。此前本行只有单向的「不许存」半句，而前提句只写在状态层契约里，`main` 上读不到。
+
+**有源时，边只存在持久化的消费端，两端都不存。**「哪篇文书用了哪些主张」写在文书 frontmatter，`claims.md` 不设 `used_in` 列；「哪条素材被哪封信讲过」由分配现推，素材侧不设 `已用于`（[ADR 0006](docs/adr/0006-claims-are-one-shared-truth-source.md)）。
 
 **缺口** — `—`
 一处**应有而实无**的空位。判别式是一条减法：**产品侧应有的集合 − 工作区侧实有的集合**，现算现打、**绝不落盘**——[#19](https://github.com/jiangxidong/EduApplication/issues/19) §6 点明材料缺口与 [#16](https://github.com/jiangxidong/EduApplication/issues/16) §8 的依据缺口**结构同构**，都是这条减法。落盘的缺口必然腐烂：有人往 `channels/` 补了事实，不会有人回来改 `tier_basis`。
@@ -516,4 +522,5 @@ _Avoid_: 骨架 / 补全（用时序冒充责任——「什么时候被填」�
 | 三档虚拟档案 | 三个样例档案 / `persona` | 「档」已经是 `tier` 且是**五**档；同一个字指两个东西，「第二档档案在 UIUC 上应得 `safer` 档」当场有歧义 |
 | 联网档位（作为回归模式名） | 离线模式 / 预取证模式 | 产品里不存在「档位」这个实体（[ADR 0007](docs/adr/0007-a-checkmark-is-earned-by-a-fetch-not-by-a-capability.md)）；模式是**回归套件**的属性，不是产品的属性 |
 | 起步清单 / 推荐方向（作为首屏产出） | 缺口清单 / 第 0 问 | 首屏给不出可取证的方向建议——硬编码院校库在 Out of scope，凭记忆给撞停手线取证类（[ADR 0012](docs/adr/0012-the-first-reply-is-a-mirror-not-a-list.md)） |
+| 已用于（作为素材的一个字段） | （不存，现推） | 它是镜像——文书侧由 canonical 跨校共用决定「跨校开头雷同」不是缺陷，推荐信侧的差异化轴是**主张**不是素材（[ADR 0006](docs/adr/0006-claims-are-one-shared-truth-source.md)、[#30](https://github.com/jiangxidong/EduApplication/issues/30)） |
 | 毕业目标（作为第 0 问） | 毕业去向意向 / `post_grad_intent` | 它是画像的一个字段，不是第 0 问——两支的可取证性均未证实（[#15](https://github.com/jiangxidong/EduApplication/issues/15)） |

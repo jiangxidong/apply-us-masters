@@ -51,3 +51,24 @@
 [#9](https://github.com/jiangxidong/EduApplication/issues/9) 的「owner = 唯一写入者、跨 owner 写一律禁止」在文件粒度上因此有了**第二个**反例
 （第一个是 `channels/`，已由 [#23](https://github.com/jiangxidong/EduApplication/issues/23) 承接）。
 两个反例合起来把 #23 的题面从「`channels/` 的例外」变成「唯一写入者必须按节/阶段定义，不能按文件」。
+
+## 补充（[#30](https://github.com/jiangxidong/EduApplication/issues/30)）：通则是「边只存在持久化的消费端」，素材同理
+
+本 ADR 的 Consequences 只把这条规则写成了主张层的一个实例（`claims.md` 不设 `used_in`）。#30 拿素材撞出了它的一般形态：
+
+> **一条关系边，只存在它那个已经落盘的消费端；两端都存必漂移。**
+
+#10 给素材定的 `已用于` 字段（记「哪几篇文书、哪些学校用过这条素材」）**删掉**，两个用途都不需要它：
+
+- **防跨推荐人雷同**——在它被写下的同一节里就已被上一句驳回。[#12](https://github.com/jiangxidong/EduApplication/issues/12) §5 的原话是「轴 = **主张**……素材是主张的支撑物，**直接分素材是分错了层**」，紧接着却调了一个素材层字段来干这件事。边已经在持久化的消费端了：`recommenders.md` 的「主张 → 推荐人分配」（本 ADR 已认定它是真相源而非镜像）。
+- **防跨校开头雷同**——**在架构上不成立**。#10 §8 自己定了跨校 **canonical + delta**，且把 delta 三类砍到只剩 `why this program`（字数裁剪归渲染物轴、AI 政策是 canonical 的全局属性）。开头段属于 canonical，**跨校本来就是同一份**：「前 3 校都拿 X 素材开头」是设计的必然结果，不是待警告的缺陷。真正值得防的是**同一所学校多篇文书之间**的开头雷同（Cornell 的 academic-sop 与 personal-statement、UIUC 的 q1 与 q2），那是篇与篇的事，与「哪些学校用过这条素材」无关。
+
+**因此不新增任何派生视图。** 用途一溶解，用途二落在既有的分配上；「这条素材用过没有 / 有没有素材从没被用过」若要问，是扫全部消费端报余数，与待核实清单同形，现算现打。
+
+**也不留可再生缓存。** [#4](https://github.com/jiangxidong/EduApplication/issues/4) 允许 `packets/` 持久化可推导内容，但那条豁免建立在「它是渲染终点、没人从它读回去」上；`已用于` 是**索引**，会被读回去做判断，漂移有后果，不满足前提。
+
+**对 #10 的定性是「多余」，不是「错」。** 一字段两用途这个形态本身正当（`voice` 就是）；#10 的毛病是**把两个本来都不需要落盘的用途，当成了立字段的理由**。订正评论留在已关闭的 #10 上（同 [#23](https://github.com/jiangxidong/EduApplication/issues/23) 修 [#20](https://github.com/jiangxidong/EduApplication/issues/20) 的先例）。
+
+**顺带补落一句本 ADR 一直依赖却没写下的前提**：判别式的完整形态需要「**「镜像」的前提是别处有源；没有源的可变内容是判断，不是镜像**」。#12 提出过它、状态层契约收了它，但 `main` 的 `CONTEXT.md` 只有单向的「不许存」半句——而 #30 的裁决恰是第一次真正用到它的场合。已补进 `CONTEXT.md` 的「派生视图」词条。
+
+⚠️ **本裁决的两个消费端目前都还没有实体**：`claims.md` 不存在、`essays/canonical/*.md` 没有 `claims:` 键（[#27](https://github.com/jiangxidong/EduApplication/issues/27) 已登记）。这不影响裁决——本图产出的是决策不是实现——但实现 #27 时不得顺手把 `已用于` 加回去。
