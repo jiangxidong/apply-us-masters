@@ -66,7 +66,7 @@
 
 ## 🔴 已知的实现坑
 
-**检查本身也会写错，已经七次**，其中五次是假阳性、两次是工具缺陷。每一条都要进 `evals/fixtures/violations/`。
+**检查本身也会写错，已经八次**，其中五次是假阳性、三次是工具缺陷。每一条都要进 `evals/fixtures/violations/`。
 
 1. **`grep` 命中文件名。** `grep -nE '^\|.*owner' CONTEXT.md` 命中了 `0008-the-owner-binds-to-a-section-not-a-file.md`（[#26](https://github.com/jiangxidong/EduApplication/issues/26)）。
 2. **`###` 那一层是 `program_key`，从来不是法定节名。** 把它当节标题扫会误报三条（`check28.sh` 第一版，[#28](https://github.com/jiangxidong/EduApplication/issues/28)）。
@@ -75,6 +75,12 @@
 5. **locale 静默失效。** `LC_ALL=C` 下 `gsub(/^[^一-龥A-Za-z0-9]+/,"",t)` 不剥 emoji，六个节照旧 FAIL 且不报任何错。检查脚本必须**显式**设 `LC_ALL=en_US.UTF-8`，不能靠继承环境（`CONTRACT.md` §4.5）。
 6. 🔴 **awk 的 `==` 在两个中文串之间是坏的**（#14 实测，见下）。
 7. 🔴 **`/bin/sh` 里 `$var` 紧邻多字节字符会被截断**（[#48](https://github.com/jiangxidong/EduApplication/issues/48) 实测，见下）。**没有任何 locale 能修**，与第 6 条不同源。
+8. 🔴 **zsh 不对未加引号的参数展开做分词**（[#61](https://github.com/jiangxidong/EduApplication/issues/61) 普查第一版全灭于此，2026-08-15 复现）。`git grep <pat> ${BRANCHES}` 会把整串分支名当作**一个**不存在的 tree 传进去；配上 `2>/dev/null` 就是**静默零命中**。与第 6/7 条**不同源**——不坏在中文上，坏在「零命中」与「参数根本没生效」不可区分。
+   ```
+   $ zsh -c 'B="main prototype/state-layer"; set -- ${B}; echo $#'   → 1   # 🔴 整串一个参数
+   $ bash -c 'B="main prototype/state-layer"; set -- ${B}; echo $#'  → 2   # ✅
+   ```
+   **写法**：用数组 `B=(main prototype/state-layer)` 配 `"${B[@]}"`，或显式 `setopt shwordsplit`。⚠️ **零命中一律先自证命令本身有效**（换一个必然命中的 pattern 跑一次），再下「仓库里没有」的结论。
 
 ### awk 的 `==` 不能用来比中文——`CONTRACT.md` §4.5 那句「awk 正常」是错的
 
