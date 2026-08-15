@@ -293,7 +293,7 @@ _Avoid_: 匹配理由（那是「依据」+「作废条件」的渲染，不是�
 
 🔴 **前提句，不可省**（[#12](https://github.com/jiangxidong/EduApplication/issues/12)，由 [#30](https://github.com/jiangxidong/EduApplication/issues/30) 补落）：**「镜像」的前提是别处有源；没有源的可变内容是判断，不是镜像。** 少了这句，判别式会把 `recommenders.md` 的「主张 → 推荐人分配」和 `tier_basis` 一起判死——那两处都会被改写，但都**不是任何别处内容的镜像，它们就是真相源**（[#11](https://github.com/jiangxidong/EduApplication/issues/11)、#12 各判过一次）。此前本行只有单向的「不许存」半句，而前提句只写在状态层契约里，`main` 上读不到。
 
-**有源时，边只存在持久化的消费端，两端都不存。**「哪篇文书用了哪些主张」写在文书 frontmatter，`claims.md` 不设 `used_in` 列；「哪条素材被哪封信讲过」由分配现推，素材侧不设 `已用于`（[ADR 0006](docs/adr/0006-claims-are-one-shared-truth-source.md)）。
+**一条关系边存在哪一端**（例如「哪篇文书用了哪些主张」写在文书 frontmatter 而不写在 `claims.md`）是**归属问题，归状态层契约**——按 [ADR 0011](docs/adr/0011-the-glossary-defines-words-the-contract-holds-the-values.md) 的消费方判据，agent 读它的时刻是「决定一条事实落进哪个文件」，不是「命名领域概念」。通则与逐条落位见 [ADR 0006](docs/adr/0006-claims-are-one-shared-truth-source.md) 的补充节。
 
 **缺口** — `—`
 一处**应有而实无**的空位。判别式是一条减法：**产品侧应有的集合 − 工作区侧实有的集合**，现算现打、**绝不落盘**——[#19](https://github.com/jiangxidong/EduApplication/issues/19) §6 点明材料缺口与 [#16](https://github.com/jiangxidong/EduApplication/issues/16) §8 的依据缺口**结构同构**，都是这条减法。落盘的缺口必然腐烂：有人往 `channels/` 补了事实，不会有人回来改 `tier_basis`。

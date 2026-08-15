@@ -71,4 +71,4 @@
 
 **顺带补落一句本 ADR 一直依赖却没写下的前提**：判别式的完整形态需要「**「镜像」的前提是别处有源；没有源的可变内容是判断，不是镜像**」。#12 提出过它、状态层契约收了它，但 `main` 的 `CONTEXT.md` 只有单向的「不许存」半句——而 #30 的裁决恰是第一次真正用到它的场合。已补进 `CONTEXT.md` 的「派生视图」词条。
 
-⚠️ **本裁决的两个消费端目前都还没有实体**：`claims.md` 不存在、`essays/canonical/*.md` 没有 `claims:` 键（[#27](https://github.com/jiangxidong/EduApplication/issues/27) 已登记）。这不影响裁决——本图产出的是决策不是实现——但实现 #27 时不得顺手把 `已用于` 加回去。
+**两个消费端都已有实体**（[#27](https://github.com/jiangxidong/EduApplication/issues/27) 已完成并关闭）：`prototype/state-layer` 的样例里 `claims.md` 已建（四列，含一条 `materials` 为空的缺口主张），`essays/canonical/long.md` 的 frontmatter 已有 `claims: [c01, c02, c03]`。所以本裁决不是纸面通则——两端都存的那个物理机会**此刻就已经存在**，`已用于` 若加回去立刻就是漂移。
