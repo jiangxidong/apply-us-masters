@@ -80,6 +80,35 @@ owner 绑**阶段**而非 skill：阶段是内容的自然切分，skill 是分�
 
 🔴 **`claims.md` 的 append/rewrite 分工不进检查表——它不是检查，是规则。** 验它要 commit range，而**工作区不是 git 仓库，没有 diff 可跑，也没有「这次写入属于哪个阶段」这项元数据**。它是写给 skill 的行为规则，靠契约措辞约束，不靠脚本。写明于此，免得下一个 session 以为它被机械保护着。**本限定落盘时未经验证**，且在 v1 里不可机械验证——这是本 ADR 尾部那条「转述过 ≠ 核过」的同一条纪律。
 
+## 2026-08-15 修订（[#37](https://github.com/jiangxidong/EduApplication/issues/37)）：限定 4 — 记录 owner 状态的戳，跟着 owner 走
+
+[#23](https://github.com/jiangxidong/EduApplication/issues/23) 依本文把 owner 从「文件」翻到「节」，却把**换季降级的季度戳留在了文件级**：
+
+> 各阶段下次进入时，发现自己 owner 的节所在文件 frontmatter 的 `season` ≠ 当前 `season`，才就地降级自己的节，**并同步该文件的 `season`**。
+
+一个 `channels/*.md` 有五个阶段 owner，于是选校先进来、降完自己那 5 节、把文件 `season` 刷成本季之后，**文书再进来就不匹配失败，永远不降自己那 2 节**——它们带着上一季的 `✓` 无限期留存，而文件的 `season` 声称它是本季的。陈旧因此**不是一个会关闭的窗口，而是被第一个进来的阶段永久掩盖**，且 `CONTEXT.md`「降级」词条那条「派生视图按 `season` 比对」的渲染规则在这种情况下也是瞎的。
+
+这是本文已经纠正过一次的**同一个范畴错误**，只是换了个对象：owner 绑节不绑文件，那么「这个 owner 降级到哪一季了」这个戳也必须绑 owner。
+
+> **限定 4：凡记录「某个 owner 对自己辖区做了什么」的状态戳，其粒度必须与 owner 绑定的粒度一致，不得挂在文件上。**
+
+落到换季降级：文件级 `season` 字段**删除**，改为 frontmatter 里的一张 **`season_downgraded`** 表，键取自封闭的「阶段」词表，各阶段只戳自己那行。`programs.md` 因此**新建 frontmatter**（它此前一行 frontmatter 都没有，所以惰性降级在它身上**根本无法执行**——而 `deadline` 的取证状态恰恰只住在它的 `evidence` 列），表里只有一行（选校）。**不为单 owner 文件开「用标量」的第二条判据**：检查脚本要为两种形态各写一遍，而本文自己就是从「文件」翻到「节」的——「今天只有一个 owner」不是可以刻进契约的性质。
+
+**这张表不是镜像。** 它记的是「某个 owner 在哪一季对自己辖区做完了降级」，是历史观察值，同 `log.md` 与 `source_fingerprint` 的豁免（亦即限定 3 的同一条推理：它从不为了保持为真而被改写）。
+
+🔴 **缺行 = 陈旧（fail-safe），而这不重蹈 [#28](https://github.com/jiangxidong/EduApplication/issues/28) 的「空节把两态压成一态」**——理由是**一个文件有哪些 owner 是契约推得出来的，不是从文件里读的**（十节表定死 `channels/*.md` 的五个 owner，§1.1 定死 `programs.md` 归选校）。契约说是 owner 而表里无其行 = 从没降过级；契约说不是 owner = 那行永远不会被查。缺席在这里只有一种读法。
+
+🔴 **连带必须同时成立：建节即戳，降级即戳。** 选校在 2027fall 新建 `channels/x.md` 并当场取证打 `✓`，若不同时写 `season_downgraded: {选校: 2027fall}`，那批**刚刚取回的**事实会立刻被判成陈旧——最新鲜的证据当成最陈旧的。**两句缺一句，fail-safe 就变成 fail-always。**
+
+### 检查表：七条 → 八条
+
+只改叙述不改检查表，限定 4 等于没落地（同限定 3 的教训）。
+
+- **新增第 8 条**：契约里每个承载证据标记（`✓` / `待核实`）的路径，其 frontmatter 必须有 `season_downgraded` 表，且该表的键**恰好等于**契约给这个路径列出的 owner 集合——多一个键、少一个键都是违规。**文件级 `season` 字段出现在这类路径上即违规。**
+- 仍不进 CI（同上）。
+
+⚠️ **本限定落盘时，`CONTRACT.md` 侧尚未跟改**——它只活在 prototype 分支，而落盘时仓库根这一个 checkout 在 `main` 上、另有四个 worktree 活着，切分支会搅到别的 session。契约侧与样例侧的改动转 [#47](https://github.com/jiangxidong/EduApplication/issues/47)。**在 #47 落盘之前，`CONTRACT.md` §4 与本节直接冲突，以本节为准。**
+
 ## 后续
 
 - [ADR 0011](0011-the-glossary-defines-words-the-contract-holds-the-values.md)（[#26](https://github.com/jiangxidong/EduApplication/issues/26)）——本决定产出的十节归属表一度在 `CONTEXT.md` 与状态层契约各存一份。0011 定下词汇表与契约的边界判据，把词表与 owner 列整个归到契约。**本文正文一字未改**，此处只补指针。
