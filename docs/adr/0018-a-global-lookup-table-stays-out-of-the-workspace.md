@@ -39,7 +39,7 @@
 
 **STEM 结论每次会话重算，永不持久化。** 这正是要买的东西：DHS 名单一改版，结论自动跟着变，不留任何陈旧 `✓`，也不需要为它设计第二套失效机制。代价是每次要呈现 STEM 时都得付一次取回，取回失败率不低（ADR 0007 已认下「全表 `待核实` 是常态而非异常」）。
 
-**`CIP code` 的家是覆盖层，不是渠道层。** #34 已查实 CIP 与 `program_key` 两头对不上（Cornell 一个 graduate field 下 MEng/MS/PhD 共用一码；Columbia SIPA 一个 channel 内四个 MPA 变体四个 CIP），所以它住 `## 项目级差异` → `### <program_key>` → `#### 费用与资格`（归属见 ADR 0008 限定 5）。三个样例现在把 `待核实 STEM OPT 资格` 填在渠道层的 `## 费用与资格`，**两处都要改**：层级下沉，且内容从「STEM 资格」改成「CIP code」。
+**`CIP code` 的家是覆盖层，不是渠道层。** #34 已查实 CIP 与 `program_key` 两头对不上（Cornell 一个 graduate field 下 MEng/MS/PhD 共用一码；Columbia SIPA 一个 channel 内四个 MPA 变体四个 CIP），所以它住 `## 项目级差异` → `### <program_key>` → `#### 费用与资格`（归属见 ADR 0008 限定 5）。三个样例现在把 `待核实 STEM OPT 资格` 填在渠道层的 `## 费用与资格`，**两处都要改**：层级下沉，且内容从「STEM 资格」改成「CIP code」。⚠️ **在 [#58](https://github.com/jiangxidong/EduApplication/issues/58) 落盘之前，样例与本条直接冲突，以本条为准**——这条冲突没有任何机械检查会报（`##` 底下一条 `待核实` 结构合法）。
 
 **派生视图清单多一项。** 「本项目是否 STEM」加入派生视图清单，与「待核实自查清单」同类（派生、不落盘）。清单本身住 `CONTEXT.md`，而它已知比契约短七项（[#42](https://github.com/jiangxidong/EduApplication/issues/42)）——本条一并交给 #42，不在此处补。
 
