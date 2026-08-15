@@ -754,34 +754,279 @@ Cornell 要 **Academic Statement of Purpose** 和 **Personal Statement** 两份*
 
 ## Part D — 跨国字段复用分析（**本文件最重要的一节**）
 
-> 版本：v1（仅含 AU 四校 143 行数据）。每补一所学校即刷新本节。
+> 版本：v2（AU 4 校 + UK 3 校 + US 3 校，共 **10 所、303 行字段**）。
 
-### D.1 方法
+### D.1 方法与口径
 
-复用度用 TSV 的 `normalized_key` 列机械计算，不靠肉眼归类：
+复用度用 TSV 的 `normalized_key` 列**机械计算**，不靠肉眼归类：
 
 ```sh
+# 每个 key 覆盖多少所学校（先按「学校 × 字段」去重，避免同一学校同一字段跨 section 重复计数）
 tail -n +2 docs/research/portal-fields.tsv | cut -f1,5 | sort -u | cut -f2 | sort | uniq -c | sort -rn
 ```
 
-（`cut -f1,5 | sort -u` 先按「学校 × 字段」去重，避免同一学校同一字段出现在多个 section 时被重复计数。）
+**一处必须声明的口径**：统计时把几组概念同义的 key 合并计算——`personal_statement_upload` / `statement_of_purpose` / `academic_statement` 并入 `personal_statement`；`translation_upload` 并入 `transcript_translation_upload`；`referee_details_cs` / `referee_details_eps` 并入 `referee_details`。**TSV 原文保留各自的原始 key**（因为它们的约束确实不同），合并只发生在本节的统计里。
 
-### D.2 v1 结论（AU 内部，四校）
+原始规模：**131 个不同的 `normalized_key`，其中 80 个只出现在一所学校**（约 61%）。
 
-**四校全中（4/4）**：`transcript_upload`、`password`、`application_fee_payment`
-**三校中（3/4）**：`given_name`、`family_name`、`email`、`passport_scan`、`personal_statement`、`english_test_report_upload`、`course_preference_1`、`translation_upload`、`transcript_delivery_method`、`genuine_student_declaration`、`agent_used_yn`
-**仅一校（school-unique）**：57 个 key 中约 27 个只在单校出现，多为国别政策字段（`gs_funding_source`、`accommodation_under18_nomination`、`credential_verification_id`）与平台特有字段（`flywire_terms_consent`）。
+---
 
-### D.3 ⚠️ 最关键的一条：`normalized_key` 相同 ≠ 约束可复用
+### D.2 三层复用度
 
-AU 数据自身就是反例：UQ 的 `given_name` HTML 属性写 `maxlength="50"`，字段下方帮助文字却写 `Maximum 30 characters.`——**同一个字段，同一所学校，两个数字**。跨校时这种分歧只会更多。
+#### 第 1 层：跨三国可复用（11 个 key）
 
-因此"准备包能不能省力"的答案是**两层的**，不是一个扁平的复用/独有清单：
+以下 11 个 key **在 AU / UK / US 三国都出现**，是准备包唯一可以按"通用件"设计的部分：
 
-| 层 | 复用度 | 产品含义 |
+| key | 覆盖学校数 |
+|---|---|
+| `transcript_upload` 成绩单 | **10 / 10** |
+| `application_fee_payment` 申请费 | **10 / 10** |
+| `course_preference_1` 课程/项目选择 | 9 / 10 |
+| `personal_statement` 文书（含 SOP / academic statement） | 9 / 10 |
+| `transcript_translation_upload` 翻译件 | 9 / 10 |
+| `english_test_report_upload` 英语成绩 | 8 / 10 |
+| `referee_details` 推荐人信息 | 8 / 10 |
+| `agent_used_yn` 中介/代申 | 6 / 10 |
+| `degree_certificate_upload` 学位证 | 5 / 10 |
+| `given_name` / `family_name` 姓名 | 5 / 10 |
+
+> ⚠️ **只有"这些字段都存在"是可复用的，它们的取值约束不可复用。** 见 D.3。
+
+#### 第 2 层：国别级可复用（同国多校共有，另两国完全没有）
+
+这一层决定产品能不能做"国家模板"。
+
+- **AU 独有（16 个）**：`genuine_student_declaration`、`genuine_student_statement`（GS 真实学生要求）、`coe_confirmation_of_enrolment`（CoE）、`oshc_selection`（海外学生医保）、`citizenship_status` / `citizenship_country`（注册阶段即问国籍，用于触发强制中介门槛）、`agent_name`、`transcript_delivery_method`（My eQuals / Parchment 等电子成绩单渠道）、`credit_request_yn` / `credit_advanced_standing_request`（学分抵免）、`flywire_terms_consent`（第三方支付商条款）、`single_name_flag`（单名申请人）、`existing_student_id`、`email_confirm` / `password_confirm`、`referee_report_upload`
+- **UK 独有（4 个）**：`registration_form_absent`（三校登录前均无公开表单——这条本身就是国别特征）、`reference_upload_by_student`（学生能否自交推荐信，英国三校政策直接相反）、`tuition_deposit`（学费押金 → CAS）、`contact_details`
+  另有一个未进入"多校"统计但强烈国别相关的：`previous_uk_visa_documents`（Visa / **Share code** / BRP / CAS）——**澳美两国完全没有这类字段**。
+- **US 独有（5 个）**：`ferpa_waiver_checkbox`（FERPA 1974 放弃查阅推荐信权）、`official_transcript_post_admit`（官方成绩单一律录取后才交）、`test_scores_self_reported`（自报分数 + 事后核验）、`reference_third_party_service`（Interfolio 等第三方递信服务）、`platform_evidence`
+  另有 `us_status_document_upload`（绿卡 / 庇护 / 难民 / 假释身份文件）、`ssn_redaction_rule`（SSN 脱敏）。
+
+**结论**：**国家模板是成立的**，而且三国各有一组不可省略的国别字段。产品应做"三套国别骨架"，而不是一套全球骨架。
+
+#### 第 3 层：单校独有（80 个 key，约占 61%）
+
+样本：`draft_expiry_200_days`（Leeds 草稿 200 天过期）、`reference_import_previous`（UIUC 推荐信导入）、`referee_filler_placeholder`（Cornell 占位值）、`file_naming_requirement`（曼大文件标题）、`scan_quality_rule`（Leeds 四角）、`ssn_redaction_rule`（Cornell 脱敏）、`video_interview`（Columbia 强制录像面试）、`gbc_evidence_upload`（曼大 BPS GBC）、`later_year_entry_qualification`（Leeds 非一年级入读）、`transcript_legend_upload`（UIUC 评分说明）……
+
+> **这 61% 是准备包"省不了力"的部分**，也是产品真正的工作量所在。
+
+---
+
+### D.3 🔴 核心结论：`normalized_key` 相同 ≠ 约束可复用
+
+**这是本次调研最重要的一句话。** 十所学校里，同名字段的约束几乎处处不同，而且**存在互相矛盾、物理上无法同时满足的要求**。
+
+#### 证据一：同一份多页成绩单，两组学校要求相反
+
+| 学校 | 原文 | 要求 |
 |---|---|---|
-| **内容层**（学生要准备的实际信息与文件本体） | **高** | 姓名、护照、成绩单、英语成绩、个人陈述正文——一次准备，多校通用。准备包应存**规范化的长版内容**。 |
-| **约束层**（每个 portal 对该内容的字数/格式/份数/认证要求） | **低** | maxlength、文件 MB 上限、是否要 certified copy、志愿数量上限——逐校不同且互相冲突。必须建**每校截断/改写规则表**，在投递时套用。 |
+| **Cornell** | `Combine multiple pages from the same transcript into one file` | **必须合并** |
+| **Manchester** | `Each supporting document should be uploaded separately and not combined into one document` | **禁止合并** |
+| **Leeds (EPS)** | `Please do not merge separate qualifications together` | **禁止合并** |
 
-**设计推论**：准备包不应存"已经按某校要求截断好的成品"，而应存 `canonical content + per-school rendering rules`。否则换一所学校就要重写。
+→ **一份准备好的 PDF 不可能同时满足两边。**
 
+#### 证据二：扫描参数要求相反
+
+| 学校 | 要求 |
+|---|---|
+| **UIUC** | `at the lowest resolution that results in a legible document (we recommend using under 200 dpi whenever possible)`；灰度或黑白最佳 |
+| **Leeds (EPS)** | `scans should be complete and of a good quality, showing the 4 corners of all pages`；**不接受拍照** |
+| **Cornell** | `clear and easy to read`；**加密件必须先打印再扫描** |
+
+→ 高分辨率彩色扫描在 Leeds 是加分，在 UIUC 是被明确劝阻的做法。
+
+#### 证据三：文书上限八校八种（**没有任何两校可以共用同一份成品**）
+
+| 学校 | 上限 | 计量单位 |
+|---|---|---|
+| UCL | 表内 3,000 字符（含空格）／上传两页 A4、12pt、单倍行距 | **字符** 或 **版面** |
+| Manchester AMBS | 不超过一页 | 版面 |
+| Manchester CS（modular） | 约半页 A4 | 版面 |
+| Leeds EPS | 不超过一面 A4 | 版面 |
+| Columbia SEAS | 建议 250–1,000 词，**超出不罚** | **词**（软性） |
+| Cornell SOP | 一到两页 | 版面 |
+| UIUC academic statement | **500–1000 词，具体由项目定** | 词（**项目级**） |
+| UIUC personal statement | **每题 250 词 × 4 题（2 必 2 选）** | **短答题结构** |
+
+注意 UIUC 那一行：**它甚至不是"一篇文章"**，而是四道短答题。为 Columbia 写好的 1,000 词长文在 UIUC 连形态都对不上。
+
+#### 证据四：文件格式与大小上限互不兼容
+
+| 学校 | 格式 | 单文件上限 |
+|---|---|---|
+| UCL | `.pdf`（首选）/ `.docx` / `.jpeg` / `.jpg` | **5MB** |
+| Cornell | PDF / TIFF / JPEG / GIF（**不收 Word**） | **10MB** |
+| UIUC | **PDF 或 Word** | 未公开 |
+| UNSW | PDF / JPG / TIF | 10Mb |
+| Manchester / Leeds / Columbia | **完全未公开** | 未公开 |
+
+#### 证据五：同一字段的判定门槛不同数字
+
+- 推荐人可用 professional 而非 academic 的门槛：**UCL 离开高等教育满 4 年**；**Leeds 满 5 年**；**Cornell CS MEng "离开学术界久"（未给数字）**。
+- 志愿/项目数量：**UQ 3 个、UNSW 3 个、Melbourne 3 或 4（两份官方页自相矛盾）、UCL 每周期最多 2 个课程、Columbia SEAS 每学期只能 1 个、UIUC 联合学位要交 2 份独立申请**。
+- 甚至**同一所学校内部**也冲突：UQ 的 `given_name` HTML 写 `maxlength="50"`，帮助文字写 `Maximum 30 characters.`
+
+#### 证据六：**平台相同也不代表字段可复用**
+
+**Columbia SEAS 与 UIUC 同为 Slate（Technolutions）**，但：
+- Columbia 注册表 4 个字段、要 3 封推荐信、一篇 250–1000 词文书、强制录像面试、拒绝 Interfolio、禁止一切中介；
+- UIUC 要 academic statement + 4 道 250 词短答题、允许推荐信导入、允许多种免申请费、先提交后付费。
+
+同理，AU 的 UQ / UNSW / Adelaide 三校同为 StudyLink Connect，但 UNSW 无法公开注册、GS 机制也与另两校不同。
+
+> **产品推论：不能按"平台"建适配层，只能按"学校（甚至学校 × 院系 × 项目）"建库。** 平台只决定**抓取方式**，不决定**字段契约**。
+
+---
+
+### D.4 因此：准备包的正确数据结构
+
+答案是**两层的**，不是一个扁平的"可复用/独有"清单：
+
+| 层 | 复用度 | 内容 | 产品做法 |
+|---|---|---|---|
+| **内容层**（学生实际拥有的信息与文件本体） | **高，跨三国可复用** | 姓名、出生日期、护照、逐校学历与成绩、英语成绩、工作经历、文书素材、推荐人是谁 | 存**规范化的、尽可能长的 canonical 版本**：全文文书、最高质量原始扫描、完整学历列表 |
+| **约束层**（每个 portal 对同一内容的要求） | **低，逐校冲突** | 字数/版面上限、文件格式与大小、合并还是分开、扫描分辨率、份数、认证等级、命名与标识、提交与付费顺序 | 存**每校 rendering rules**，投递时从 canonical 内容**渲染**出该校专用版本 |
+
+**核心设计原则**：
+
+> **准备包不能存"已经按某校要求做好的成品"，只能存 canonical 内容 + 每校渲染规则。**
+> 存成品的话，换一所学校就要重做——而本次数据显示，十校之间**几乎没有任何一份成品可以原样复用**。
+
+具体地说，canonical 层应保存的是"上限最宽松的版本"，再向下裁剪：
+- 文书：存完整长文 + 一份 250 词摘要 + 可拆成短答题的要点（因为 UIUC 需要的是短答题，不是摘要）；
+- 扫描件：存**高分辨率原始扫描**（可以降采样给 UIUC，但不能从 200dpi 灰度反推出 Leeds 要的高质量件）；
+- 成绩单：存**逐页单文件**（可以合并给 Cornell，但合并件无法拆回去满足曼大/Leeds）。
+
+**注意后两条的方向性**：canonical 必须选择**信息量更大的那一侧**，因为降级是可逆的、升级是不可逆的。
+
+---
+
+### D.5 🔴 推荐信机制矩阵 —— 产品红线
+
+任务特别要求查清"系统发邀请给推荐人 vs 学生上传"。答案是：**六种机制，不能一刀切。**
+
+| 学校 | 谁给谁发信 | 触发时点 | 学生能否自己交推荐信 | 取证状态 |
+|---|---|---|---|---|
+| **UCL** | **系统 → 推荐人** | 🔴 **提交申请那一刻自动发** | ❌ 明文禁止（`we cannot accept references from applicants`） | 官方页明写 |
+| **Columbia SEAS** | **系统 → 推荐人** | 🔴 字面为**填入联系方式即联系**（比 UCL 更早） | ❌ 禁止 Interfolio、禁止纸质 | ⚠️ **保存即发还是提交后发，官方页未明示——未确认** |
+| **Cornell** | **系统 → 推荐人**（含链接的在线表单） | ⚠️ **未确认** | 部分可：可选 By Mail；**接受 Interfolio（须 field 同意）** | 机制细节最全，触发时点未写 |
+| **UIUC** | **系统 → 推荐人** | 推荐人信息**必须在提交前填妥**；但不必等信到齐 | 否；但**可导入旧申请的推荐信** | 官方页明写 |
+| **Manchester (AMBS)** | **校方 → 申请人**（reference request email 收件人是学生） | 初审之后，视需要 | ✅ 学生收到请求后自行取得并交付 | 官方页明写 |
+| **Manchester (CS 系)** | — | — | ✅ `references can be emailed separately if preferred` | 官方页明写 |
+| **Leeds** | **招生团队 → 推荐人，人工** | 仅当需要看推荐信才联系（**填了也不必然发**） | 未确认 | 官方页明写 |
+| **AU 四校** | 授课型硕士**主流不要推荐信**；UNSW AGSM MBA 是例外 | — | — | 见 Part A |
+
+#### 红线的准确表述（不是"凡涉及推荐人都危险"）
+
+本次数据支持把红线拆成**两类性质不同的风险**：
+
+**风险 A —— 冒名发信**（UCL / Columbia 型）
+系统会因为申请人的动作，**以申请人名义向第三方（推荐人）发出邮件**。
+- AI 代填 `referee_1_email` 并代为提交 = AI 让系统冒申请人之名给一个真人发信。
+- Columbia 更严重：字面上**填入即可能已经发出**，没有"提交前反悔"的窗口。**产品在 Columbia 上必须按"填入即已发信"的保守假设设计**。
+- Columbia 的禁令范围也最宽：`Under no circumstance should you write any portion of the evaluation, nor have any involvement in its drafting or submission.` —— 代写、**参与起草**、**参与提交**三者皆禁。
+
+**风险 B —— 冒名复用**（UIUC 型）
+UIUC 允许把此前申请里的推荐信**一键导入**新申请，官方硬性要求 `you must obtain explicit permission from the letter writer`，且导入后**推荐人不会收到新请求**。
+- AI 代为勾选导入 = 在未取得推荐人明示同意的情况下，**复用其署名文件**。
+- 这不涉及发信，因此按"只拦发信动作"设计的防护会**完全漏掉**它。
+
+**必须一并纳入禁止 AI 自动操作的字段清单**：
+`referee_1_email` / `referee_details` / `reference_import_previous`（UIUC）/ `ferpa_waiver_checkbox`（US，影响推荐人对保密性的预期）/ `reference_delivery_method`（Cornell，**选错不可逆**）/ `publication_verifier_email`（Columbia Publications 项要求填一位可证实参与的教授邮箱——**本申请里第二个第三方邮箱字段，极易被漏掉**）。
+
+#### 两个反直觉的例外，产品必须容忍
+
+1. **`referee_1_email` 并不总是装真人邮箱。** Cornell CS MEng 明确指引：使用 Interfolio 时，把 Interfolio 生成的 **custom document e-mail address 填进推荐人邮箱栏，取代推荐人本人邮箱**。产品若一律把该字段当真人邮箱拦截，会在这条**合法路径**上误判。
+2. **官方主动要求填占位值。** Cornell CS 在读生只需 1 封推荐信，官方指引是在第 2 位推荐人处 `enter a "filler"`。字段校验必须容忍官方认可的占位内容。
+
+#### 一个可直接落地的产品设计
+
+UCL 官方自己反复强调 `contact your nominated referee(s) before starting your application`。
+→ 把"**已向推荐人本人确认其愿意写**"做成**提交前的人工确认闸口**，对 UCL / Columbia / Cornell / UIUC 四校都适用，且与官方指引方向一致。
+
+---
+
+### D.6 其他跨国可复用的产品结论
+
+**1. 提交与付费的顺序三国三样，且决定"何时不可再改"**
+
+| 学校 | 顺序 | 冻结点 |
+|---|---|---|
+| Manchester | **付费才能提交** | 提交后可邮件补件 |
+| Cornell | **付费 = 提交的最后一步** | 🔴 付费或提交 waiver 后**完全不能再改** |
+| UIUC | **先提交，后付费** | 逾期未付 → **退回未提交状态** |
+| UCL | 提交时付费 | 提交后只能改姓名/联系方式/推荐人/护照；**文件一律不能替换或补传** |
+| Leeds | 公开流程未见申请费 | 补件走 portal 的 enquiry / condition response |
+
+→ 产品的"提交前最后检查"必须**逐校知道冻结点在哪**。UCL 与 Cornell 是"一锤定音"型，曼大与 Leeds 有补救通道。
+
+**2. 认证件（certified copy）政策三国分裂**
+- **AU**：部分校在**申请阶段**就要 certified copy（见 Part A 5.2，四校政策本身也冲突）。
+- **UK**：曼大明确**申请阶段不要原件**（录取后注册时才带）；UCL 申请阶段未要求 certified copy。
+- **US**：一律**上传非官方件，录取后才交官方件**（Cornell、UIUC 都明写）。翻译件认证等级则 US 更严（Cornell 要 certified **or notarized**）。
+
+**3. 中介（agent）政策三国相反，且是硬编码级差异**
+
+| 立场 | 学校 |
+|---|---|
+| **按国籍强制走中介** | UQ、Adelaide（由 JS 按 citizenship 触发拦截文案） |
+| **允许中介代交，且由中介付费** | Manchester |
+| **主动建议使用海外代表** | Leeds |
+| **明文禁止本人以外任何人代交** | UNSW（`You must personally complete the application`）、**Columbia SEAS**（仅 Fulbright / IIE / LASPAU / AMIDEAST / DAF / DAAD / VEF 例外） |
+
+**4. 文件命名 / 标识要求（八校中只有两校提出，但都很硬）**
+- **Manchester**：`provide a relevant title for each document which clearly states what that file contains`（文件**标题**）。
+- **UIUC**：`The uploaded document must include your name and the institution name`（文件**内容**须含姓名与院校名）。
+- 其余六校公开页**完全未提及命名要求**（记未确认，不是"无要求"）。
+
+**5. 一个被普遍忽略的时间约束**
+**Leeds：未提交的申请 200 天后被删除。** 八校中唯一公开草稿存活期的学校。做"长期托管草稿"的功能必须知道这条。
+
+---
+
+### D.7 本节的取证边界
+
+- 本节所有统计只覆盖**本 TSV 内的 10 所学校**，不能外推为"三国标准"。
+- `limit` 列中大量 `未确认(登录墙后)` 是**取证边界，不是漏查**：AU 的 StudyLink 与美国 Slate 的注册页能公开 GET 到真实 `maxlength`，而 UK 三校与美国的申请表主体全部在登录墙后。
+- 所有"两校要求相反"的判断，均以**双方官方页面的逐字原文**为据，已在各校小节列出出处。
+
+---
+
+## Part E — UK / US 明确「无法从公开页面确认」的清单
+
+（AU 的对应清单见 Part A 第 8 节，此处不重复。）按重要性排序：
+
+### 🔴 与产品红线直接相关
+
+1. **Columbia SEAS 的推荐人邀请究竟是"保存即发"还是"提交后发"。** 官方原文 `Upon entering your recommendation providers' contact information ... your recommendation providers will be contacted`，字面读作填入即联系，但没有一句话确认发信发生在保存还是提交。**这是本次最重要的未解项**——它决定产品在 Columbia 上有没有"填了还能反悔"的窗口。目前只能按最保守假设（填入即已发信）设计。
+2. **Cornell 的推荐人邀请触发时点**。官方只写了"推荐人会收到含链接的邮件"，没写何时发。
+3. **Columbia `publication_verifier_email`（可证实 publication 参与的教授邮箱）是否会触发系统发信。**
+4. **Leeds 是否允许学生自行提交推荐信。** Leeds 只写了"招生团队需要时才联系推荐人"，未说明学生能否自交。
+
+### 🟠 字段契约本身拿不到（登录墙）
+
+5. **UK 三校申请表主体的完整字段列表与全部 `maxlength` / `required` 属性。** UCL 的 Portico 登录页只有 User ID + Password 两个可见输入框且无注册入口；Leeds 是 Power Pages SPA；曼大 PeopleSoft 直接重定向到 `cmd=login`。**英国三校无一能公开 GET 到注册或申请表单。**
+6. **US 申请表主体同样在登录墙后。** 唯一拿到真实 HTML 约束的是 **Columbia SEAS 的 Register Account 页**（4 个字段）。UIUC 的 Slate portal 页只拿到 `Application Management` 标题。
+7. **Manchester / Leeds / Columbia 的单文件大小上限与允许格式**——三校公开页完全未给。（已知的只有 UCL 5MB、Cornell 10MB、UIUC 仅给格式、UNSW 10Mb。）
+8. **Cornell 的 Personal Statement 字数/页数上限**——官方设有独立指引页但未给硬性数字。
+9. **UIUC academic statement 的具体上限**——只知道范围 500–1000 词，实际值由每个项目自行设定，未公开逐项目取值。
+
+### 🟠 取证被技术手段阻断（非"无此内容"，是我没读到）
+
+10. **`gradschool.cornell.edu` 的 recommendations 页被 Cloudflare 挡回 403**（`Enable JavaScript and cookies to continue`）。该页内容是通过康奈尔其他已抓取页面（FAQ、application-steps、CS MEng apply 页）交叉取得的，**不是从该页原文读到的**。
+11. **`w.applyweb.com/public/account?s=cornellg` 连接失败（HTTP 000）**，因此 Cornell 的 ApplyWeb 平台名取证来自康奈尔官方页的自述字符串，**不是我亲自读到的 portal HTML**。
+12. **Manchester 的 PeopleSoft 登录页只拿到重定向后的错误页**（`An error has occurred.`），未见任何输入框——足以证明"登录墙 + 无公开注册"，但拿不到字段。
+
+### 🟡 政策层面的未解冲突（两处及以上官方来源互相矛盾，本次未能解决）
+
+13. **Manchester 三份官方页对推荐信/个人陈述的要求互相冲突**（AMBS 要 SOP 不要推荐信｜MSc Advanced Computer Science 明写两者都不要｜CS 系写全日制 MSc 要 2 封学术推荐信）。**未解决**，已在 Part B.2 如实并列。
+14. **Leeds 大学层面与 EPS 学部层面口径不一致**（CV 是否必交、references 是否需要）。**未解决**。
+15. **UCL 每周期最多申请 2 个授课型硕士——是"一份表内选 2 个"还是"两份独立申请"**，公开页未说明。
+
+### 🟡 未覆盖的范围（本次根本没查，不能当作"没有"）
+
+16. **Coventry University（英国 post-92 对照组）本次未做字段级调研。** 平台栈（Salesforce Experience Cloud + Convera）来自另一份调研，字段未取。
+17. **英国是否存在集中申请系统**：本次三校全部是直申院校 portal，未验证 UCAS 在授课型硕士上的覆盖情况。
+18. **美国三校之外的主流平台**：Common App（研究生）、Liaison CAS（CSDCAS/BusinessCAS 等）、ApplyTexas 本次均未做字段级调研，`scratchpad/fc/` 下虽有抓取但未整理入 TSV。
+19. **各校"提交后"申请人门户（applicant portal / Status Portal）的字段**——全部在登录墙后，仅从官方页得知其功能（查推荐信状态、重发请求、录像面试等）。
