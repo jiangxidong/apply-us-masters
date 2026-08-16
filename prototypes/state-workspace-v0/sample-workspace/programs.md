@@ -1,3 +1,8 @@
+---
+season_downgraded:
+  选校: 2027fall
+---
+
 # 项目池
 
 **主键 = `program_key`**（`<school>--<college>--<program>`）。每行一个项目 —— 最小分叉粒度是项目，不是学校。

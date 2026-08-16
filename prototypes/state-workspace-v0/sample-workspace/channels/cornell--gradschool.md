@@ -3,7 +3,12 @@ channel_key: cornell--gradschool
 school: Cornell University
 college: Graduate School / Cornell Bowers CIS
 platform: ApplyWeb (CollegeNET)
-season: 2027fall
+season_downgraded:
+  选校: 2027fall
+  文书: 2027fall
+  材料: 2027fall
+  推荐信: 2027fall
+  准备包: 2027fall
 ---
 
 # Cornell Graduate School — 申请约束
