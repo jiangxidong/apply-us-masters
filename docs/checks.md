@@ -140,7 +140,7 @@ echo "[$h 」]"     → [## 我做了什么 」]  ✅ 中间有空格也对
 
 ## 尚未实现
 
-**`evals/` 骨架已由 [#75](https://github.com/jiangxidong/EduApplication/issues/75) 落地**：`evals/checks/check-docs.sh` 存在并实现了 `glossary-holds-no-owner` 一条；其余十七条（docs 类六条、工作区类的静态检查组）仍无实现体。**三个 persona 工作区同样不存在**——`工作区` 那行的三项夹具今天只有 `sample-workspace/` 有货（[#63](https://github.com/jiangxidong/EduApplication/issues/63) 逐 ref 复核，取证见该票）。本表落的是**决策**，脚本是实现。
+**`evals/` 骨架已由 [#75](https://github.com/jiangxidong/EduApplication/issues/75) 落地**：`evals/checks/check-docs.sh` 存在并实现了 `glossary-holds-no-owner` 一条；其余十七条（docs 类六条、工作区类的静态检查组）仍不满足位置 ④ 的第 ① 项——「无实现体」这个说法对其中两条不成立，`derive-demo.sh` 那两条见下段。**三个 persona 工作区同样不存在**——`工作区` 那行的三项夹具今天只有 `sample-workspace/` 有货（[#63](https://github.com/jiangxidong/EduApplication/issues/63) 逐 ref 复核，取证见该票）。本表落的是**决策**，脚本是实现。
 
 ⚠️ **`evals/` 与 `skills/` 的位置本身已不再是 fog**（[ADR 0021](adr/0021-the-repo-root-is-the-plugin-root-for-both-runtimes.md)，[#64](https://github.com/jiangxidong/EduApplication/issues/64)）：仓库根就是两个运行时的 plugin 根，顶层按「谁会读它」切。本表上面写死的 `evals/checks/` 与 `evals/fixtures/violations/{docs,workspace}/` **被该 ADR 照单收下，一个字未改**。仍然缺的只是脚本本身。
 
