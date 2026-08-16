@@ -72,7 +72,7 @@
 
 🔴 **它会失效，而且已经失效过一次。** #14 G1 与 ADR 0008 第 2 条分叉了 89 分钟没有任何人发现，靠的正是「有人会记得跑」。配一条纪律顶着：
 
-> 凡改动 [ADR 0008](adr/0008-the-owner-binds-to-a-section-not-a-file.md) ／ [ADR 0010](adr/0010-personas-ignite-assertions-they-are-not-examples.md) ／ [ADR 0011](adr/0011-the-glossary-defines-words-the-contract-holds-the-values.md) ／ [ADR 0016](adr/0016-the-checklist-holds-names-and-pointers.md) 或 `CONTRACT.md` §0 / §1 / §4 的提交，**结案评论必须附上跑过的命令与它的输出**。
+> 凡改动 [ADR 0008](adr/0008-the-owner-binds-to-a-section-not-a-file.md)（owner 绑节不绑文件）／ [ADR 0010](adr/0010-personas-ignite-assertions-they-are-not-examples.md)（persona 点火断言）／ [ADR 0011](adr/0011-the-glossary-defines-words-the-contract-holds-the-values.md)（词汇表定义词、契约持值）／ [ADR 0016](adr/0016-the-checklist-holds-names-and-pointers.md)（清单只持名与指针）或 `CONTRACT.md` §0 / §1 / §4 的提交，**结案评论必须附上跑过的命令与它的输出**。
 
 纪律不是执法，代价明写在 [ADR 0016](adr/0016-the-checklist-holds-names-and-pointers.md)。
 
