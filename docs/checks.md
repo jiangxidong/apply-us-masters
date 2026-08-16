@@ -79,7 +79,7 @@
 🔴 **触发按「被测对象」分档，不只按规则源**（[#81](https://github.com/jiangxidong/EduApplication/issues/81)；分类键沿用 [ADR 0016](adr/0016-the-checklist-holds-names-and-pointers.md) 决定 ② 的那把——被测对象，不是读了哪些文件）。[#65](https://github.com/jiangxidong/EduApplication/issues/65) 实测过反例：改夹具（契约一字不动）把 FAIL 从 5 降到 0——同一个提交类型既能修好也能弄坏检查，只盯规则源的纪律看不见它。三档：
 
 > ① 改**规则源**（上列四条 ADR 或 `CONTRACT.md` §0 / §1 / §4）的提交——重跑对应检查并附输出（现行，不变）。
-> ② 改**被测对象**的提交：动 `sample-workspace/`（含未来的 persona 工作区）→ 重跑全部「被测对象＝工作区」的已实现检查（今天＝`trace-packet.sh`；`evals/` 的工作区检查落地后并入）；动 `CONTEXT.md` / `docs/` / `skills/` → 重跑「被测对象＝契约 / repo 文档」的已实现检查（`evals/checks/check-docs.sh`；`main` 上每次 push CI 已自动跑，手动义务由 CI 吸收）。
+> ② 改**被测对象**的提交：动 `sample-workspace/`（含未来的 persona 工作区）→ 重跑全部「被测对象＝工作区」的已实现检查（今天＝`trace-packet.sh` ＋ `derive-demo.sh` 里那两条（见「尚未实现」节）；`evals/` 的工作区检查落地后由 runner 接手）；动 `CONTEXT.md` / `docs/` / `skills/` → 重跑「被测对象＝契约 / repo 文档」的已实现检查（`evals/checks/check-docs.sh`；`main` 上每次 push CI 已自动跑，手动义务由 CI 吸收）。
 > ③ 改**检查自身**（`evals/`）→ 取证必须含「夹具仍翻红」（CI 的反向断言已内建）。
 
 不选「一揽子加 `sample-workspace/` 重跑一切」：分档后每类提交只跑测它的那一组，工作区组整套秒级，「太吵」不成立；「改完 `sample-workspace/` 必跑 `trace-packet.sh`」在 [#73](https://github.com/jiangxidong/EduApplication/issues/73) 落盘时已是事实惯例（改一行说明文字也会让指纹失效，当场被咬过），本条只是把惯例写进纪律。
