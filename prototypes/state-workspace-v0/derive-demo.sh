@@ -188,7 +188,7 @@ done
 echo "  ⚠️ 通过 ≠ 这几条素材够具体 —— 判「具体」的是采集时的 agent，不是本脚本。"
 
 echo
-echo "=== 缺口三分类（缺素材 / 缺人 / 缺放行；#17 结案后修正的同一张表）==="
+echo "=== 缺口三分类（缺素材 / 缺人 / 缺放行；CONTEXT.md「缺口」词条六类表的申请人侧前三类）==="
 awk -F'|' -v MAT="$MAT" -v REC="$REC" '
   BEGIN {
     while ((getline m < MAT) > 0) { n=split(m, a, "|"); sen[a[1]]=a[2]; vb[a[1]]=a[3] }

@@ -172,6 +172,20 @@
 撞 [ADR 0006](../../docs/adr/0006-claims-are-one-shared-truth-source.md)「主张集全局唯一、两条线**共用**」。
 ⚠️ **`voice` 因此两条线各有一个消费方**：文书线是「这条主张由谁来说」，
 推荐信线是 `claims.md` 那条「`voice = referee` 的零素材主张 = **双重缺口**」的分类依据。
+🔒 **文书线那道闸的被测对象是 `essays/canonical/*.md` 的 `claims:`**（[#63](https://github.com/jiangxidong/EduApplication/issues/63)）。
+`claims:` 记的是「这篇引用了哪些主张」，而禁令说的是「申请人自述」——两者在 canonical 层**重合**：
+canonical 渲染物**整篇都是申请人的声音**（[ADR 0006](../../docs/adr/0006-claims-are-one-shared-truth-source.md)：
+「文书是申请人自述主张，推荐信是第三方佐证同一批主张」），文书里不存在第三方在说话的位置。
+**被 `claims:` 引用即被自述。**
+
+规则因此是：**`essays/canonical/*.md` 的 `claims:` 里不得出现 `voice = referee` 的 `claim_id`。**
+`both` 与 `self` 一律放行（`both` 的语义明写允许自述）；`essays/canonical/README.md` 不是渲染物，不在作用域内。
+`voice` 的值**现读 `claims.md`**，不许在别处存第二份主张表。
+
+⚠️ **本条不动禁令本身**（[#52](https://github.com/jiangxidong/EduApplication/issues/52) 已锁），只定它读什么。
+机械化见 `essay-cites-no-referee-claim`（[`docs/checks.md`](../../docs/checks.md)）——清单只持名与指针，本节是规则原文的唯一权威。
+🔴 落地时**必须一并落 violation fixture**：样例当前不违反，直接落地就是 #52 点名的**空闸**
+（[ADR 0017](../../docs/adr/0017-a-check-that-compares-against-a-forkable-copy-is-vacuous.md) 推论 2：全绿不是证据）。
 
 🔴 **`essays/canonical/*.md` 的正文不设结构契约**（[#32](https://github.com/jiangxidong/EduApplication/issues/32)）。
 上表第 7 行此前只规定了「Markdown + frontmatter」，正文一个字没管；这条空白现在是**有意的**，不是漏掉的。
@@ -569,6 +583,7 @@ Columbia SEAS 那条「AI 政策未查到，暂按 GSAS 从严」就没法被自
 🔴 **两个错误答案各错在哪**：给判断行打 `✓` 是**凭空造出处**（[ADR 0007](../../docs/adr/0007-a-checkmark-is-earned-by-a-fetch-not-by-a-capability.md) 与停手线取证类）；给它打 `待核实` 会造出一个**永远核不掉的条目**去污染待核实清单——原因后缀那张表（[ADR 0001](../../docs/adr/0001-evidence-stays-binary-with-a-closed-suffix.md)）**四项全都假定校方那边有答案**。
 
 **不为它新增机械检查**，理由同 §1.2 拒绝为「同一条事实」加检查。
+⚠️ **这句的「它」是事实行 / 判断行的分类，不是 `✓` 那一行的写法。** `✓ <url>` 的 URL 必须是可直接取回的端点（不得含省略号），那条**有**字面判据、已机械化为 `cite-url-has-no-ellipsis`，规则原文见 [ADR 0007](../../docs/adr/0007-a-checkmark-is-earned-by-a-fetch-not-by-a-capability.md) 补充（[#63](https://github.com/jiangxidong/EduApplication/issues/63)）。
 
 ### 换季降级（**惰性执行**，不是全表触发）
 
