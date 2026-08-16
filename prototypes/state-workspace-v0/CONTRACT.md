@@ -748,6 +748,10 @@ $ awk 'BEGIN{ print ("中文" ~ /^阶段$/) }'
    > `undecided` 与 `ineligible` 的切分是**词的含义**，见「分档」词条。
    自由文本列（`school` / `program` / `evidence`）可以是中文，因为它们只被 `grep` / `awk` 正则匹配，不被聚合。
 
+🔴 **无 `考试日期` 的分数不得参与门槛比较**（[#72](https://github.com/jiangxidong/EduApplication/issues/72)）。`profile.md` 成绩表的 `考试日期` 列**必填**；`tier_basis` ／ `tier_void_if` 引用标化分数时，该分数必须能在 `profile.md` 成绩表解析到带考期的行——
+量表由考试日期决定、跨量表比较非法，`考试日期` 是比较的**前提字段**（语义见 `CONTEXT.md`「分数量表」，#56）。
+量表本身**不落盘**：它是「这所学校怎么读这个分数」的函数（同词条「不外推到考试机构」），`profile.md` 侧存一个量表值连唯一正确取值都没有——从考期现推。
+
 2. **禁止 `uniq` 与 `sort -u`。** 计数走 `awk '{c[$0]++} END{for(k in c) print c[k], k}'`，
    去重走 `awk '!s[$0]++'`，两者均已实测在中文下正确；`grep -c` 也正常。
 
