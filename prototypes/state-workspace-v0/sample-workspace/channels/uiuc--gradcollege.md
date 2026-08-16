@@ -76,7 +76,6 @@ season_downgraded:
 - `待核实` 单文件大小上限（未公开）
 - 🔴 `✓ 同上` **文件内容须含申请人姓名与院校名** —— 这是对**文件本身**的要求，不是文件名
 - `✓ 同上` `transcript_legend_upload`：需另传**评分说明 / grading legend**
-  → 已回写 `profile.md` 的待补充清单
 
 ## 文书规格 —— 形态与另两校完全不同
 

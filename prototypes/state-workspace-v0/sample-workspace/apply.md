@@ -4,7 +4,6 @@ season: 2027fall
 country: US
 degree_type: coursework-master
 created: 2026-08-15
-last_session: 2026-08-15
 ---
 
 # 申请工作区
