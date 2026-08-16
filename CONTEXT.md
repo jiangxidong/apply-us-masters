@@ -336,7 +336,7 @@ _Avoid_: 假保底（同一概念的旧名，中文名以本条为准）、保�
 
 **惰性执行**：换季只改 `apply.md` 的 `season`。各阶段下次进入时，按 frontmatter 的 **`season_downgraded`** 表比对**自己那一行**，落后于当前 `season` 才就地降级自己的节，并戳新自己那一行。
 由入口阶段一次性全表降级会构成**跨 owner 的写**（`programs.md` 与 `channels/` 的十个节分属三个阶段）。顺带：未被访问的节保持上季标记，比假装重查过更诚实。
-🔴 **戳的粒度必须与 owner 绑定的粒度一致，不得挂在文件上**（[ADR 0008](docs/adr/0008-the-owner-binds-to-a-section-not-a-file.md) 限定 4，[#37](https://github.com/jiangxidong/EduApplication/issues/37)）。原先的**文件级 `season` 字段已删除**：一个 `channels/*.md` 有五个阶段 owner，谁先进来把文件 `season` 刷成本季，其余四个阶段就**永远不匹配失败、永远不降级**，陈旧被永久掩盖。**缺行 = 陈旧**（owner 集合由契约推出，不从文件读，所以缺席只有一种读法）；连带**建节即戳、降级即戳**，否则刚取回的 `✓` 会被判成陈旧。
+🔴 **戳的粒度必须与 owner 绑定的粒度一致，不得挂在文件上**（[ADR 0008](docs/adr/0008-the-owner-binds-to-a-section-not-a-file.md) 限定 4，[#37](https://github.com/jiangxidong/EduApplication/issues/37)）。原先的**文件级 `season` 字段已删除**：一个 `channels/*.md` 有五个阶段 owner，谁先进来把文件 `season` 刷成本季，其余四个阶段就**永远不匹配失败、永远不降级**，陈旧被永久掩盖。**缺行 = 该 owner 在本文件里没有内容，不是陈旧**（[#47](https://github.com/jiangxidong/EduApplication/issues/47)）——「建节即戳」使**有内容 ⟺ 有行**，所以缺席只能读作「它一个节都没落过」。⚠️ 这一条曾被写反过一版（「缺行 = 陈旧」），在**首季工作区**上当场破：首季根本没有上一季，那个「上季核过」的链接不存在。fail-safe 由 `season-stamp-matches-owners` 守，**不由「缺行」的读法守**。连带**建节即戳、降级即戳**，否则刚取回的 `✓` 会被判成陈旧。
 渲染时读到尚未降级的 `✓`，**按该条事实所属 owner 的那一行比对，不等即视为本季未取证**——那是渲染时的活，不落盘。**准备包同样适用**（它虽落盘，但整包重生成、绝不就地改，见 [ADR 0013](docs/adr/0013-a-packet-is-regenerated-whole-never-patched.md)），渲染成带上季链接的 ⬜。
 
 🔴 **前提句，不可省**（[#37](https://github.com/jiangxidong/EduApplication/issues/37) 补落）：**「取证」一直是本季的。** 上一季的取回不构成本季的取证——这正是换季降级存在的全部理由，也是「已落盘的 `✓` 只由换季降级改写」那句话的另一面（见「取证」与 [ADR 0007](docs/adr/0007-a-checkmark-is-earned-by-a-fetch-not-by-a-capability.md)）。此前这层季度相对性只能从两处推出来，从没被写成一句话，于是「⬜ = 尚未取证」与「那些节真相源里明明是 `✓`」看上去像冲突，实际不是。
