@@ -356,7 +356,7 @@ _Avoid_: 假保底（同一概念的旧名，中文名以本条为准）、保�
 
 🔴 **前提句，不可省**（[#12](https://github.com/jiangxidong/EduApplication/issues/12)，由 [#30](https://github.com/jiangxidong/EduApplication/issues/30) 补落）：**「镜像」的前提是别处有源；没有源的可变内容是判断，不是镜像。** 少了这句，判别式会把 `recommenders.md` 的「主张 → 推荐人分配」和 `tier_basis` 一起判死——那两处都会被改写，但都**不是任何别处内容的镜像，它们就是真相源**（[#11](https://github.com/jiangxidong/EduApplication/issues/11)、#12 各判过一次）。此前本行只有单向的「不许存」半句，而前提句只写在状态层契约里，`main` 上读不到。
 
-🔴 **限定句，同样不可省**（[#32](https://github.com/jiangxidong/EduApplication/issues/32)）：**镜像 ⇔ 这段内容存在一个唯一正确的取值，而那个取值在工作区内的别处。** 上一句管的是「有没有源」，这一句管的是「这段字有没有正确答案」——少了它，判别式对 `essays/canonical/` 是**逐字自毁**的：canonical 渲染物本来就是「把主张写成人话」的产物，长文整篇都在复述 `claims.md` 的主张，措辞一改就得跟着改，按字面读它整篇是镜像、该删。散文没有唯一正确取值（措辞是手艺），表格单元格有。⚠️ **不要读成「散文豁免」**——「不写素材几条、不写闸口几比几」禁的正是散文；切口开在有没有唯一正确取值上，不开在体裁上。**「工作区内」也是限定的一部分**：`✓ <url>` 指向站外，站外页面不是工作区的真相源。自测：两个 agent 各写一遍，差异算 bug 还是算文风？**算 bug ⇒ 是镜像。**
+🔴 **限定句，同样不可省**（[#32](https://github.com/jiangxidong/EduApplication/issues/32)）：**镜像 ⇔ 这段内容存在一个唯一正确的取值，而那个取值在工作区内的别处。** 上一句管的是「有没有源」，这一句管的是「这段字有没有正确答案」——少了它，判别式对 `essays/canonical/` 是**逐字自毁**的：canonical 文书本来就是「把主张写成人话」的产物，长文整篇都在复述 `claims.md` 的主张，措辞一改就得跟着改，按字面读它整篇是镜像、该删。散文没有唯一正确取值（措辞是手艺），表格单元格有。⚠️ **不要读成「散文豁免」**——「不写素材几条、不写闸口几比几」禁的正是散文；切口开在有没有唯一正确取值上，不开在体裁上。**「工作区内」也是限定的一部分**：`✓ <url>` 指向站外，站外页面不是工作区的真相源。自测：两个 agent 各写一遍，差异算 bug 还是算文风？**算 bug ⇒ 是镜像。**
 
 **一条关系边存在哪一端**（例如「哪篇文书用了哪些主张」写在文书 frontmatter 而不写在 `claims.md`）是**归属问题，归状态层契约**——按 [ADR 0011](docs/adr/0011-the-glossary-defines-words-the-contract-holds-the-values.md) 的消费方判据，agent 读它的时刻是「决定一条事实落进哪个文件」，不是「命名领域概念」。通则与逐条落位见 [ADR 0006](docs/adr/0006-claims-are-one-shared-truth-source.md) 的补充节。
 
@@ -410,10 +410,13 @@ _Avoid_: 假保底（同一概念的旧名，中文名以本条为准）、保�
 往 canonical 里存东西时的**选择规则**：完整长文、高分辨率逐页扫描、完整学历列表。**降级可逆、升级不可逆**，所以永远存大的那一侧。
 只在同一份内容存在粗细两版时才适用；逐项目文书段这类只有一版的内容不涉及。
 
-**渲染物** — `—`
-canonical 的一种**形态**（长文 / 250 词版 / 可拆短答题的要点）。三者不是同一篇的长短，是三种形态。
-**逐项目文书段不是渲染物**（见下），它既不开形态轴也不开版本轴。
-三种形态由**文件名**承载（`long.md` / `short-250.md` / `points.md`），**不另存 frontmatter 键**；v1 的三个文件名与路径规则归 `CONTRACT.md` §5（[#50](https://github.com/jiangxidong/EduApplication/issues/50)）。
+**形态** — `—`
+canonical 文书的三个并列写法之一：完整长文 / 250 词版 / 可拆短答题的要点。**三者不是同一篇的长短**——UIUC 要的是 4 道 250 词短答题，从长文自动截会失败。
+它是**形态轴**上的一个取值，与「版本」那根轴正交（见下条；两根轴见 `CONTRACT.md` §5）。
+**逐项目文书段没有形态**（见下），它既不开形态轴也不开版本轴。
+三个形态由**文件名**承载（`long.md` / `short-250.md` / `points.md`），**不另存 frontmatter 键**；v1 的三个文件名与路径规则归 `CONTRACT.md` §5（[#50](https://github.com/jiangxidong/EduApplication/issues/50)）。
+⚠️ **这个词只在文书语境下是术语**（本节之内、与「版本」成对时）。散文里泛指「东西长什么样」的「形态」是普通词，不是本词条。
+🔴 **它曾经叫「渲染物」，[#73](https://github.com/jiangxidong/EduApplication/issues/73) 改名。** 理由是那个名字**指反了**：这三个写法住在渲染箭头的**左边**（canonical，真相源），而「渲染物」按字面是箭头**右边**的产物——它现在专指那一侧（见「交付」节的「渲染物」词条）。旧文档里的「渲染物」凡指这三个写法的，读作本条。
 
 **逐项目文书段** — `per-program`
 「为什么是这个项目」这一段，是文书里**唯一必须逐项目手写**的内容，粒度对齐**提交单元**（[#18](https://github.com/jiangxidong/EduApplication/issues/18)）。
@@ -422,7 +425,7 @@ canonical 的一种**形态**（长文 / 250 词版 / 可拆短答题的要点�
 闸门行为见 [#18](https://github.com/jiangxidong/EduApplication/issues/18)。
 
 **版本** — `—`
-文书**方向**（主线故事或目标定位）的一次变更。字数与格式的裁剪**不是**新版本（那是渲染物），跨校差异**也不是**新版本。旧版永不自动删。
+文书**方向**（主线故事或目标定位）的一次变更。字数与格式的裁剪**不是**新版本（那是形态），跨校差异**也不是**新版本。旧版永不自动删。
 
 **教练模式 / 代写模式** — `—`
 两种模式**只差「谁产出文字」**，其余全部共用。教练模式的红线是**不写整段替代文字**。两者受同一道素材门槛约束，代写**不设解锁门槛**。
@@ -430,6 +433,14 @@ canonical 的一种**形态**（长文 / 250 词版 / 可拆短答题的要点�
 ---
 
 ## 交付
+
+**渲染物** — `—`
+由**内容层经渲染产出**的东西——它住在渲染箭头的**右边**（两层数据结构见 `CONTRACT.md` §2）。
+判别式是**方向，不是长相**：这东西删了能不能从真相源重建？能 → 它是渲染物，**在它身上改内容等于白改**（源一变就被覆盖）。
+渲染规则**通常逐渠道**（住 `channels/`），但不必然——按推荐人切的那种就不跟渠道走。
+⚠️ **它横跨「落盘 / 不落盘」这根轴，别用落盘与否去判它**：网申准备包（逐项目、落盘、可再生）与 support pack（逐推荐人、不落盘、派生视图）**都是**渲染物，落不落盘由各自词条说。
+⚠️ **反例比正例有用**：`documents/cv/` 的简历、`recommenders/drafts/` 的草稿**都不是**渲染物——排版措辞与被两边改过的稿子，从真相源重建不出来。这正是「canonical」词条那句「既非派生视图、也非可再生产物」的另一面。
+🔴 **它不指 canonical 文书的三个写法**（长文 / 250 词版 / 要点）。那三个住箭头**左边**，是「形态」（见「文书」节）——[#73](https://github.com/jiangxidong/EduApplication/issues/73) 之前它们也叫「渲染物」，一个词指着一条边的两端，已按 [ADR 0023](docs/adr/0023-the-sense-that-fails-the-words-own-test-gives-up-the-name.md) 拆开。
 
 **网申准备包** — `packet`
 逐项目的一套产物，由 canonical 内容 × 该渠道的渲染规则生成，**可再生**——删掉能从真相源重建。它**停在提交前**。
@@ -610,9 +621,9 @@ _Avoid_: 骨架 / 补全（用时序冒充责任——「什么时候被填」�
 | `usable_for`（作为素材的一个字段） | （不存）正文的「不能用在哪」 | 两条判据各判一次：选材路径是「主张 → 素材」，它不在任何决策链上；且文书类型清单逐渠道住在 `channels/` 的「文书规格」，**源在别处** = 镜像（[ADR 0014](docs/adr/0014-a-semantic-slot-is-not-a-stored-field.md)） |
 | `concrete`（作为素材的一个字段） | （不存）正文三问 | 它是同一个文件正文的镜像，也是「零可再生缓存」禁的那样东西（[ADR 0014](docs/adr/0014-a-semantic-slot-is-not-a-stored-field.md)、[#30](https://github.com/jiangxidong/EduApplication/issues/30)） |
 | 「能证实什么」（作为推荐人的一个列） | （不存）素材的 `verifiable_by` | 它是同一条边的镜像面——源在素材侧，反向投影是派生视图（`derive-demo.sh` 缺口三分类已打印「可证实人」）；两端都存必漂移（[ADR 0006](docs/adr/0006-claims-are-one-shared-truth-source.md) 补充（#49）、[#30](https://github.com/jiangxidong/EduApplication/issues/30)） |
-| `word_count`（作为渲染物的一个 frontmatter 键） | （不存，现算） | 零落盘消费方；源就在同一文件的正文里，改一版即假；且它是「当前状态」不是契约（[#50](https://github.com/jiangxidong/EduApplication/issues/50)） |
-| `target`（作为渲染物的一个 frontmatter 键） | （不存）`channels/` 的 `文书规格` | 与 `usable_for` 同一条判据：文书规格逐渠道住 `channels/`，源在别处 = 镜像；样例里已丢掉「超出不罚」这个限定（[#50](https://github.com/jiangxidong/EduApplication/issues/50)）。⚠️ **不波及 `packets/*/essays/*.md` 的 `target_field:`**——另一个键、另一层，可再生层允许镜像（[ADR 0013](docs/adr/0013-a-packet-is-regenerated-whole-never-patched.md)） |
-| `render_form`（作为渲染物的一个 frontmatter 键） | （不存）文件名 | 键值 ≡ 文件名去掉 `.md`，三篇实测全等（[#50](https://github.com/jiangxidong/EduApplication/issues/50)）。**词本身留着**——它是形态轴的名字，只是不落盘 |
-| `supersedes`（作为渲染物的一个 frontmatter 键） | （不存）`ls _versions/` | 零消费方；`_versions/README.md` 自陈它是「这个目录为空」的另一面（[#50](https://github.com/jiangxidong/EduApplication/issues/50)） |
+| `word_count`（作为 canonical 文书的一个 frontmatter 键） | （不存，现算） | 零落盘消费方；源就在同一文件的正文里，改一版即假；且它是「当前状态」不是契约（[#50](https://github.com/jiangxidong/EduApplication/issues/50)） |
+| `target`（作为 canonical 文书的一个 frontmatter 键） | （不存）`channels/` 的 `文书规格` | 与 `usable_for` 同一条判据：文书规格逐渠道住 `channels/`，源在别处 = 镜像；样例里已丢掉「超出不罚」这个限定（[#50](https://github.com/jiangxidong/EduApplication/issues/50)）。⚠️ **不波及 `packets/*/essays/*.md` 的 `target_field:`**——另一个键、另一层，可再生层允许镜像（[ADR 0013](docs/adr/0013-a-packet-is-regenerated-whole-never-patched.md)） |
+| `render_form`（作为 canonical 文书的一个 frontmatter 键） | （不存）文件名 | 键值 ≡ 文件名去掉 `.md`，三篇实测全等（[#50](https://github.com/jiangxidong/EduApplication/issues/50)）。**词本身留着**——它是形态轴的名字，只是不落盘 |
+| `supersedes`（作为 canonical 文书的一个 frontmatter 键） | （不存）`ls _versions/` | 零消费方；`_versions/README.md` 自陈它是「这个目录为空」的另一面（[#50](https://github.com/jiangxidong/EduApplication/issues/50)） |
 | 毕业目标（作为第 0 问） | 毕业去向意向 / `post_grad_intent` | 它是画像的一个字段，不是第 0 问——「回国」支不可取证（[#16](https://github.com/jiangxidong/EduApplication/issues/16) 排除），「留美」支能取证但取不全（[#34](https://github.com/jiangxidong/EduApplication/issues/34)：三所样例 1/3） |
 | 共享 reference（作为跨 skill 复用文件的形态） | （不存）按消费方拆开 | 两个运行时的 plugin 安装都不支持跨 skill 目录引用（"Paths that traverse outside the plugin root … will not work after installation"；Codex 无 `@import`）。判别式：第二个消费方要的是**这张表**，还是**一条以表的输出为键的规则**？后者 → 拆开（[#64](https://github.com/jiangxidong/EduApplication/issues/64)，推翻 [#9](https://github.com/jiangxidong/EduApplication/issues/9) §4 与 [#20](https://github.com/jiangxidong/EduApplication/issues/20) 的放置位置） |
