@@ -4,7 +4,7 @@
 
 🔴 **它不复述规则。** 每条检查的规则只有一处权威，见「规则原文」列。本表里任何一句读起来像规则的话都是索引的措辞，**不是规则本身**——照它实现之前先点开指针读原文。判据见 [ADR 0016](adr/0016-the-checklist-holds-names-and-pointers.md)。
 
-⚠️ **`prototypes/state-workspace-v0/` 整个目录住在未合并的 `prototype/state-layer` 分支**（`CONTRACT.md`、样例工作区、`derive-demo.sh`），本表指向它的链接与路径在 `main` 上一律解析不到。显式写出来好过假装，合并后自愈——同 [ADR 0011](adr/0011-the-glossary-defines-words-the-contract-holds-the-values.md) 对 `CONTEXT.md` 那个死链的处理。⚠️ 本节「已知的实现坑」里的取证也指着那个目录（第 7 条指 `derive-demo.sh`），同此。
+⚠️ **`prototypes/state-workspace-v0/` 整个目录住在未合并的 `prototype/state-layer` 分支**（`CONTRACT.md`、样例工作区、`derive-demo.sh`），本表指向它的链接与路径在 `main` 上一律解析不到。显式写出来好过假装，合并后自愈。⚠️ 而这份文档**会随 repo 分发到每个用户的磁盘上**（[ADR 0021](adr/0021-the-repo-root-is-the-plugin-root-for-both-runtimes.md)），也就是说这批死链是**发布出去的**。两个 prototype 分支的归宿因此不再只是内部整洁问题 → 见 [#64](https://github.com/jiangxidong/EduApplication/issues/64) 开出的那张票——同 [ADR 0011](adr/0011-the-glossary-defines-words-the-contract-holds-the-values.md) 对 `CONTEXT.md` 那个死链的处理。⚠️ 本节「已知的实现坑」里的取证也指着那个目录（第 7 条指 `derive-demo.sh`），同此。
 
 ## 怎么读这张表
 
@@ -14,7 +14,7 @@
 | 被测对象 | 违规的是 | 谁跑 | 夹具 |
 |---|---|---|---|
 | `契约` | 状态层契约自己内部不自洽 | `evals/checks/check-docs.sh` | `evals/fixtures/violations/docs/` |
-| `repo 文档` | 产品 repo 的文档（`CONTEXT.md` / `docs/adr/` / 将来的 `SKILL.md`） | 同上 | 同上 |
+| `repo 文档` | 产品 repo 的文档（`CONTEXT.md` / `docs/adr/` / `skills/*/SKILL.md`） | 同上 | 同上 |
 | `工作区` | 某个工作区的文件内容 | 回归套件的静态检查组 | `sample-workspace/` ＋ 三个 persona 工作区 ＋ `evals/fixtures/violations/workspace/` |
 
 **「曾用号」列只为迁移存在**：旧文档里写着「孤儿检查第 N 条」或「#14 G1」时用它换算成短名。它记的是历史，**不随规则改动而改写**，所以它不是镜像。
@@ -141,6 +141,8 @@ echo "[$h 」]"     → [## 我做了什么 」]  ✅ 中间有空格也对
 ## 尚未实现
 
 **`evals/` 整个目录不存在**：`evals/checks/check-docs.sh`、`evals/fixtures/violations/`、回归套件的静态检查组，一个都没有。**三个 persona 工作区同样不存在**——`工作区` 那行的三项夹具今天只有 `sample-workspace/` 有货（[#63](https://github.com/jiangxidong/EduApplication/issues/63) 逐 ref 复核，取证见该票）。本表落的是**决策**，脚本是实现。
+
+⚠️ **`evals/` 与 `skills/` 的位置本身已不再是 fog**（[ADR 0021](adr/0021-the-repo-root-is-the-plugin-root-for-both-runtimes.md)，[#64](https://github.com/jiangxidong/EduApplication/issues/64)）：仓库根就是两个运行时的 plugin 根，顶层按「谁会读它」切。本表上面写死的 `evals/checks/` 与 `evals/fixtures/violations/{docs,workspace}/` **被该 ADR 照单收下，一个字未改**。仍然缺的只是脚本本身。
 
 ⚠️ **十八条里有两条已经有实现体，但它不在 `evals/` 里。** `material-keys-complete` 与 `material-body-fixed-headings` 今天由 `prototypes/state-workspace-v0/derive-demo.sh` 跑——那是**演示脚本**（它自陈「证明派生视图可以机械算出，不必落盘」），是**过渡期的实际 runner**，且在两个 prototype 分支上各有一份逐字副本。🔴 **`evals/` 建起来时，这两段从 `derive-demo.sh` 同刀删除**：[ADR 0016](adr/0016-the-checklist-holds-names-and-pointers.md) 已否掉「允许两份并存」，一条规则只有一处实现。
 
