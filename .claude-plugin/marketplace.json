@@ -1,0 +1,12 @@
+{
+  "name": "jiangxidong-edu",
+  "owner": {
+    "name": "jiangxidong"
+  },
+  "plugins": [
+    {
+      "name": "edu-application",
+      "source": "./"
+    }
+  ]
+}
