@@ -76,6 +76,12 @@ season_downgraded:
 - `待核实` 单文件大小上限（未公开）
 - 🔴 `✓ 同上` **文件内容须含申请人姓名与院校名** —— 这是对**文件本身**的要求，不是文件名
 - `✓ 同上` `transcript_legend_upload`：需另传**评分说明 / grading legend**
+- `✓ https://grad.illinois.edu/admissions/application-instructions/completing-your-graduate-application` **上传后须自检可读性**：
+  `You will also be able to click the "view document" button to verify whether the uploaded document is legible.`
+  → 「传完就算完」在本校不成立。本校同时要求降到 <200dpi 灰度，**正是最容易传出不可读件的那一档**，自检不是可选步骤
+- `✓ https://grad.illinois.edu/admissions/application-instructions/completing-your-graduate-application` **简历条件必填（多数项目）**：
+  `Most graduate programs require a resume or curriculum vitae.`（→ `documents/cv/`）
+  ⚠️ 与 Cornell 默认值相反，记录在 `channels/cornell--gradschool.md § 材料上传`——**那一份是唯一一份，本文件不复述**
 
 ## 文书规格 —— 形态与另两校完全不同
 
@@ -99,6 +105,14 @@ season_downgraded:
 > `reference_import_previous` 必须与 `referee_*_email` 一同进 AI 停手清单。
 
 - `✓ 同上` `ferpa_waiver_checkbox`（FERPA 1974 放弃查阅推荐信权）—— 影响推荐人对保密性的预期，**AI 不得代勾**
+- `✓ https://grad.illinois.edu/admissions/application-instructions/completing-your-graduate-application` **需要几封**：
+  `Most graduate programs require three letters of reference. Check with your proposed program of study office regarding the number required.`
+  → 大学层给的是「多数项目 3 封」，**具体几封由项目定** → 本项目取值归 `## 项目级差异`
+- 🔴 `✓ https://grad.illinois.edu/admissions/application-instructions/completing-your-graduate-application` **推荐人条目可增 / 可排除 / 可恢复，但排除有窗口**：
+  `To add a recommender, simply click the "Add Recommender" link and follow the provided instructions. If you wish to exclude a recommender, you may do so as long as the recommendation letter has not yet been submitted.`
+  `If you later want to reinstate a previously excluded reference, you will need to access the References page again, then click the excluded recommender's name and click the grey "Reinstate" button at the bottom to reinstate the reference.`
+  → **信一旦提交就排不掉**。这与 `reference_import_previous` 一起，是本校推荐信线的两个边界；
+    「填错了大不了删掉」这个直觉在本校**只在信到齐之前成立**
 
 ## 费用与资格（从 programs.md 下沉至此 —— evidence 列只担保 deadline）
 

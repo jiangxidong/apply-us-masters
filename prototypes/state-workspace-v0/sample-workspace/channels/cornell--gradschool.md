@@ -31,11 +31,32 @@ season_downgraded:
 - `✓ 同上` 质量：`clear and easy to read`；**加密件必须先打印再扫描**
 - `✓ 同上` 成绩单：申请阶段上传非官方件，录取后才交官方件
 - `✓ 同上` 翻译件认证等级：**certified or notarized**
+- `✓ https://gradschool.cornell.edu/admissions/application-steps/transcripts/` **含 SSN 的成绩单禁止上传**：
+  `Do not upload transcripts that include a U.S. Social Security Number (SSN). Redact, cross out, or cover your SSN, if applicable, before scanning the document.`
+  → 涂黑要在**扫描之前**做；扫完再涂等于没涂
+- `✓ https://gradschool.cornell.edu/admissions/application-steps/transcripts/` **加密 / 密码保护的文件系统不接受**：
+  `The online application will not accept or properly display encrypted or password-protected documents.`
+  → 这是上面「加密件必须先打印再扫描」那条的**原因**。直接转发学校发来的加密官方电子成绩单（e-transcript）会失败
+- `✓ https://gradschool.cornell.edu/admissions/application-steps/transcripts/` **第三方成绩单渠道**：
+  `We also accept transcripts that have been certified and uploaded directly to your application by IIE, or Amideast or were submitted through SOPHAS, VMCAS, or LSAC.`
+  ⚠️ 与 Columbia「明文禁止本人以外任何人代交」口径**相反**——「中介路径是否关闭」逐校不同，不能写一套通用判断
+- 🔴 `✓ https://gradschool.cornell.edu/admissions/application-process/important-application-policies/` **附加材料明令不收（含简历）**：
+  `Publications, award certificates, resumes, theses, and similar materials should not be sent unless prior approval has been given by the field of study to which you are applying. Mail any approved materials directly to the graduate field, not to the Graduate School.`
+- `✓ https://gradschool.cornell.edu/admissions/application-steps/required-tests/` **官方送分机构代码 = 2098**：
+  `All official test scores should be reported directly to Cornell University's institution code 2098.`
+  `Department codes are not needed for matching scores to applications. If ETS requires you to select a department code, you may choose "0000 undecided."`
+  → 这条不是费用，是**第三方（ETS）把一份材料送到学校的渠道地址**，与上面的 IIE / Amideast / SOPHAS 同形状，故归本节（#39 改派，票面原写 `## 费用与资格`）
 
 > **冲突记录**：Cornell 要「清晰易读 + 多页合并」，UIUC 要「≤200dpi 灰度 + 尽可能低分辨率」。
 > 一份成品不可能同时满足。
 > → canonical 存**高分辨率彩色、逐页单文件**（`documents/transcript/page-NN.pdf`），
 > 投递时给 Cornell 合并 + 保清晰，给 UIUC 降采样。**降级可逆，升级不可逆。**
+
+> **默认值相反记录（`documents/cv/` 槽位）**：本校是 `不允许(除非 field 事先批准)`，UIUC 是 `条件必填(多数项目)`。
+> 一份 canonical 简历，投 UIUC 交、投 Cornell 不交——少了任何一条，产品在一所学校上必错：
+> 对 Cornell 是**教用户违反默认**，对 UIUC 是**漏交多数项目要的件**。
+> ⚠️ **不是互斥**：两边都带条件，合取可满足；无条件的那一侧在池外（Columbia SEAS 的简历是 `必填`）。
+> 两层结构的正当性锚在**降级不可逆**，不锚在互斥断言——互斥断言总能被一个「除非…」条款推翻。
 
 ## 文书规格 —— 两篇独立文书，不是一篇
 
