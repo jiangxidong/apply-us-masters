@@ -4,7 +4,7 @@ channel_key: uiuc--gradcollege
 season: 2027fall
 generated: 2026-08-15
 source_fingerprint:
-  apply.md: 1922655607-2813
+  apply.md: 1721676589-2821
   profile.md: 3301469396-2623
   programs.md: 3219980832-2660
   claims.md: 2294360780-5454
