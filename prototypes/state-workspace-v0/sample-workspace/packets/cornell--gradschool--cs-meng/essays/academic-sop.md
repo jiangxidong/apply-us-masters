@@ -18,6 +18,6 @@ I spent the first two months of my job watching a dashboard I did not understand
 
 （原型省略正文 —— canonical 的正文在样例里本就是省略的。）
 
-⚠️ `claims:` 引用的 `c01` / `c02` 指向 `claims.md`，而**样例工作区里 `claims.md` 尚不存在**
-（[#27](https://github.com/jiangxidong/EduApplication/issues/27) 的第 ③ 项）。本包按 `CONTRACT.md` §1.1 第 4 行的形态写，
-不自己发明主张内容。
+⚠️ **`claims:` 比源少一条，是渲染规则的结果，不是漏抄**：`long.md` 的 frontmatter 是
+`[c01, c02, c03]`，而本校要求去掉个人动机段，`c03`（把陌生学术环境拆成可执行步骤的方法）随那段走进
+`essays/personal-statement.md`。断言原文见 `claims.md`，本文件不复述。

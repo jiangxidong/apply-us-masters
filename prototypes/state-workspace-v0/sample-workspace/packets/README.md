@@ -102,12 +102,17 @@ packets/<program_key>/
 
 ## 机械检查
 
-`../trace-packet.sh`，四项：
+`../trace-packet.sh`，**五项**：
 
 1. 断言行里不得出现 `✓` 或「待核实」（规则 ②）
 2. 每条 `← channels/<key>.md § <节名>` 指针可解析到真实存在的节
 3. 每个渲染物的 `rendered_from` 真相源存在
 4. `source_fingerprint` 与当前真相源一致（陈旧包检测，规则 ①）
+5. `season-stamp-matches-owners` —— `channels/*.md` 与 `programs.md` 的 `season_downgraded`
+   键集合恰好等于「在该文件里实际有内容的 owner」集合（[ADR 0008](../../../../docs/adr/0008-the-owner-binds-to-a-section-not-a-file.md) 限定 4，[#47](https://github.com/jiangxidong/EduApplication/issues/47)）
+
+🔴 **条数别再写在别处。** 它在脚本头注释里停在「三条」而实有四项、停了一整轮才被发现；
+现在脚本每一项由自己的 `=== [N] ... ===` 分隔行自陈，本表是唯一另一处，改了要一起改。
 
 ## ⚠️ 这个脚本不在 CI 里
 
