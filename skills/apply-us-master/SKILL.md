@@ -8,7 +8,7 @@ description: >-
   tiering programs (use pick-programs), or assembling application packets
   and coordinating recommenders (use assemble-packet).
 license: MIT
-allowed-tools: Read, Write, Edit, Glob, Grep, Bash(git status:*), Bash(git rev-parse:*), Bash(ls:*), Bash(stat:*), Bash(file:*), Bash(pdfinfo:*)
+allowed-tools: Read, Write, Edit, Glob, Grep, Bash
 ---
 
 # apply-us-master
