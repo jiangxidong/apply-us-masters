@@ -154,7 +154,7 @@ _Avoid_: 个人资料、背景、简历
 
 **推荐信闸口** — `—`
 「未过闸不得进入任何涉及推荐人邮箱的步骤」这条**流程硬约束**。闸门本身是规则，规则落盘；
-🔴 「过没过」是**派生视图**——按 `recommenders.md` 的本人授权现算，绝不落盘（#61；授权判据见 `drafts-imply-consent` 的规则原文）。
+🔴 「过没过」是**派生视图**——按 `recommenders.md` 的本人授权现算，绝不落盘（[#61](https://github.com/jiangxidong/EduApplication/issues/61)；授权判据见 `drafts-imply-consent` 的规则原文）。
 
 ---
 
@@ -178,12 +178,12 @@ _Avoid_: 选校表、候选池
 项目池里 `status ∈ {applying, submitted}` 的**派生视图**。不落盘。
 
 **STEM 资格** — `—`
-本项目是否 STEM 指定的**派生视图**：拿落盘的 CIP code 对照 DHS STEM 名单**现算**，绝不落盘（#58；全局名单不进工作区——[ADR 0018](docs/adr/0018-a-global-lookup-table-stays-out-of-the-workspace.md)）。
+本项目是否 STEM 指定的**派生视图**：拿落盘的 CIP code 对照 DHS STEM 名单**现算**，绝不落盘（[#58](https://github.com/jiangxidong/EduApplication/issues/58)；全局名单不进工作区——[ADR 0018](docs/adr/0018-a-global-lookup-table-stays-out-of-the-workspace.md)）。
 工作区侧的唯一输入是「CIP 分类」，见该词条。
 
 **CIP 分类** — `—`
 美国教育部给学位项目的分类码。**落盘的事实，不是派生视图**——它是「STEM 资格」现算的工作区侧唯一输入，`evidence` 列不担保它。
-落进哪一节归契约的范围话（`费用与资格` 收资格属性；粒度是项目级——CIP 与 `program_key` 两头对不上，#34 查实）。
+落进哪一节归契约的范围话（`费用与资格` 收资格属性；粒度是项目级——CIP 与 `program_key` 两头对不上，[#34](https://github.com/jiangxidong/EduApplication/issues/34) 查实）。
 
 **状态** — `status`
 项目在池子里的处境。**唯一的状态轴**——不存在并行的「决定」列。
@@ -471,7 +471,7 @@ canonical 文书的三个并列写法之一：完整长文 / 250 词版 / 可拆
 _Avoid_: 申请包、投递包、完成度计数（「已完成 12/17」是镜像）
 
 **完成度自检** — `—`
-包交付前「哪些槽位还空着」的**派生视图**：空位就是 ⬜，**不写计数**（#8）。现算、绝不落盘——
+包交付前「哪些槽位还空着」的**派生视图**：空位就是 ⬜，**不写计数**（[#8](https://github.com/jiangxidong/EduApplication/issues/8)）。现算、绝不落盘——
 落盘的包里那个 `## 完成度自检` 小节是渲染物的一部分，整包重生成时随包重算，不是第二份存储（[ADR 0013](docs/adr/0013-a-packet-is-regenerated-whole-never-patched.md)）。
 
 **support pack** — `—`
