@@ -18,3 +18,21 @@ jobs:
           else
             echo "✅ 夹具翻红，检查活着"
           fi
+  check-workspace:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: 取被测分支
+        run: git worktree add /tmp/sl origin/prototype/state-layer
+      - name: 名单里的工作区检查（真样例全绿）
+        run: bash evals/checks/check-workspace.sh /tmp/sl/prototypes/state-workspace-v0 /tmp/sl/prototypes/state-workspace-v0/sample-workspace
+      - name: 五条夹具必须各自翻红（ADR 0017 推论 2）
+        run: |
+          set -e
+          for c in pseudo-safer-excludes-safer material-keys-complete material-body-fixed-headings cite-url-has-no-ellipsis essay-cites-no-referee-claim; do
+            if bash evals/checks/check-workspace.sh /tmp/sl/prototypes/state-workspace-v0 "evals/fixtures/violations/workspace/${c}" "${c}"; then
+              echo "🔴 ${c} 夹具没翻红"; exit 1
+            fi
+          done
