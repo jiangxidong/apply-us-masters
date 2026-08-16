@@ -10,9 +10,9 @@
 
 ## 安装 Installation
 
-两个运行时都走同一条路径：先把本仓库加为 marketplace，再安装其中的插件。四个技能是一个整体分发单元，装了会一起出现，不存在"只装一半"。
+两个运行时都走同一条路径：先把本仓库加为 marketplace，再安装其中的插件。四个技能是一个整体分发单元——marketplace 条目不列子目录，装了会一起出现，不存在"只装一半"。**目前仓库里实际落盘的只有 `apply-us-master` 一个**；其余三个随各自的实现票落盘后，会自动出现在同一个已安装条目里，不需要重新安装。
 
-Both runtimes use the same two-step path: add this repo as a marketplace, then install the plugin from it. The four skills ship as one distribution unit — you cannot install only part of it.
+Both runtimes use the same two-step path: add this repo as a marketplace, then install the plugin from it. The four skills ship as one distribution unit — the marketplace entry doesn't list subdirectories, so whatever exists installs together, never half. **Only `apply-us-master` is built today**; the other three will appear under the same installed entry as their own implementation tickets land, with no reinstall needed.
 
 ### Claude Code
 
