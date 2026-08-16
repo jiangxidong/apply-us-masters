@@ -4,8 +4,8 @@ channel_key: cornell--gradschool
 season: 2027fall
 generated: 2026-08-15
 source_fingerprint:
-  apply.md: 1721676589-2821
-  profile.md: 2531006322-2654
+  apply.md: 3689528157-2796
+  profile.md: 2730792665-2260
   programs.md: 3219980832-2660
   claims.md: 2294360780-5454
   recommenders.md: 3627732816-11901
@@ -105,7 +105,7 @@ source_fingerprint:
 | 本科成绩单 | `documents/transcript/<institution_id>/page-NN.pdf` → **合并成一个 PDF**、保持清晰 | ⬜ `documents/transcript/` 为空 |
 | 交换成绩单 | 同上，交换院校单独一份 | ⬜ 同上 |
 | 学位证 | `documents/degree/<institution_id>.pdf` | ⬜ 条件必填（境外学历） |
-| 翻译件 | `documents/translation/<institution_id>/`，需 certified 或 notarized | ⬜ ← `profile.md § 待补充的 canonical 事实` 第 2 项 |
+| 翻译件 | `documents/translation/<institution_id>/`，需 certified 或 notarized | ⬜ ← `CONTRACT.md §1.3 translation 槽位` |
 
 **降级方向**：canonical 是逐页高分辨率彩色，给这里**合并 + 保清晰**；给 UIUC 反向降到 <200dpi 灰度。
 降级可逆，升级不可逆 —— 别反过来存。

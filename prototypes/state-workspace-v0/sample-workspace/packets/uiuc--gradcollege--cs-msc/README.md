@@ -4,14 +4,14 @@ channel_key: uiuc--gradcollege
 season: 2027fall
 generated: 2026-08-15
 source_fingerprint:
-  apply.md: 1721676589-2821
-  profile.md: 2531006322-2654
+  apply.md: 3689528157-2796
+  profile.md: 2730792665-2260
   programs.md: 3219980832-2660
   claims.md: 2294360780-5454
   recommenders.md: 3627732816-11901
   essays/canonical/long.md: 1603118701-364
   essays/canonical/points.md: 470119277-1264
-  channels/uiuc--gradcollege.md: 669103378-18146
+  channels/uiuc--gradcollege.md: 2472000618-18098
 ---
 
 # 提交动线 — UIUC Master of Computer Science (MCS, Urbana-Champaign)
@@ -93,7 +93,7 @@ source_fingerprint:
 |---|---|---|
 | 本科成绩单 | `documents/transcript/<institution_id>/page-NN.pdf` → **降采样到 <200dpi 灰度** | ⬜ 目录为空 |
 | 交换成绩单 | 同上 | ⬜ 同上 |
-| **评分说明 / grading legend** | `documents/legend/<institution_id>.pdf`，**逐院校一份** | ⬜ ← `profile.md § 待补充的 canonical 事实` 第 1 项 |
+| **评分说明 / grading legend** | `documents/legend/<institution_id>.pdf`，**逐院校一份** | ⬜ ← `channels/uiuc--gradcollege.md § 材料上传` |
 | 学位证 | `documents/degree/<institution_id>.pdf` | ⬜ 条件必填（成绩单未载明学位时） |
 | 翻译件 | `documents/translation/<institution_id>/` | ⬜ 目录为空 |
 
