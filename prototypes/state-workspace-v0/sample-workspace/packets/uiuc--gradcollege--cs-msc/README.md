@@ -11,7 +11,7 @@ source_fingerprint:
   recommenders.md: 3627732816-11901
   essays/canonical/long.md: 1603118701-364
   essays/canonical/points.md: 470119277-1264
-  channels/uiuc--gradcollege.md: 3484404341-18259
+  channels/uiuc--gradcollege.md: 669103378-18146
 ---
 
 # 提交动线 — UIUC Master of Computer Science (MCS, Urbana-Champaign)

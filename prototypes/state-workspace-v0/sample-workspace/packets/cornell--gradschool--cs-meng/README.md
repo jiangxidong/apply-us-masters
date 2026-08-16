@@ -11,7 +11,7 @@ source_fingerprint:
   recommenders.md: 3627732816-11901
   essays/canonical/long.md: 1603118701-364
   essays/canonical/points.md: 470119277-1264
-  channels/cornell--gradschool.md: 3480135101-8187
+  channels/cornell--gradschool.md: 1072558271-8322
 ---
 
 # 提交动线 — Cornell MEng in Computer Science
