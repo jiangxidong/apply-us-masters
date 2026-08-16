@@ -62,7 +62,9 @@ $ git grep -n '渲染物' main prototype/state-layer prototype/application-packe
 
 ## Consequences
 
-**宽义现场一个字都不用改，因此不触发 ADR 0013。** 这是本决定最便宜的一面，也值得写下来免得下一个人白拆一遍包：五个 packet 文书标题后缀的「（渲染物）」、Cornell 那篇另有的「🔴 **这是渲染物，不是真相源。** 要改内容改 `essays/canonical/long.md`」、`trace-packet.sh` 的检查 [3]、`packets/README.md:109`、`documents/README.md:15`、`CONTRACT.md` 的 `:218/:383/:512/:513` —— **全部按新定义逐字成立**。`source_fingerprint` 不变，两个包不重生成。
+**宽义现场一个字都不用改。** 这是本决定最便宜的一面，也值得写下来免得下一个人白拆一遍包：五个 packet 文书标题后缀的「（渲染物）」、Cornell 那篇另有的「🔴 **这是渲染物，不是真相源。** 要改内容改 `essays/canonical/long.md`」、`trace-packet.sh` 的检查 [3]、`packets/README.md:109`、`documents/README.md:15`、`CONTRACT.md` 的 `:218/:383/:512/:513` —— **全部按新定义逐字成立**，包正文一个字节未动。
+
+⚠️ **但 ADR 0013 仍然被触发了一次，而且是从没人预料的那一侧。** 落盘时把 `sample-workspace/apply.md` 目录导引表里的「文书 canonical 渲染物」改成「文书 canonical（三个形态）」——那是一行**没有任何包引用**的说明文字，`trace-packet.sh` 检查 [4] 当场报 🔴，因为 `apply.md` **整份进 `source_fingerprint`**（`packets/README.md:52` 明写：不进指纹的话换季不会让任何包失效）。⇒ **指纹的粒度是文件，改一个错别字与改一条约束在它眼里没有区别。** 按 [#65](https://github.com/jiangxidong/EduApplication/issues/65) 的先例重算指纹（两个包各一行，包正文零字节改动），复跑 0 🔴。**先例：一次纯措辞的重命名也会摊到已落盘的产物上，别把「不改内容」当成「不碰包」。**
 
 **#60 的那次回避，结论保留、理由作废。** 「support pack 是渲染物」现在是**真话、也可以说**——但新词条**仍然不写它**，换了个理由：按 [#42](https://github.com/jiangxidong/EduApplication/issues/42) ②，词条该写的是 X 的**内涵**（「它是派生视图」），而「它在渲染箭头的哪一边」是**层的事实**，住 `CONTRACT.md` §2。`support pack` 词条**一个字不改**。#60 转出的这一项到此结清。
 
@@ -70,6 +72,6 @@ $ git grep -n '渲染物' main prototype/state-layer prototype/application-packe
 
 **不新增机械检查。** 想得到的形态是「`essays/canonical/` 语境里不得出现『渲染物』」，它要判的是**语境**不是字符串，纯 `grep` 判不了，白名单一开就退化成花名册。按 [ADR 0019](0019-an-absence-needs-a-consumer-branch-not-a-registry.md) 甲类：**不开票、不进 `docs/checks.md`**。往一份至今没有实现体的清单里再加一行散文，正是 ADR 0011 Consequences 末段点名的那个形态。
 
-**判据本身可复用，且已知有第二个候选。** 「判不过自己名字的那一义让名」不限于本词。[#79](https://github.com/jiangxidong/EduApplication/issues/79)（「项目内容」的范围话住在词汇表）在处理时可以先跑一遍这条判据。⚠️ 但它**不是** ADR 0022 的替代：0022 管「没有这个词，要不要加」，本条管「有这个词，两义谁留名」，两条的入口不同。
+**判据可复用，但今天只有一个样本。** 「判不过自己名字的那一义让名」写成通则，而它只在「渲染物」这一个词上跑过一次——**没有第二个样本，别把它当已复验的机器**。⚠️ 它也**不是** ADR 0022 的替代：0022 管「没有这个词，要不要加」，本条管「有这个词，两义谁留名」，两条的入口不同。
 
 **反向代价：低。** 改名可逆——把「形态」改回去是一次全仓 `git grep` 加十几处编辑。真正难回头的是判据，不是名字。
