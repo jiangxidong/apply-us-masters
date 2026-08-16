@@ -12,11 +12,13 @@ jobs:
         run: bash evals/checks/check-docs.sh .
       - name: 夹具必须翻红（ADR 0017 推论 2：全绿不是证据）
         run: |
-          if bash evals/checks/check-docs.sh evals/fixtures/violations/docs/glossary-holds-no-owner; then
-            echo "🔴 夹具没有翻红——检查是恒真的"
+          rc=0
+          bash evals/checks/check-docs.sh evals/fixtures/violations/docs/glossary-holds-no-owner || rc=$?
+          if [ "${rc}" -ne 1 ]; then
+            echo "🔴 期望翻红（exit 1），实得 exit ${rc}（exit 2 是检查器硬失败，不是真检出）"
             exit 1
           else
-            echo "✅ 夹具翻红，检查活着"
+            echo "✅ 夹具翻红（exit 1），检查活着"
           fi
   check-workspace:
     runs-on: ubuntu-latest
@@ -32,7 +34,10 @@ jobs:
         run: |
           set -e
           for c in pseudo-safer-excludes-safer material-keys-complete material-body-fixed-headings cite-url-has-no-ellipsis essay-cites-no-referee-claim; do
-            if bash evals/checks/check-workspace.sh /tmp/sl/prototypes/state-workspace-v0 "evals/fixtures/violations/workspace/${c}" "${c}"; then
-              echo "🔴 ${c} 夹具没翻红"; exit 1
+            rc=0
+            bash evals/checks/check-workspace.sh /tmp/sl/prototypes/state-workspace-v0 "evals/fixtures/violations/workspace/${c}" "${c}" || rc=$?
+            if [ "${rc}" -ne 1 ]; then
+              echo "🔴 ${c} 期望翻红（exit 1），实得 exit ${rc}（exit 2 是检查器硬失败，不是真检出）"; exit 1
             fi
+            echo "✅ ${c} 翻红（exit 1）"
           done

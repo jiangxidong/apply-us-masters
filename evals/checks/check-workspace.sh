@@ -5,6 +5,9 @@
 #   WORKSPACE_DIR = 被测工作区（sample-workspace/ 或某条夹具）
 #   check-name    = 可选，只跑这一条（夹具翻红用）；省略则跑全部五条
 # 规则原文不住这里——每条检查头上的指针才是唯一权威（docs/checks.md 只持名与指针，ADR 0016）。
+# 已知限制（本次不修，对抗性复查记录）：CRLF/BOM 会造成假红（`sensitive: no`\r 之类的字面量比较对不上、
+# BOM 会挂在 frontmatter 第一个键前面）；表头字面量匹配（`grep -n '^| 键 | ...'` 一类）对多余空白/换行是脆的。
+# 两类都是 fails-closed（宁可漂移闸误报，不做更松的匹配去吞掉真正的破坏），故意留到下一轮再处理。
 set -u
 export LC_ALL=en_US.UTF-8   # 不靠继承：LC_ALL=C 下多字节处理静默失效（docs/checks.md 坑 5）
 
@@ -49,17 +52,26 @@ fails=0
 # 字面量运行时提取（脚本零内联）——提取失败（计数不对/为空）一律 exit 2
 # ══════════════════════════════════════════════════════════════════════════
 
-# ── YES：CONTRACT.md §4.6 表 `| 12 |` 且含 pseudo_safer 的行，取值域 cell 第一个反引号 token ──
+# ── YES_SET：CONTRACT.md §4.6 表 `| 12 |` 且含 pseudo_safer 的行，取值域 cell 全部反引号 token ──
+# 与 SAFER_SET 对称：不取「第一个」（枚举一重排就失明——F1），取全集，断言 `yes` ∈ 集合，
+# 比较仍用字面量 `yes`（§4.6 第三条机械判别式写死的是 `pseudo_safer = yes`，不是「值域第一项」）。
 yes_row="$(grep '^| 12 |' "${CONTRACT}" | grep 'pseudo_safer')"
 yes_n="$(printf '%s\n' "${yes_row}" | grep -c '.')"
-YES=""
+YES_SET=()
 if [ "${yes_n}" -eq 1 ]; then
-  YES="$(printf '%s\n' "${yes_row}" | awk -F'|' '{print $4}' | grep -oE '`[^`]+`' | head -1 | tr -d '`')"
+  while IFS= read -r tok; do YES_SET+=("${tok}"); done < <(printf '%s\n' "${yes_row}" | awk -F'|' '{print $4}' | grep -oE '`[^`]+`' | tr -d '`')
 fi
-if [ "${yes_n}" -ne 1 ] || [ -z "${YES}" ]; then
-  echo "🔴 字面量提取失败：YES（CONTRACT.md §4.6 pseudo_safer 行命中 ${yes_n} 条，取值='${YES}'）" >&2
+if [ "${yes_n}" -ne 1 ] || [ "${#YES_SET[@]}" -eq 0 ]; then
+  echo "🔴 字面量提取失败：YES_SET（CONTRACT.md §4.6 pseudo_safer 行命中 ${yes_n} 条，取到 ${#YES_SET[@]} 个 token）" >&2
   exit 2
 fi
+yes_ok=0
+for y in "${YES_SET[@]}"; do [ "${y}" = "yes" ] && yes_ok=1; done
+if [ "${yes_ok}" -ne 1 ]; then
+  echo "🔴 契约漂移闸：yes 不在 CONTRACT.md §4.6 pseudo_safer 值域 YES_SET=[${YES_SET[*]}] 内——规则失去支点" >&2
+  exit 2
+fi
+YES="yes"
 
 # ── SAFER_SET：CONTEXT.md「分档」表（表头 `| 中文 | 标识符 | 断言的是 |` 后）第 2 列反引号 token 集合 ──
 ctx_hdr_ln="$(grep -n '^| 中文 | 标识符 | 断言的是 |$' "${GLOSSARY}" | head -1 | cut -d: -f1)"
@@ -152,8 +164,12 @@ check_pseudo_safer_excludes_safer() {
     echo "🔴 ${target} 不存在——检查目标文件缺失（硬失败，不是跳过）" >&2
     exit 2
   fi
+  # 数据行判定改为「分隔行标志法」（F2）：不再靠 $2 是否形如 [A-Za-z0-9]--[A-Za-z0-9]——
+  # 纯 CJK 的 program_key（如「北大--元培--计算机」）没有 ASCII 字符贴着 `--`，靠内容匹配会隐身。
+  # 改成看见表头下方的分隔行（`|---|---|...`）就置 sep=1，此后行首为 `|` 的行一律算数据行。
   hits="$(awk -F'|' -v YES="${YES}" '
-    /^\|/ && $2 ~ /[A-Za-z0-9]--[A-Za-z0-9]/ {
+    /^\|[ :-]*-/ { sep=1; next }
+    sep==1 && /^\|/ {
       tier=$7; ps=$13
       gsub(/^[ \t]+|[ \t]+$/, "", tier); gsub(/^[ \t]+|[ \t]+$/, "", ps)
       if (ps == YES && tier == "safer") print NR": tier="tier" pseudo_safer="ps
@@ -163,7 +179,7 @@ check_pseudo_safer_excludes_safer() {
     printf '🔴 FAIL %s：pseudo_safer=%s 与 tier=safer 共存（ADR 0015 禁止共存）\n%s\n' "${name}" "${YES}" "${hits}"
     fails=$((fails + 1))
   else
-    echo "✅ PASS ${name}（参照物：CONTRACT.md §4.6 pseudo_safer 行取值 YES=${YES}［源 ${CONTRACT_ROOT}］＋ CONTEXT.md「分档」表 SAFER_SET 含 safer［源=main 词表］；夹具＝evals/fixtures/violations/workspace/${name}/）"
+    echo "✅ PASS ${name}（参照物：CONTRACT.md §4.6 pseudo_safer 行值域 YES_SET=[${YES_SET[*]}]，断言 yes∈其中［源 ${CONTRACT_ROOT}］＋ CONTEXT.md「分档」表 SAFER_SET 含 safer［源=main 词表］；夹具＝evals/fixtures/violations/workspace/${name}/）"
   fi
 }
 
@@ -179,6 +195,9 @@ check_material_keys_complete() {
     exit 2
   fi
 
+  # F3：verifiable_by 有键但值既不是 [...]（flow，可空）也不是同行标量（bare token，无 `[`）
+  # 时——多半是 YAML block-list（键后另起几行 `- rNN`）——判 parse_ok=0，外层按此 fail closed，
+  # 不再像旧逻辑那样把「解析不出内容」悄悄读成「空列表」而放行。
   mat_records=()
   for f in "${files[@]}"; do
     rec="$(awk -v k1="${KEYS[0]}" -v k2="${KEYS[1]}" -v k3="${KEYS[2]}" -v file="${f}" '
@@ -187,12 +206,22 @@ check_material_keys_complete() {
         if ($0 ~ "^"k1":") { v=$0; sub("^"k1":[ \t]*","",v); mid=v }
         if ($0 ~ "^"k2":") { v=$0; sub("^"k2":[ \t]*","",v); sen=v }
         if ($0 ~ "^"k3":") {
-          v=$0; sub("^"k3":[ \t]*","",v)
-          gsub(/[][,]/," ",v); gsub(/  +/," ",v); sub(/^ +/,"",v); sub(/ +$/,"",v)
-          vb=v; has=1
+          raw=$0; sub("^"k3":[ \t]*","",raw); sub(/[ \t\r]+$/,"",raw)
+          has=1
+          if (raw == "") {
+            parse_ok=0
+          } else if (raw ~ /^\[.*\]$/) {
+            v=raw
+            gsub(/[][,]/," ",v); gsub(/  +/," ",v); sub(/^ +/,"",v); sub(/ +$/,"",v)
+            vb=v; parse_ok=1
+          } else if (raw !~ /\[/) {
+            vb=raw; parse_ok=1
+          } else {
+            parse_ok=0
+          }
         }
       }
-      END { printf "%s|%s|%s|%s|%s", mid, sen, vb, has+0, file }
+      END { printf "%s|%s|%s|%s|%s|%s", mid, sen, vb, has+0, file, parse_ok+0 }
     ' "${f}")"
     mat_records+=("${rec}")
   done
@@ -200,8 +229,8 @@ check_material_keys_complete() {
   # 外键子步是否需要 recommenders.md：任一素材的 verifiable_by 非空才需要。
   need_fk=0
   for rec in "${mat_records[@]}"; do
-    IFS='|' read -r mid sen vb has file <<< "${rec}"
-    if [ "${has}" = "1" ] && [ -n "${vb}" ]; then need_fk=1; fi
+    IFS='|' read -r mid sen vb has file parse_ok <<< "${rec}"
+    if [ "${has}" = "1" ] && [ "${parse_ok}" = "1" ] && [ -n "${vb}" ]; then need_fk=1; fi
   done
   rec_file="${WS}/recommenders.md"
   known_ids=()
@@ -219,7 +248,7 @@ check_material_keys_complete() {
   bad_lines=""
   nbad=0
   for rec in "${mat_records[@]}"; do
-    IFS='|' read -r mid sen vb has file <<< "${rec}"
+    IFS='|' read -r mid sen vb has file parse_ok <<< "${rec}"
     bad=""
     if [[ ! "${mid}" =~ ^m[0-9]+$ ]]; then
       bad="${bad} material_id 缺失或不是 mNN"
@@ -235,6 +264,8 @@ check_material_keys_complete() {
     fi
     if [ "${has}" != "1" ]; then
       bad="${bad} 缺 verifiable_by 键（空列表要写成 []，不是不写）"
+    elif [ "${parse_ok}" != "1" ]; then
+      bad="${bad} verifiable_by 有键但值既不是 [...]（可空）也不是同行标量，检查解析不了（像是写成了 YAML block-list——按 §1.1 样例形态写）"
     elif [ -n "${vb}" ]; then
       for id in ${vb}; do
         found=0
@@ -293,8 +324,8 @@ check_material_body_fixed_headings() {
 
 # ── 4. cite-url-has-no-ellipsis ─────────────────────────────────────────
 # 规则原文：ADR 0007 补充（#63）。两个作用域写死（判据非契约字面量，是 #63 定的固定裁决）：
-#   (a) channels/*.md 的顶层 bullet（^- 起头）首行，含 ✓ 且含 URL；
-#   (b) programs.md 数据行 $10（evidence）trim 后以 ✓ 开头的 cell。
+#   (a) channels/*.md 的顶层 bullet（^[-*] 起头——GFM 两种 bullet 记号等价，F4）首行，含 ✓ 且含 URL；
+#   (b) programs.md 数据行 $10（evidence）trim 后以 ✓ 开头的 cell（数据行判定同 F2，分隔行标志法）。
 # 裁定（#76 结案评论详述）：待核实后缀里的 URL 不在作用域——规则原文绑的是 `✓ <url>`，
 # 「待核实」封闭后缀是历史观察值，不带 ✓，天然放行。
 check_cite_url_has_no_ellipsis() {
@@ -329,7 +360,7 @@ check_cite_url_has_no_ellipsis() {
           nhit=$((nhit + 1))
           ;;
       esac
-    done < <(grep -n '^- ' "${f}")
+    done < <(grep -n '^[-*] ' "${f}")
   done
 
   while IFS= read -r row; do
@@ -349,7 +380,10 @@ check_cite_url_has_no_ellipsis() {
         fi
         ;;
     esac
-  done < <(awk -F'|' '/^\|/ && $2 ~ /[A-Za-z0-9]--[A-Za-z0-9]/' "${prog}")
+  done < <(awk '
+    /^\|[ :-]*-/ { sep=1; next }
+    sep==1 && /^\|/ { print }
+  ' "${prog}")
 
   if [ "${nhit}" -gt 0 ]; then
     printf '🔴 FAIL %s：URL 内含省略号（… 或 ...），共 %d 处\n%s' "${name}" "${nhit}" "${hits}"
@@ -390,7 +424,22 @@ check_essay_cites_no_referee_claim() {
     [ -e "${f}" ] || continue
     base="$(basename "${f}")"
     [ "${base}" = "README.md" ] && continue
-    used="$(awk -F'[][]' '/^claims:/ {gsub(/,/," ",$2); print $2}' "${f}")"
+    claims_line="$(awk '/^claims:/ {print; exit}' "${f}")"
+    [ -z "${claims_line}" ] && continue
+    # F3：claims: 键存在但不是同行 flow 形式（[...]，可空）时——多半是 YAML block-list
+    # （键后另起几行 `- cNN`）——fail closed，不许像旧逻辑那样把「解析不出内容」悄悄读成
+    #「没有 claims」而跳过整个文件（那样会把 block-list 里引用的 referee 主张放过）。
+    case "${claims_line}" in
+      *'['*']'*)
+        used="$(printf '%s\n' "${claims_line}" | sed -E 's/^claims:[^[]*\[([^]]*)\].*/\1/' | tr ',' ' ')"
+        ;;
+      *)
+        hits="${hits}${f} 的 claims 不是 flow 形式（[...]），检查解析不了——按 §1.1 样例形态写
+"
+        nhit=$((nhit + 1))
+        continue
+        ;;
+    esac
     [ -z "${used}" ] && continue
     for c in ${used}; do
       for r in "${referee_ids[@]:-}"; do
