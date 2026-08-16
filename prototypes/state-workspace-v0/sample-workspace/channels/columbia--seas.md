@@ -74,14 +74,6 @@ season_downgraded:
 
 ### `columbia--seas--cs-ms`
 
-#### 学位形态 —— 在切片内
-
-- `✓ https://www.cs.columbia.edu/education/ms/` 学位要求逐字：`Complete a total of 30 points (Courses must be at the 4000 level or above)`、`Take at least 6 points of technical courses at the 6000 level` —— **清单里没有任何 thesis 条目**
-- `✓ https://www.cs.columbia.edu/education/ms/` PATHWAY OPTIONS 共**十条**，`MS Thesis (by faculty invite only)` 只是其中之一，与 `Machine Learning` / `Software Systems` 等并列 ⇒ **论文非必需，且需院系邀请**
-
-> ✅ **在切片（coursework / taught master）内**，本行不用动（[#55](https://github.com/jiangxidong/EduApplication/issues/55) 复核）。
-> 🔴 同一个名字 `MS in Computer Science` 在 UIUC 是 Thesis/Research 皆 Yes 的研究型硕士 —— **学位名不是切片判据**，判据是项目页上「thesis 是否 required」那一句。
-
 #### 学历门槛
 
 - `待核实` GRE 是否**要求** —— 该 FAQ 只回答「有没有最低分」，「要不要考」转指 SEAS 的 application requirements 页，**本次未取回该页**，故这一条不借势填掉
@@ -96,7 +88,7 @@ season_downgraded:
 > 「落在录取群体中段」的公开信号不存在，反而有一条公开信号说明它在中段**以下**。
 > 机械判别式 `pseudo_safer = yes ⇒ tier ≠ safer` 在本行成立。
 
-#### 英语门槛
+**英语**
 
 - `✓ https://www.cs.columbia.edu/education/ms/appfaq/` `For Internet-based TOEFL test, we recommend a total score of 101.` 与 `For IELTS, 7 is the recommended score for admission.`（样例托福 102，**跨过** 101）
 
@@ -107,3 +99,8 @@ season_downgraded:
 #### 费用与资格
 
 - `待核实` CIP code（用于判 STEM OPT 资格；STEM 归属是派生视图，渲染时对照 DHS 名单现算，不落盘）
+- `✓ https://www.cs.columbia.edu/education/ms/` 学位要求逐字：`Complete a total of 30 points (Courses must be at the 4000 level or above)`、`Take at least 6 points of technical courses at the 6000 level` —— **清单里没有任何 thesis 条目**
+- `✓ https://www.cs.columbia.edu/education/ms/` PATHWAY OPTIONS 共**十条**，`MS Thesis (by faculty invite only)` 只是其中之一，与 `Machine Learning` / `Software Systems` 等并列 ⇒ **论文非必需，且需院系邀请**
+
+> ✅ **在切片（coursework / taught master）内**，本行不用动（[#55](https://github.com/jiangxidong/EduApplication/issues/55) 复核）。
+> 🔴 同一个名字 `MS in Computer Science` 在 UIUC 是 Thesis/Research 皆 Yes 的研究型硕士 —— **学位名不是切片判据**，判据是项目页上「thesis 是否 required」那一句。

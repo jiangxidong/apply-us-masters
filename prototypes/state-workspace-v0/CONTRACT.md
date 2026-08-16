@@ -172,6 +172,20 @@
 撞 [ADR 0006](../../docs/adr/0006-claims-are-one-shared-truth-source.md)「主张集全局唯一、两条线**共用**」。
 ⚠️ **`voice` 因此两条线各有一个消费方**：文书线是「这条主张由谁来说」，
 推荐信线是 `claims.md` 那条「`voice = referee` 的零素材主张 = **双重缺口**」的分类依据。
+🔒 **文书线那道闸的被测对象是 `essays/canonical/*.md` 的 `claims:`**（[#63](https://github.com/jiangxidong/EduApplication/issues/63)）。
+`claims:` 记的是「这篇引用了哪些主张」，而禁令说的是「申请人自述」——两者在 canonical 层**重合**：
+canonical 渲染物**整篇都是申请人的声音**（[ADR 0006](../../docs/adr/0006-claims-are-one-shared-truth-source.md)：
+「文书是申请人自述主张，推荐信是第三方佐证同一批主张」），文书里不存在第三方在说话的位置。
+**被 `claims:` 引用即被自述。**
+
+规则因此是：**`essays/canonical/*.md` 的 `claims:` 里不得出现 `voice = referee` 的 `claim_id`。**
+`both` 与 `self` 一律放行（`both` 的语义明写允许自述）；`essays/canonical/README.md` 不是渲染物，不在作用域内。
+`voice` 的值**现读 `claims.md`**，不许在别处存第二份主张表。
+
+⚠️ **本条不动禁令本身**（[#52](https://github.com/jiangxidong/EduApplication/issues/52) 已锁），只定它读什么。
+机械化见 `essay-cites-no-referee-claim`（[`docs/checks.md`](../../docs/checks.md)）——清单只持名与指针，本节是规则原文的唯一权威。
+🔴 落地时**必须一并落 violation fixture**：样例当前不违反，直接落地就是 #52 点名的**空闸**
+（[ADR 0017](../../docs/adr/0017-a-check-that-compares-against-a-forkable-copy-is-vacuous.md) 推论 2：全绿不是证据）。
 
 🔴 **`essays/canonical/*.md` 的正文不设结构契约**（[#32](https://github.com/jiangxidong/EduApplication/issues/32)）。
 上表第 7 行此前只规定了「Markdown + frontmatter」，正文一个字没管；这条空白现在是**有意的**，不是漏掉的。
@@ -324,6 +338,8 @@ LC_ALL=en_US.UTF-8 awk '/^#{2,4} /{ t=$0
 援引「现有单元都收不下」来给封闭词表加项时，每一个「收不下」必须引用一句**写下来的**范围话。**以后会被援引，措辞别改写。**
 ⚠️ **粒度是项目级**：CIP 与 `program_key` 两头对不上（[#34](https://github.com/jiangxidong/EduApplication/issues/34) 已查实），
 所以它的家是覆盖层 `## 项目级差异` → `### <program_key>` → `#### 费用与资格`，**不是渠道层的 `## 费用与资格`**（[ADR 0018](../../docs/adr/0018-a-global-lookup-table-stays-out-of-the-workspace.md)）。
+> 🔒 **`学历门槛` 收「学校公布的、施加在申请人身上的准入线」这一整类，连同读懂这条线所必需的一切**：学历本身（本科院校层级、学位与成绩单的认证与评估、成绩换算口径）、GPA 线、以及标化考试线（GRE，与 TOEFL ／ IELTS ／ Duolingo 等语言成绩）。**同收**：这条线的**档位结构**（多档时每一档的名字与取值）、**量表口径**（成绩日期与量表切换）、**未达标的后果与授予方式**（入学后补课、逐案裁量、限制性录取算不算真实的录取路径），以及**「本项目适用哪一档」这类尚未取证的问题**。判据是这条事实描述的是「**申请人要达到什么、达不到会怎样**」，不是「这个项目是什么」。它们同由选校的分档决策消费（[ADR 0004](../../docs/adr/0004-tiers-are-anchored-on-published-hard-requirements.md) 把分档锚在**硬门槛**上，而 `CONTEXT.md`「硬门槛」词条把「语言分下限」与「是否要 GRE」逐字列进硬门槛的定义；分档机制见 `CONTEXT.md`「第二条线」「擦线」），owner 不变。
+> ⚠️ **`英语门槛` 这个词不进任何词表，也不作废。** 它照旧可以出现在标题的**自由后缀**里、出现在正文里；被禁的只有「让它顶在标题最前面充当节名」。
 
 **只建自己 owner 的节，不预建空节。** 节的**缺席本身是信息**（该渠道没有这类特殊约束）；
 预建会把「没查」与「不存在」压成同一形态，而区分这两者正是「待核实后缀」存在的全部意义。
@@ -338,11 +354,13 @@ LC_ALL=en_US.UTF-8 awk '/^#{2,4} /{ t=$0
 > ⚠️ 样例 `sample-workspace/channels/*.md` 里 UIUC 有 `学历门槛` 而另两校没有、Columbia 有 `硬约束` 而另两校没有，
 > **是有意的**，验收时别当成漏填去补齐。
 >
-> ✅ **前缀匹配已按上面的剥离规则在三个样例文件的全部 `##` 标题上实测通过。**
+> 🔴 **这里原本写着一句 ✅：「前缀匹配已按上面的剥离规则在三个样例文件的全部 `##` 标题上实测通过。」它是假的。**
+> [#65](https://github.com/jiangxidong/EduApplication/issues/65) 在 `prototype/state-layer` 与 `prototype/application-packet` **两棵树各实测一遍**：按它自己的限定（只数 `##`）就已经假了（`## 英语门槛 —— 🔴 两档，且 2026-01-20 起换了量表` 当场 FAIL）；连 `####` 一起数是 **38 个标题 / 5 条 FAIL**（`英语门槛` ×2、`学位形态` ×3）。
 > 此前「样例全部过得了前缀匹配」那句断言在 #23 结论 / #24 票面 / 本节验收注 / #27 末段**四处被转述、四处都错**
-> ——六个节 FAIL，坏在 `🔴 ` 顶在节名**之前**；四处现已全部更正。
-> 🔴 **这次是判据让步，不是样例让步**：`🔴` 前置是全 repo 的书写习惯，
-> `git grep '^#\+ *[🔴⚠️🔒]'` 命中 9 处，**本契约自己占 3 处**。
+> ——六个节 FAIL，坏在 `🔴 ` 顶在节名**之前**；四处现已全部更正。**本行是第五处。**
+> 🔴 **判据没有第二次让步**：`🔴` 前置是全 repo 的书写习惯，`git grep '^#\+ *[🔴⚠️🔒]'` 命中 9 处，**本契约自己占 3 处**；剥离规则原样保留。
+> **#65 的修法是改夹具、不动词表**：`英语门槛` 两处标题降为正文行并入 `学历门槛`；三处 `#### 学位形态` 按用途分流并入 `#### 费用与资格` 与 `#### 项目内容`。改后**两棵树都是 `FAIL = 0`，而封闭词表一项没加**——见 [ADR `0022`](../../docs/adr/0022-a-name-outside-the-vocabulary-is-not-a-reason-to-add-one.md)。
+> ⚠️ **本行记的是一次取证，不是一条现行断言。** 夹具再改一次它就可能再翻——**要用就重跑，别再转述**。
 >
 > ⏳ **覆盖层的 9 行占位行尚未按上面的 `####` 规则整理**，归 [#27](https://github.com/jiangxidong/EduApplication/issues/27)；
 > 每行挂哪个 `####` 已由 [#28 的结案评论](https://github.com/jiangxidong/EduApplication/issues/28) 定死，**照抄即可，不必再判**。
@@ -569,6 +587,7 @@ Columbia SEAS 那条「AI 政策未查到，暂按 GSAS 从严」就没法被自
 🔴 **两个错误答案各错在哪**：给判断行打 `✓` 是**凭空造出处**（[ADR 0007](../../docs/adr/0007-a-checkmark-is-earned-by-a-fetch-not-by-a-capability.md) 与停手线取证类）；给它打 `待核实` 会造出一个**永远核不掉的条目**去污染待核实清单——原因后缀那张表（[ADR 0001](../../docs/adr/0001-evidence-stays-binary-with-a-closed-suffix.md)）**四项全都假定校方那边有答案**。
 
 **不为它新增机械检查**，理由同 §1.2 拒绝为「同一条事实」加检查。
+⚠️ **这句的「它」是事实行 / 判断行的分类，不是 `✓` 那一行的写法。** `✓ <url>` 的 URL 必须是可直接取回的端点（不得含省略号），那条**有**字面判据、已机械化为 `cite-url-has-no-ellipsis`，规则原文见 [ADR 0007](../../docs/adr/0007-a-checkmark-is-earned-by-a-fetch-not-by-a-capability.md) 补充（[#63](https://github.com/jiangxidong/EduApplication/issues/63)）。
 
 ### 换季降级（**惰性执行**，不是全表触发）
 

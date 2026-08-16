@@ -94,15 +94,6 @@ season_downgraded:
 
 ### `cornell--gradschool--cs-meng`
 
-#### 学位形态 —— 在切片内
-
-- `✓ https://www.cs.cornell.edu/master-engineering-computer-science` 学校自己的三学位对照表，M.Eng. 一列 Degree Differences 逐字：`Primarily focused on coursework with a capstone project that advances students' placement in industry jobs.`（同表 MS 一列：`Specialized area coursework with the completion of a thesis`）
-- `✓ https://www.cs.cornell.edu/master-engineering-computer-science` 学位要求：`A student must complete a total of 30 credit hours`，其中 `Three to six (3-6) of the 30 credits must be earned as project credit` —— 是 **project，不是 thesis**
-
-> ✅ **在切片内**，本行不用动（[#55](https://github.com/jiangxidong/EduApplication/issues/55) 复核）。
-> ⚠️ 它成立是因为**页上写了**，不是因为「MEng 通常是 coursework」—— #55 明令不按印象判。
-> ⚠️ 取回时撞到门牌号：`https://www.cs.cornell.edu/masters/` **重定向**到上面这个规范 URL。本文件「推荐信机制」节那条 `✓ https://www.cs.cornell.edu/masters/…` 仍是**带省略号的悬空出处**（与 [#62](https://github.com/jiangxidong/EduApplication/issues/62) 同形，且下面还挂着一条 `✓ 同上`）—— 不在 #55 范围内，另开票。
-
 #### 学历门槛
 
 - `待核实` GRE 是否要求
@@ -111,3 +102,13 @@ season_downgraded:
 
 - `待核实` 申请费金额
 - `待核实` CIP code（用于判 STEM OPT 资格；STEM 归属是派生视图，渲染时对照 DHS 名单现算，不落盘）
+- `✓ https://www.cs.cornell.edu/master-engineering-computer-science` 学校自己的三学位对照表，M.Eng. 一列 Degree Differences 逐字：`Primarily focused on coursework with a capstone project that advances students' placement in industry jobs.`（同表 MS 一列：`Specialized area coursework with the completion of a thesis`）
+- `✓ https://www.cs.cornell.edu/master-engineering-computer-science` 学位要求里 `Three to six (3-6) of the 30 credits must be earned as project credit` —— 是 **project，不是 thesis**（`30 credit hours` 这条本身是课程结构，住 `#### 项目内容`）
+
+> ✅ **在切片内**，本行不用动（[#55](https://github.com/jiangxidong/EduApplication/issues/55) 复核）。
+> ⚠️ 它成立是因为**页上写了**，不是因为「MEng 通常是 coursework」—— #55 明令不按印象判。
+> ⚠️ 取回时撞到门牌号：`https://www.cs.cornell.edu/masters/` **重定向**到上面这个规范 URL。本文件「推荐信机制」节那条 `✓ https://www.cs.cornell.edu/masters/…` 仍是**带省略号的悬空出处**（与 [#62](https://github.com/jiangxidong/EduApplication/issues/62) 同形，且下面还挂着一条 `✓ 同上`）—— 不在 #55 范围内，另开票。
+
+#### 项目内容
+
+- `✓ https://www.cs.cornell.edu/master-engineering-computer-science` 学位要求：`A student must complete a total of 30 credit hours`

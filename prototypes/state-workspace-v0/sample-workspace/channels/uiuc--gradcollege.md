@@ -42,7 +42,7 @@ season_downgraded:
 > [#62](https://github.com/jiangxidong/EduApplication/issues/62) 已把两条各自重新取回、改写成自带完整 URL 的独立 `✓` 行，省略号那一行删除（`B Average / 80%` 由 china 精确端点承载）。**本文件其余 `✓ 同上` 链全部锚在 `✓ https://grad.illinois.edu/admissions/apply` 上，删除未孤立任何一条**（2026-08-15 逐条核过）。
 > 🔴 **不要把这两条改挂回 `country/china`** —— 那页上既没有 WES 也没有 CHESICC（2026-08-15 重取全文复核，仍然如此）。换锚点 = 让两条 `✓` 静默断言来自一个没有它们的页。
 
-## 英语门槛 —— 🔴 两档，且 2026-01-20 起换了量表
+**英语 —— 🔴 两档，且 2026-01-20 起换了量表**
 
 - `✓ https://grad.illinois.edu/admissions/international-applicants` 研究生院英语线分 **Limited Status / Full Status 两档**（下表为该页原值）。⚠️ 旧链 `https://grad.illinois.edu/admissions/instructions/04c` 现**重定向到本端点**，正文逐字相同（2026-08-15 两次取回 diff 只差聊天机器人插件文本）—— 事实成立、门牌号漂了（同 #39），故 `✓` 改指规范 URL
 
@@ -147,16 +147,15 @@ season_downgraded:
 > 措辞与实质冲突时按实质判：该词条已写明「触发措辞只判定第二条线的**类型**」，而类型的定义是语义的，不是词表的。
 > ⚠️ 类型 B 是**单个平均值、无区间** ⇒ 按词条 ⚠️ 第二条（类型 B 通往 `safer` 必须有离散度）**不判 `safer`**；3.4 高于 3.2 ⇒ **到 `match` 为止**。
 
-#### 学位形态 —— 本行 = MCS（coursework-only，落在切片内）
-
-- `✓ https://siebelschool.illinois.edu/admissions/graduate/degree-program-options` 同一张表：**Master of Computer Science（Urbana-Champaign）** = Admission Cycle **Spring & Fall** / 3 semesters (on campus) / Thesis Required **No** / Research Required **No** / GPA 3.2；**Master of Science in Computer Science with thesis（Urbana-Champaign）** = **Fall only** / 2 years / Thesis **Yes** / Research **Yes** / GPA 3.2
-- `✓ https://siebelschool.illinois.edu/academics/graduate/professional-mcs` 学校自己的定性：`The MCS program is a coursework-only degree consisting of 32 credit hours with no GRE required for admission.`
-- `✓ https://siebelschool.illinois.edu/academics/graduate/professional-mcs/campus-master-computer-science` Urbana-Champaign 校区页：`The Siebel School of Computing and Data Science's Master of Computer Science (MCS) consists of 32 credit hours of coursework and no thesis.`；`Designed to be completed in as little as three semesters of full-time study`
+#### 费用与资格
+- `待核实` CIP code（用于判 STEM OPT 资格；STEM 归属是派生视图，渲染时对照 DHS 名单现算，不落盘）
+- `✓ https://siebelschool.illinois.edu/admissions/graduate/degree-program-options` 同一张表：**Master of Computer Science（Urbana-Champaign）** = Admission Cycle **Spring & Fall** / 3 semesters (on campus) / Thesis Required **No** / Research Required **No**；**Master of Science in Computer Science with thesis（Urbana-Champaign）** = **Fall only** / 2 years / Thesis **Yes** / Research **Yes**（同表的 GPA 列住 `#### 学历门槛`，本条不复述）
+- `✓ https://siebelschool.illinois.edu/academics/graduate/professional-mcs/campus-master-computer-science` Urbana-Champaign 校区页：`The Siebel School of Computing and Data Science's Master of Computer Science (MCS) consists of 32 credit hours of coursework and no thesis.`
 
 > ✅ **本行 = MCS，在切片（coursework / taught master）内。** #31 建行时 `program` 那一格写成了 `MS in Computer Science` —— 在 UIUC 那是 Thesis/Research 皆 Yes 的研究型硕士、落在切片外。[#55](https://github.com/jiangxidong/EduApplication/issues/55) 已把显示名改回 MCS；**`program_key` 未变**（`cs-msc` 本就是 Master of **C**omputer **S**cience 的 slug，仓库内无一处把它解释成 Master of Science）。分档不受影响：两个学位的 3.2 相同。
 > 🔴 **`deadline` 将来补的时候不能混用**：MCS 是 **Spring & Fall**，带论文的 MS 是 **Fall only**。查错轮次会把一个还开着的申请季报成已关闭。
 > 🔴 **通则（#55）**：切片归属**不能按学位名推**（`MS` / `MEng` / `MCS` 都不是判据），只能看项目页上「thesis 是否 required」那一句 —— 同一个 `MS in CS` 在 UIUC 是研究型、在 Columbia 是授课型。
 
-#### 费用与资格
+#### 项目内容
 
-- `待核实` CIP code（用于判 STEM OPT 资格；STEM 归属是派生视图，渲染时对照 DHS 名单现算，不落盘）
+- `✓ https://siebelschool.illinois.edu/academics/graduate/professional-mcs/campus-master-computer-science` 修业时长：`Designed to be completed in as little as three semesters of full-time study`
