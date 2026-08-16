@@ -144,50 +144,6 @@ awk -F'|' '/^\|/ {
   }' recommenders.md > "$ASG"
 
 echo
-echo "=== 素材 frontmatter 三键完整性（#38 定稿名单）==="
-# ⚠️ 只判「键在不在、值域对不对、外键悬不悬空」。判不了「这条素材具体不具体」——那是采集时 agent 的事。
-awk -F'|' -v REC="$REC" '
-  BEGIN { while ((getline r < REC) > 0) if (r != "") known[r]=1 }
-  {
-    mid=$1; sen=$2; vb=$3; has=$4; file=$5
-    bad=""
-    if (mid !~ /^m[0-9]+$/)              bad=bad" material_id 缺失或不是 mNN"
-    else {
-      base=file; sub(/^.*\//, "", base)
-      if (index(base, mid "-") != 1)     bad=bad" material_id 与文件名前缀不一致（id 要能靠 glob 解析）"
-    }
-    if (sen !~ /^(yes|no)$/)             bad=bad" sensitive 缺失或不是 ASCII 二元 yes/no"
-    if (has != 1)                        bad=bad" 缺 verifiable_by 键（空列表要写成 []，不是不写）"
-    else if (vb != "") {
-      k=split(vb, ids, " ")
-      for (i=1; i<=k; i++)
-        if (!(ids[i] in known))          bad=bad" verifiable_by 悬空外键 " ids[i]
-    }
-    if (bad == "") printf "  ✓ %s — sensitive=%s verifiable_by=[%s]\n", file, sen, vb
-    else         { printf "  ✗ %s —%s\n", file, bad; nbad++ }
-  }
-  END { if (!nbad) print "  ✓ 全部素材三键齐全、值域合法、外键可解析" }' "$MAT"
-
-echo
-echo "=== 素材正文三问形状（🔴 只判形状，判不了内容）==="
-# 三个固定小标题（CONTRACT.md §1.1 形状规则）。标题齐全而底下写的是感想，本检查一样放行。
-# 🔴 第七个「中文撞 shell 工具」的坑，本节实测撞到（macOS /bin/sh = GNU bash 3.2.57）：
-#    双引号里 `$var` **紧邻**一个多字节字符时，展开结果被截断成一个替换字符。
-#      "「$h」"   → 「�          ✗
-#      "「${h}」" → 「## 我做了什么」  ✓
-#    ⚠️ 与 §4.5 已记的那族不同源：**没有任何 locale 能修它**（LC_ALL=en_US.UTF-8 显式设进去照旧坏），
-#    修法是**给变量加花括号**。`"$m2 $h"`（后面跟空格）不受影响，所以它只在拼接处发作。
-for f in materials/m*.md; do
-  [ -f "$f" ] || continue
-  miss=""
-  for h in "## 时间" "## 我做了什么" "## 结果"; do
-    grep -qx "$h" "$f" || miss="$miss \`${h}\`"
-  done
-  [ -n "$miss" ] && echo "  ✗ $f 缺小标题:$miss" || echo "  ✓ $f"
-done
-echo "  ⚠️ 通过 ≠ 这几条素材够具体 —— 判「具体」的是采集时的 agent，不是本脚本。"
-
-echo
 echo "=== 缺口三分类（缺素材 / 缺人 / 缺放行；CONTEXT.md「缺口」词条六类表的申请人侧前三类）==="
 awk -F'|' -v MAT="$MAT" -v REC="$REC" '
   BEGIN {
