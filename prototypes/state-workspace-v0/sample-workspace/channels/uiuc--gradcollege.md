@@ -76,7 +76,6 @@ season_downgraded:
 - `待核实` 单文件大小上限（未公开）
 - 🔴 `✓ 同上` **文件内容须含申请人姓名与院校名** —— 这是对**文件本身**的要求，不是文件名
 - `✓ 同上` `transcript_legend_upload`：需另传**评分说明 / grading legend**
-  → 已回写 `profile.md` 的待补充清单
 - `✓ https://grad.illinois.edu/admissions/application-instructions/completing-your-graduate-application` **上传后须自检可读性**：
   `You will also be able to click the "view document" button to verify whether the uploaded document is legible.`
   → 「传完就算完」在本校不成立。本校同时要求降到 <200dpi 灰度，**正是最容易传出不可读件的那一档**，自检不是可选步骤
