@@ -661,7 +661,7 @@ fail-safe 由下面那条机械检查守，**不由「缺行」的读法守**：
 按节切的路径（`channels/<channel_key>.md`）走上面那条前缀匹配。两条都活读本文件，检查不为任一形态内嵌常量。
 **有内容而无戳 = 违规**；**有戳而无内容 = 违规**（预建空行，同 §1.2 否掉的预建空节）。
 **文件级 `season` 字段出现在辖区路径上即违规。**
-实现体是 `trace-packet.sh` 的第 [5] 项（只活在 `prototype/application-packet`，不在 CI，同 `packets/README.md` 末节）。
+实现体住 `evals/checks/check-workspace.sh`（`main`，CI 每次 push 在跑；#89 同刀迁移，原实现体 `trace-packet.sh` 第 [5] 项已删）。
 ⚠️ 它**必须活读跑它那棵树自己的本文件 §1.2**，不得内嵌一份归属表副本，也不得跨分支取参照物——
 两者都会把它变成 [ADR 0017](../../docs/adr/0017-a-check-that-compares-against-a-forkable-copy-is-vacuous.md) 意义上的恒真检查。
 
