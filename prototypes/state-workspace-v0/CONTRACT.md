@@ -62,7 +62,7 @@
 | 4 | `claims.md` | Markdown 表，4 列 | **主张集**（全局唯一，文书与推荐信共用） | 🔴 **按行单向移交**：**冷启动 / 画像**只 append 新行，**文书**此后全权（见下） |
 | 5 | `channels/<channel_key>.md` | frontmatter（`season_downgraded`，见 §4）＋ Markdown，**分节** | **约束层**（逐申请渠道的 rendering rules） | 🔴 **按节归属，见 §1.2**（5 个阶段 owner） |
 | 6 | `materials/*.md` | frontmatter **三键** `material_id` / `sensitive` / `verifiable_by` ＋ 正文（形状规则见下，**一律列名不计数**） | **文书素材**（素材门槛在此判定）；推荐信线是第二个消费方，**只读** | **文书**（见 §1.5 注 ②） |
-| 7 | `essays/canonical/*.md` | Markdown + frontmatter **二键**（名单见下） | **文书 canonical 渲染物**（当前版） | **文书** |
+| 7 | `essays/canonical/*.md` | Markdown + frontmatter **二键**（名单见下） | **文书 canonical**（当前版，三个形态） | **文书** |
 | 8 | `essays/canonical/per-program/<program_key>.md` | frontmatter + 散文 | **逐项目 why-this-program 内容**（不可再生） | **文书**（按 §1.4 前缀继承） |
 | 9 | `essays/canonical/_versions/*.md` | Markdown | 历史版本，只增不改 | **文书** |
 | 10 | `documents/<槽位>/…` | 原始文件 | **材料 canonical**（信息量最大的一侧），**七槽位见 §1.3** | **材料** |
@@ -174,12 +174,12 @@
 推荐信线是 `claims.md` 那条「`voice = referee` 的零素材主张 = **双重缺口**」的分类依据。
 🔒 **文书线那道闸的被测对象是 `essays/canonical/*.md` 的 `claims:`**（[#63](https://github.com/jiangxidong/EduApplication/issues/63)）。
 `claims:` 记的是「这篇引用了哪些主张」，而禁令说的是「申请人自述」——两者在 canonical 层**重合**：
-canonical 渲染物**整篇都是申请人的声音**（[ADR 0006](../../docs/adr/0006-claims-are-one-shared-truth-source.md)：
+canonical 文书**整篇都是申请人的声音**（[ADR 0006](../../docs/adr/0006-claims-are-one-shared-truth-source.md)：
 「文书是申请人自述主张，推荐信是第三方佐证同一批主张」），文书里不存在第三方在说话的位置。
 **被 `claims:` 引用即被自述。**
 
 规则因此是：**`essays/canonical/*.md` 的 `claims:` 里不得出现 `voice = referee` 的 `claim_id`。**
-`both` 与 `self` 一律放行（`both` 的语义明写允许自述）；`essays/canonical/README.md` 不是渲染物，不在作用域内。
+`both` 与 `self` 一律放行（`both` 的语义明写允许自述）；`essays/canonical/README.md` 不是三个形态之一，不在作用域内。
 `voice` 的值**现读 `claims.md`**，不许在别处存第二份主张表。
 
 ⚠️ **本条不动禁令本身**（[#52](https://github.com/jiangxidong/EduApplication/issues/52) 已锁），只定它读什么。
@@ -189,7 +189,7 @@ canonical 渲染物**整篇都是申请人的声音**（[ADR 0006](../../docs/ad
 
 🔴 **`essays/canonical/*.md` 的正文不设结构契约**（[#32](https://github.com/jiangxidong/EduApplication/issues/32)）。
 上表第 7 行此前只规定了「Markdown + frontmatter」，正文一个字没管；这条空白现在是**有意的**，不是漏掉的。
-三个渲染物统一为「frontmatter + 散文」**一种**形态，没有任何 `render_form` 需要破例——
+三个形态统一为「frontmatter + 散文」**一种**写法，没有任何 `render_form` 需要破例——
 正文就是文书本身，措辞是手艺，不存在唯一正确取值（§1.5 判别式的限定句）。逐形态「长什么样」的说明留在
 `essays/canonical/README.md`，那是**说明不是契约**。
 
@@ -204,7 +204,7 @@ canonical 渲染物**整篇都是申请人的声音**（[ADR 0006](../../docs/ad
 > 删到只剩 `claim_id` 一列仍不干净：它与 frontmatter 的 `claims:` **互为镜像**，
 > 而**分配能算出集合、集合算不出分配**——两处存必有一处是投影。#32 因此整张表删掉，改四个 `###` 分节：
 > **节标题 = 题类**（自由文本，非封闭词表，故按 §4.5 可用中文），**空节 = 这类题还没东西写**，那就是缺口本身。
-> 边只留在 frontmatter 的 `claims:` 一处，机械读者（`derive-demo.sh`）三个渲染物一视同仁。
+> 边只留在 frontmatter 的 `claims:` 一处，机械读者（`derive-demo.sh`）三个形态一视同仁。
 >
 > ⚠️ **本票只裁了正文，没有重扫 frontmatter。** [ADR 0014](../../docs/adr/0014-a-semantic-slot-is-not-a-stored-field.md)
 > 的消费方判据自己写着「别处的 frontmatter（`essays/canonical/*.md`、`apply.md`、`profile.md`）都该按它重扫一遍，
@@ -215,7 +215,7 @@ canonical 渲染物**整篇都是申请人的声音**（[ADR 0006](../../docs/ad
 
 | 键 | 取值 | 消费方 |
 |---|---|---|
-| `version` | 整数 | `packets/<program_key>/essays/*.md` 的 `source_version:`（**已落盘**，见 `prototype/application-packet` 的三个渲染物） |
+| `version` | 整数 | `packets/<program_key>/essays/*.md` 的 `source_version:`（**已落盘**，见 `prototype/application-packet` 里带 `source_version:` 的三个渲染物——那是**产物侧**的渲染物，不是这三个形态） |
 | `claims` | `claim_id` 列表 | `derive-demo.sh` 的两个派生视图；这条边**只存这一处**（[ADR 0006](../../docs/adr/0006-claims-are-one-shared-truth-source.md)、[#32](https://github.com/jiangxidong/EduApplication/issues/32)） |
 
 **删掉的四个键，理由各不相同**（[#50](https://github.com/jiangxidong/EduApplication/issues/50)）：
@@ -227,7 +227,7 @@ canonical 渲染物**整篇都是申请人的声音**（[ADR 0006](../../docs/ad
 
 🔴 **`version` 险些被这次重扫杀掉，救它的是跨分支 grep。** 它的消费方**落在另一个分支的已落盘产物上**。重扫一律跨分支查：同 `sensitive` 那条「消费方**尚未实现** ≠ 没有消费方」，本条是「消费方**不在本分支** ≠ 没有消费方」。
 
-🔴 **本名单只管三个渲染物**（`long.md` / `short-250.md` / `points.md`）。`essays/canonical/README.md` 与 `_versions/README.md` **不是渲染物**、没有 frontmatter，不受本名单约束——键名单挂在 `essays/canonical/*.md` 这个 glob 上，而那个 glob 字面上罩住了两个 README。`materials/*.md` 的名单有同一个洞（`materials/README.md`），两处读法一并按此定死。
+🔴 **本名单只管三个形态**（`long.md` / `short-250.md` / `points.md`）。`essays/canonical/README.md` 与 `_versions/README.md` **不是形态**、没有 frontmatter，不受本名单约束——键名单挂在 `essays/canonical/*.md` 这个 glob 上，而那个 glob 字面上罩住了两个 README。`materials/*.md` 的名单有同一个洞（`materials/README.md`），两处读法一并按此定死。
 
 🔴 **写入权按「行」单向移交**（[#25](https://github.com/jiangxidong/EduApplication/issues/25)，[ADR 0008](../../docs/adr/0008-the-owner-binds-to-a-section-not-a-file.md) 限定 2）——
 **冷启动 / 画像**：只 append 新行，写 `claim_id` / `断言` / `voice`，`materials` 留空
@@ -473,7 +473,7 @@ owner 列因此填封闭标记 **`append-only`**，**不能留空**（留空正�
 
 > 🔴 **再补一句限定**（[#32](https://github.com/jiangxidong/EduApplication/issues/32)）：
 > **镜像 ⇔ 这段内容存在一个唯一正确的取值，而那个取值在工作区内的别处。**
-> 少了这句，判别式对 `essays/canonical/` 是**逐字自毁**的——canonical 渲染物本来就是「把主张写成人话」的产物，
+> 少了这句，判别式对 `essays/canonical/` 是**逐字自毁**的——canonical 文书本来就是「把主张写成人话」的产物，
 > `long.md` 的正文整篇都在复述 `claims.md` 的主张，措辞一改「就得跟着改」，按字面读它整篇是镜像，该删。
 > 散文没有唯一正确取值（措辞是手艺）；表格单元格有（`论点` 那一格的正确取值就是 `claims.md` 里那一格的字符串）。
 >
@@ -814,9 +814,10 @@ short-250.md     ─────────────────────
 points.md        ─────────────────────> essays/canonical/points.md
 ```
 
-- **渲染物轴**：`long.md`（完整长文）/ `short-250.md`（250 词版）/ `points.md`（可拆短答题的要点）
-  —— 三者不是同一篇的长短，是**三种形态**（「渲染物」的定义见 `CONTEXT.md` 词条；[ADR 0011](../../docs/adr/0011-the-glossary-defines-words-the-contract-holds-the-values.md)：词的定义归词表，取值归契约）。Columbia 要长文，UIUC 要 4 道短答题，Cornell 要两篇独立文书。
+- **形态轴**：`long.md`（完整长文）/ `short-250.md`（250 词版）/ `points.md`（可拆短答题的要点）
+  —— 三者不是同一篇的长短，是**三种形态**（「形态」的定义见 `CONTEXT.md` 词条；[ADR 0011](../../docs/adr/0011-the-glossary-defines-words-the-contract-holds-the-values.md)：词的定义归词表，取值归契约）。Columbia 要长文，UIUC 要 4 道短答题，Cornell 要两篇独立文书。
   🔴 **形态由文件名承载**（`long.md` / `short-250.md` / `points.md`），**frontmatter 不另存形态键**——文件名即形态标识（[#50](https://github.com/jiangxidong/EduApplication/issues/50)）。
+  🔴 **这根轴此前叫「渲染物轴」，[#73](https://github.com/jiangxidong/EduApplication/issues/73) 改名为「形态轴」**（[ADR 0023](../../docs/adr/0023-the-sense-that-fails-the-words-own-test-gives-up-the-name.md)）。理由：这三个写法住在 §2 那张图**渲染箭头的左边**（canonical，真相源），而「渲染物」按字面是箭头**右边**的产物——那一侧的用法（§1.1 `version` 行、§1.3 `cv/`、§2 两处）**一个字未改，仍是「渲染物」**。⚠️ 旧票与 `log.md` 里的「渲染物」凡指这三个写法的，读作「形态」；照字面读会**静默**落到另一义上。
 - **版本轴**：当前版永远在稳定路径 `essays/canonical/<name>.md`（所以 rendering rules 可以直接引用）；
   开新版前先把当前版拷进 `_versions/<name>.vN.md`，然后原地改。
 
@@ -833,7 +834,7 @@ points.md        ─────────────────────
 |---|---|---|
 | [#11 选校推荐的输出契约](https://github.com/jiangxidong/EduApplication/issues/11) | `programs.md` 的**列清单**、分档措辞、假保底标注、匹配理由怎么写。⚠️ 加的列一律不被 `evidence` 担保（§4） | 文件路径、主键形态、`evidence` 只担保 deadline、换季语义 |
 | [#8 网申准备包的交付形态](https://github.com/jiangxidong/EduApplication/issues/8) | `packets/<program_key>/` 里**装什么**、怎么用、完成度怎么自检 | 它落在哪、它是**可再生**的（删了能从 canonical + rules 重建） |
-| [#10 文书双模式](https://github.com/jiangxidong/EduApplication/issues/10) | 何时开新版本、多版本怎么对比、素材门槛怎么判 | 三个渲染物文件名 + `_versions/` 命名约定 |
+| [#10 文书双模式](https://github.com/jiangxidong/EduApplication/issues/10) | 何时开新版本、多版本怎么对比、素材门槛怎么判 | 三个形态的文件名 + `_versions/` 命名约定 |
 | [#9 skill 拆几个](https://github.com/jiangxidong/EduApplication/issues/9) | **阶段 → skill** 的映射（#23 修订后：#9 的表里**不再出现任何路径字面量**） | **路径 / 节 → 阶段**（§1.1 与 §1.2）——归属表，这就是阶段之间的交接面。🔒 #23 定它「唯一」，[#26](https://github.com/jiangxidong/EduApplication/issues/26) 之后**现状也是唯一**（`CONTEXT.md` 那份已删），见 §1.5 ④ |
 | [#13 领域词汇表](https://github.com/jiangxidong/EduApplication/issues/13) | 「项目池」「待核实」「申请季」的精确定义 | 它们在文件里长什么样 |
 

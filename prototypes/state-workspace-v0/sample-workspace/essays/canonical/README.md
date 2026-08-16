@@ -5,7 +5,7 @@
 
 ## frontmatter 的 `claims:`
 
-每篇 canonical 渲染物的 frontmatter 写 `claims: [c01, c03]`，指向工作区根 `claims.md` 的 `claim_id`。
+每个形态的 frontmatter 写 `claims: [c01, c03]`，指向工作区根 `claims.md` 的 `claim_id`。
 
 **这条边只存在消费端**：`claims.md` **不设 `used_in` 列**——两端都存必漂移
 （[#21](https://github.com/jiangxidong/EduApplication/issues/21)、
