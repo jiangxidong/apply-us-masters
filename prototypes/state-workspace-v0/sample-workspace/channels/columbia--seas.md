@@ -39,7 +39,7 @@ season_downgraded:
 
 - `待核实` 单文件大小上限（公开页未公开）
 - `待核实` 格式白名单（公开页未公开）
-- `✓ https://www.engineering.columbia.edu/…/admissions` 成绩单：申请阶段上传**非官方件**，录取后才交官方件
+- `✓ https://www.engineering.columbia.edu/admissions-aid/graduate-admissions/admissions-faqs` 成绩单：申请阶段上传 **official copy 或 student copy**（🔴 明令禁止学生门户截图），录取后由原院校注册处把认证在线官方件直接发 finaldocs@columbia.edu
 
 ## 🔴 推荐信机制 —— 风险 A：冒名发信
 
