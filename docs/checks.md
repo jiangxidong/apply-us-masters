@@ -62,13 +62,13 @@
 
 ## 触发
 
-**手动，由改动规则的人跑。今天进 CI 的名单是空的。**
+**手动，由改动规则的人跑。进 CI 的名单（[#75](https://github.com/jiangxidong/EduApplication/issues/75) 起不再为空）：`glossary-holds-no-owner`——`.github/workflows/checks.yml` 每次 push／PR 跑名单里的检查，并附带跑「夹具必须翻红」的反向断言。**
 
 🔴 **这不是「暂不进」的又一次续期。** [#9](https://github.com/jiangxidong/EduApplication/issues/9) 定的是「**暂**不进 CI」，而这个「暂」已经被续期过三次且从未写下终止条件。[#63](https://github.com/jiangxidong/EduApplication/issues/63) 把它换成了判据（[ADR 0020](adr/0020-a-check-passes-through-four-places-in-order.md)）：
 
 > 一条检查够格进 CI，当且仅当四条全满足：① **有实现体，且它住在 `evals/`**；② 配了至少一条 `evals/fixtures/violations/` 夹具，且**实测能让它翻红**（[ADR 0017](adr/0017-a-check-that-compares-against-a-forkable-copy-is-vacuous.md) 推论 2：全绿不是证据）；③ **不须联网、不须跑 agent**（[#14](https://github.com/jiangxidong/EduApplication/issues/14) 已判）；④ **说得出参照物在副本之外的什么地方**（ADR 0017 推论 1）。
 
-**十八条没有一条满足 ①**，所以名单为空。**第一条满足四项的检查落地那天，它自己就进 CI，不必再开一张票问「可不可以」。**
+**「第一条满足四项的检查落地那天，它自己就进 CI」已由 [#75](https://github.com/jiangxidong/EduApplication/issues/75) 兑现**：`glossary-holds-no-owner` 四项全过（① 实现体住 `evals/checks/check-docs.sh`；② 夹具在 `evals/fixtures/violations/docs/glossary-holds-no-owner/` 且实测翻红；③ 纯 awk，不联网不跑 agent；④ 参照物＝规则语句与夹具，均在被测文件之外——取证见 #75 结案评论）。其余十七条仍不满足 ①。
 
 🔴 **它会失效，而且已经失效过一次。** #14 G1 与 ADR 0008 第 2 条分叉了 89 分钟没有任何人发现，靠的正是「有人会记得跑」。配一条纪律顶着：
 
@@ -140,12 +140,12 @@ echo "[$h 」]"     → [## 我做了什么 」]  ✅ 中间有空格也对
 
 ## 尚未实现
 
-**`evals/` 整个目录不存在**：`evals/checks/check-docs.sh`、`evals/fixtures/violations/`、回归套件的静态检查组，一个都没有。**三个 persona 工作区同样不存在**——`工作区` 那行的三项夹具今天只有 `sample-workspace/` 有货（[#63](https://github.com/jiangxidong/EduApplication/issues/63) 逐 ref 复核，取证见该票）。本表落的是**决策**，脚本是实现。
+**`evals/` 骨架已由 [#75](https://github.com/jiangxidong/EduApplication/issues/75) 落地**：`evals/checks/check-docs.sh` 存在并实现了 `glossary-holds-no-owner` 一条；其余十七条（docs 类六条、工作区类的静态检查组）仍无实现体。**三个 persona 工作区同样不存在**——`工作区` 那行的三项夹具今天只有 `sample-workspace/` 有货（[#63](https://github.com/jiangxidong/EduApplication/issues/63) 逐 ref 复核，取证见该票）。本表落的是**决策**，脚本是实现。
 
 ⚠️ **`evals/` 与 `skills/` 的位置本身已不再是 fog**（[ADR 0021](adr/0021-the-repo-root-is-the-plugin-root-for-both-runtimes.md)，[#64](https://github.com/jiangxidong/EduApplication/issues/64)）：仓库根就是两个运行时的 plugin 根，顶层按「谁会读它」切。本表上面写死的 `evals/checks/` 与 `evals/fixtures/violations/{docs,workspace}/` **被该 ADR 照单收下，一个字未改**。仍然缺的只是脚本本身。
 
 ⚠️ **十八条里有两条已经有实现体，但它不在 `evals/` 里。** `material-keys-complete` 与 `material-body-fixed-headings` 今天由 `prototypes/state-workspace-v0/derive-demo.sh` 跑——那是**演示脚本**（它自陈「证明派生视图可以机械算出，不必落盘」），是**过渡期的实际 runner**，且在两个 prototype 分支上各有一份逐字副本。🔴 **`evals/` 建起来时，这两段从 `derive-demo.sh` 同刀删除**：[ADR 0016](adr/0016-the-checklist-holds-names-and-pointers.md) 已否掉「允许两份并存」，一条规则只有一处实现。
 
-在 `evals/` 建起来之前，本表的取证形态是[「跑过的命令 ＋ 当时的输出」](https://github.com/jiangxidong/EduApplication/issues/35)贴在票的结案评论里——便宜且已经在用，代价是改了检查不会自动重跑。
+对**已有实现体**的检查，取证形态＝跑 `evals/checks/` 的 runner（CI 每次 push 也在跑）；对其余各条，仍是[「跑过的命令 ＋ 当时的输出」](https://github.com/jiangxidong/EduApplication/issues/35)贴在票的结案评论里——便宜且已经在用，代价是改了检查不会自动重跑。
 
 **`evals/` 是「不流向用户的一切」，不只是测试数据**：检查脚本与违规夹具都住进去，白拿 [ADR 0010](adr/0010-personas-ignite-assertions-they-are-not-examples.md) 那条「任何 `SKILL.md` 不得引用 `evals/`」的红线，不必为「检查脚本不该被打包进 skill」另立第二条规矩。

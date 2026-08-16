@@ -1,0 +1,20 @@
+name: checks
+on:
+  push:
+    branches: [main]
+  pull_request:
+jobs:
+  check-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 名单里的检查（见 docs/checks.md 触发节）
+        run: bash evals/checks/check-docs.sh .
+      - name: 夹具必须翻红（ADR 0017 推论 2：全绿不是证据）
+        run: |
+          if bash evals/checks/check-docs.sh evals/fixtures/violations/docs/glossary-holds-no-owner; then
+            echo "🔴 夹具没有翻红——检查是恒真的"
+            exit 1
+          else
+            echo "✅ 夹具翻红，检查活着"
+          fi

@@ -37,7 +37,7 @@
 
 | | 下落 |
 |---|---|
-| **有票的两处** | `evals/`（→ [#35](https://github.com/jiangxidong/EduApplication/issues/35) / [#57](https://github.com/jiangxidong/EduApplication/issues/57)）、`season_downgraded`（→ [#47](https://github.com/jiangxidong/EduApplication/issues/47)）—— **活着**，欠账可见可追 |
+| **有票的两处** | `evals/`（→ [#35](https://github.com/jiangxidong/EduApplication/issues/35) / [#57](https://github.com/jiangxidong/EduApplication/issues/57)——两票已关而 `evals/` 未落地，本表在自己的奠基例上复发；由 [#75](https://github.com/jiangxidong/EduApplication/issues/75) 接手落地并就地更正此格）、`season_downgraded`（→ [#47](https://github.com/jiangxidong/EduApplication/issues/47)）—— **活着**，欠账可见可追 |
 | **没票的一处** | `institution_id` 被 [#19](https://github.com/jiangxidong/EduApplication/issues/19) §3 / [#27](https://github.com/jiangxidong/EduApplication/issues/27) F 条 / [#8](https://github.com/jiangxidong/EduApplication/issues/8) 结案第 3 条**登记三次，全部随票关闭**。下落不取自票的记账，取自 `git show` 实测现货：`profile.md` 学历表**至今七列**，没有那一列，导致 §1.3 的四条 `documents/<槽位>/<institution_id>/` 路径在样例里**无从解析** |
 
 **同一天的第二个实例**：[#28](https://github.com/jiangxidong/EduApplication/issues/28) 转给 [#27](https://github.com/jiangxidong/EduApplication/issues/27) 的两项补齐活，评论 `17:04` 才到、票 `15:43` 已关，#27 自己记着「没有人承接」。
