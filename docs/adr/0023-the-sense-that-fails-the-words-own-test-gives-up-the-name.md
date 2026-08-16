@@ -70,6 +70,8 @@ $ git grep -n '渲染物' main prototype/state-layer prototype/application-packe
 
 **词条头改名是本仓库第一次。** 此前的落位调整都是搬家（#26 / #42），没有动过词条的名字。为此在两个词条里各留一条互指：「形态」词条写明它曾叫「渲染物」，新「渲染物」词条写明它不指那三个写法。**旧票与旧评论里的「渲染物」永远改不动**，照字面读会**静默**落到另一义上——同 ADR 0011 那条改号提示、同地图 Notes「改号时两头都要留痕」。
 
+**既有 ADR 正文一个字不改，含里面的「渲染物」。** 实测 `main` 上除本文外还有三处：[ADR 0006](0006-claims-are-one-shared-truth-source.md) 五次（`:78/:81/:111/:120/:134`，**全是窄义**）、[ADR 0013](0013-a-packet-is-regenerated-whole-never-patched.md) 两次（`:14/:31`，**全是宽义**）、[ADR 0014](0014-a-semantic-slot-is-not-a-stored-field.md) 一次。**都不动**——ADR 是取证记录，正文不随后续改（[ADR 0004](0004-tiers-are-anchored-on-published-hard-requirements.md) 的先例，本轮 [ADR 0011](0011-the-glossary-defines-words-the-contract-holds-the-values.md) 与 [ADR 0005](0005-basis-points-at-an-existing-checked-fact.md) 各用过一次），它记的是「当时是这么叫的」。⚠️ 少这一句，下一个拿新词表扫 repo 的人会去「修」ADR 正文——[#42](https://github.com/jiangxidong/EduApplication/issues/42) ④ 为「派生视图」花名册写过同一句提醒。
+
 **不新增机械检查。** 想得到的形态是「`essays/canonical/` 语境里不得出现『渲染物』」，它要判的是**语境**不是字符串，纯 `grep` 判不了，白名单一开就退化成花名册。按 [ADR 0019](0019-an-absence-needs-a-consumer-branch-not-a-registry.md) 甲类：**不开票、不进 `docs/checks.md`**。往一份至今没有实现体的清单里再加一行散文，正是 ADR 0011 Consequences 末段点名的那个形态。
 
 **判据可复用，但今天只有一个样本。** 「判不过自己名字的那一义让名」写成通则，而它只在「渲染物」这一个词上跑过一次——**没有第二个样本，别把它当已复验的机器**。⚠️ 它也**不是** ADR 0022 的替代：0022 管「没有这个词，要不要加」，本条管「有这个词，两义谁留名」，两条的入口不同。
