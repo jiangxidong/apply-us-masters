@@ -39,7 +39,7 @@
 | 项目 | 机制 | 风险类型 | 需要几封 | AI 停手在哪 |
 |---|---|---|---|---|
 | `columbia--seas--cs-ms` | 系统 → 推荐人，**填入即可能已发** | A 冒名发信 | 3 | 不填 `referee_*_email`；禁 Interfolio |
-| `cornell--gradschool--cs-meng` | 系统 → 推荐人；接受 Interfolio | A 冒名发信 | 在读生 1 封，第 2 位官方允许填 `filler` | 不填邮箱；**`reference_delivery_method` 选错不可逆，不代选** |
+| `cornell--gradschool--cs-meng` | 系统 → 推荐人；接受 Interfolio | A 冒名发信 | 在读生 1 封，第 2 位官方允许填 `filler` | 不填邮箱；**`reference_delivery_method` 不代选**（选错后能否更正官方页未写——#69） |
 | `uiuc--gradcollege--cs-msc` | 系统 → 推荐人；**可导入旧申请的信** | **B 冒名复用** | 待核实 | 不填邮箱；**不代勾 `reference_import_previous`**；不代勾 `ferpa_waiver_checkbox` |
 
 ## 主张 → 推荐人分配
