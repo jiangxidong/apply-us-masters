@@ -68,9 +68,9 @@ season_downgraded:
 
 ## 🔴 推荐信机制 —— 风险 A + 两个反直觉例外
 
-- `✓ https://www.cs.cornell.edu/masters/…` 机制：**系统 → 推荐人**（发含链接的在线表单）
+- `✓ https://gradschool.cornell.edu/admissions/application-steps/recommendations/` 机制：**系统 → 推荐人**（发含链接的在线表单，推荐人可上传或直接填文本框）
 - `待核实` 触发时点（机制细节最全，但何时发信官方页未写）
-- `✓ 同上` **接受 Interfolio**（须 field 同意）；部分情况可选 By Mail
+- `✓ https://www.cs.cornell.edu/master-engineering-computer-science/apply` **接受 Interfolio**（CS M.Eng. apply 页专属指引，Graduate School 通用页未载）；🔴 官方明确**不要勾 "Letter will be mailed"**——勾了系统就不给推荐人发请求
 
 **两个必须容忍的合法例外**（否则会误判）：
 1. `✓ 同上` 用 Interfolio 时，官方指引是把 **Interfolio 生成的 custom document e-mail address
@@ -78,7 +78,8 @@ season_downgraded:
 2. `✓ 同上` **在读生只需 1 封推荐信**，官方指引是在第 2 位推荐人处 `enter a "filler"`。
    字段校验必须容忍官方认可的占位内容。
 
-- 🔴 `✓ 同上` `reference_delivery_method`（Interfolio / 在线 / By Mail）**选错不可逆** → AI 不得代选
+- `待核实` `reference_delivery_method` 选错后能否更正（官方页未写「不可逆」）
+- → `reference_delivery_method` **AI 不得代选**（无论可逆与否）
 
 ## 费用与资格（从 programs.md 下沉至此 —— evidence 列只担保 deadline）
 
@@ -107,7 +108,7 @@ season_downgraded:
 
 > ✅ **在切片内**，本行不用动（[#55](https://github.com/jiangxidong/EduApplication/issues/55) 复核）。
 > ⚠️ 它成立是因为**页上写了**，不是因为「MEng 通常是 coursework」—— #55 明令不按印象判。
-> ⚠️ 取回时撞到门牌号：`https://www.cs.cornell.edu/masters/` **重定向**到上面这个规范 URL。本文件「推荐信机制」节那条 `✓ https://www.cs.cornell.edu/masters/…` 仍是**带省略号的悬空出处**（与 [#62](https://github.com/jiangxidong/EduApplication/issues/62) 同形，且下面还挂着一条 `✓ 同上`）—— 不在 #55 范围内，另开票。
+> ⚠️ 取回时撞到门牌号：`https://www.cs.cornell.edu/masters/` **重定向**到上面这个规范 URL。本文件「推荐信机制」节曾有一条带省略号的悬空出处（与 [#62](https://github.com/jiangxidong/EduApplication/issues/62) 同形）—— 已由 [#69](https://github.com/jiangxidong/EduApplication/issues/69) 重挣出处并更正事实。
 
 #### 项目内容
 
