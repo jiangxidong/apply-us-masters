@@ -15,7 +15,7 @@
 |---|---|---|---|
 | `契约` | 状态层契约自己内部不自洽 | `evals/checks/check-docs.sh` | `evals/fixtures/violations/docs/` |
 | `repo 文档` | 产品 repo 的文档（`CONTEXT.md` / `docs/adr/` / `skills/*/SKILL.md`） | 同上 | 同上 |
-| `工作区` | 某个工作区的文件内容 | `evals/checks/check-workspace.sh`（＋ `trace-packet.sh` 过渡，见「尚未实现」节） | `sample-workspace/` ＋ 三个 persona 工作区 ＋ `evals/fixtures/violations/workspace/` |
+| `工作区` | 某个工作区的文件内容 | `evals/checks/check-workspace.sh` | `sample-workspace/` ＋ 三个 persona 工作区 ＋ `evals/fixtures/violations/workspace/` |
 
 **「曾用号」列只为迁移存在**：旧文档里写着「孤儿检查第 N 条」或「#14 G1」时用它换算成短名。它记的是历史，**不随规则改动而改写**，所以它不是镜像。
 
@@ -62,13 +62,13 @@
 
 ## 触发
 
-**手动，由改动规则的人跑。进 CI 的名单（[#75](https://github.com/jiangxidong/EduApplication/issues/75) 起不再为空，[#76](https://github.com/jiangxidong/EduApplication/issues/76) 追加五条）：`glossary-holds-no-owner`、`pseudo-safer-excludes-safer`、`material-keys-complete`、`material-body-fixed-headings`、`cite-url-has-no-ellipsis`、`essay-cites-no-referee-claim`——`.github/workflows/checks.yml` 每次 push／PR 跑名单里的检查，并附带跑「夹具必须翻红」的反向断言。**
+**手动，由改动规则的人跑。进 CI 的名单（[#75](https://github.com/jiangxidong/EduApplication/issues/75) 起不再为空，[#76](https://github.com/jiangxidong/EduApplication/issues/76) 追加五条，[#89](https://github.com/jiangxidong/EduApplication/issues/89) 追加六条）：`glossary-holds-no-owner`、`pseudo-safer-excludes-safer`、`material-keys-complete`、`material-body-fixed-headings`、`cite-url-has-no-ellipsis`、`essay-cites-no-referee-claim`、`section-prefix-match`、`overlay-no-bare-lines`、`subsection-under-program`、`no-prebuilt-empty-section`、`drafts-imply-consent`、`season-stamp-matches-owners`——`.github/workflows/checks.yml` 每次 push／PR 跑名单里的检查，并附带跑「夹具必须翻红」的反向断言。**
 
 🔴 **这不是「暂不进」的又一次续期。** [#9](https://github.com/jiangxidong/EduApplication/issues/9) 定的是「**暂**不进 CI」，而这个「暂」已经被续期过三次且从未写下终止条件。[#63](https://github.com/jiangxidong/EduApplication/issues/63) 把它换成了判据（[ADR 0020](adr/0020-a-check-passes-through-four-places-in-order.md)）：
 
 > 一条检查够格进 CI，当且仅当四条全满足：① **有实现体，且它住在 `evals/`**；② 配了至少一条 `evals/fixtures/violations/` 夹具，且**实测能让它翻红**（[ADR 0017](adr/0017-a-check-that-compares-against-a-forkable-copy-is-vacuous.md) 推论 2：全绿不是证据）；③ **不须联网、不须跑 agent**（[#14](https://github.com/jiangxidong/EduApplication/issues/14) 已判）；④ **说得出参照物在副本之外的什么地方**（ADR 0017 推论 1）。
 
-**「第一条满足四项的检查落地那天，它自己就进 CI」已由 [#75](https://github.com/jiangxidong/EduApplication/issues/75) 兑现**：`glossary-holds-no-owner` 四项全过（① 实现体住 `evals/checks/check-docs.sh`；② 夹具在 `evals/fixtures/violations/docs/glossary-holds-no-owner/` 且实测翻红；③ 纯 awk，不联网不跑 agent；④ 参照物＝规则语句与夹具，均在被测文件之外——取证见 #75 结案评论）。[#76](https://github.com/jiangxidong/EduApplication/issues/76) 同样四项全过又落地五条（`pseudo-safer-excludes-safer` / `material-keys-complete` / `material-body-fixed-headings` / `cite-url-has-no-ellipsis` / `essay-cites-no-referee-claim`，实现体住 `evals/checks/check-workspace.sh`，参照物＝活读 `CONTRACT.md` / `CONTEXT.md` 字面量＋各自的翻红夹具，取证见 #76 结案评论）。其余十二条仍不满足 ①。
+**「第一条满足四项的检查落地那天，它自己就进 CI」已由 [#75](https://github.com/jiangxidong/EduApplication/issues/75) 兑现**：`glossary-holds-no-owner` 四项全过（① 实现体住 `evals/checks/check-docs.sh`；② 夹具在 `evals/fixtures/violations/docs/glossary-holds-no-owner/` 且实测翻红；③ 纯 awk，不联网不跑 agent；④ 参照物＝规则语句与夹具，均在被测文件之外——取证见 #75 结案评论）。[#76](https://github.com/jiangxidong/EduApplication/issues/76) 同样四项全过又落地五条（`pseudo-safer-excludes-safer` / `material-keys-complete` / `material-body-fixed-headings` / `cite-url-has-no-ellipsis` / `essay-cites-no-referee-claim`，实现体住 `evals/checks/check-workspace.sh`，参照物＝活读 `CONTRACT.md` / `CONTEXT.md` 字面量＋各自的翻红夹具，取证见 #76 结案评论）。[#89](https://github.com/jiangxidong/EduApplication/issues/89) 同样四项全过又落地六条（`section-prefix-match` / `overlay-no-bare-lines` / `subsection-under-program` / `no-prebuilt-empty-section` / `drafts-imply-consent` / `season-stamp-matches-owners`，实现体住 `evals/checks/check-workspace.sh`，参照物＝活读 `CONTRACT.md` 字面量＋各自的翻红夹具，取证见 #89 结案评论；`season-stamp-matches-owners` 的实现体原住 packet 分支 `trace-packet.sh` 第 [5] 项，本票同刀迁移进 `evals/`，迁移记录见该分支 `trace-packet.sh` 头注释）。其余六条仍不满足 ①。
 
 🔴 **它会失效，而且已经失效过一次。** #14 G1 与 ADR 0008 第 2 条分叉了 89 分钟没有任何人发现，靠的正是「有人会记得跑」。配一条纪律顶着：
 
@@ -79,7 +79,7 @@
 🔴 **触发按「被测对象」分档，不只按规则源**（[#81](https://github.com/jiangxidong/EduApplication/issues/81)；分类键沿用 [ADR 0016](adr/0016-the-checklist-holds-names-and-pointers.md) 决定 ② 的那把——被测对象，不是读了哪些文件）。[#65](https://github.com/jiangxidong/EduApplication/issues/65) 实测过反例：改夹具（契约一字不动）把 FAIL 从 5 降到 0——同一个提交类型既能修好也能弄坏检查，只盯规则源的纪律看不见它。三档：
 
 > ① 改**规则源**（上列四条 ADR 或 `CONTRACT.md` §0 / §1 / §4）的提交——重跑对应检查并附输出（现行，不变）。
-> ② 改**被测对象**的提交：动 `sample-workspace/`（含未来的 persona 工作区）→ 重跑全部「被测对象＝工作区」的已实现检查（今天＝`trace-packet.sh`［`season-stamp-matches-owners`，过渡至 #89，见「尚未实现」节］＋ `evals/checks/check-workspace.sh`［#76 落地的五条，`main` 上每次 push CI 已自动跑]）；动 `CONTEXT.md` / `docs/` / `skills/` → 重跑「被测对象＝契约 / repo 文档」的已实现检查（`evals/checks/check-docs.sh`；`main` 上每次 push CI 已自动跑，手动义务由 CI 吸收）。
+> ② 改**被测对象**的提交：动 `sample-workspace/`（含未来的 persona 工作区）→ 重跑全部「被测对象＝工作区」的已实现检查（今天＝`evals/checks/check-workspace.sh`［#76 落地的五条 ＋ #89 落地的六条，`main` 上每次 push CI 已自动跑]）；动 `CONTEXT.md` / `docs/` / `skills/` → 重跑「被测对象＝契约 / repo 文档」的已实现检查（`evals/checks/check-docs.sh`；`main` 上每次 push CI 已自动跑，手动义务由 CI 吸收）。
 > ③ 改**检查自身**（`evals/`）→ 取证必须含「夹具仍翻红」（CI 的反向断言已内建）。
 
 不选「一揽子加 `sample-workspace/` 重跑一切」：分档后每类提交只跑测它的那一组，工作区组整套秒级，「太吵」不成立；「改完 `sample-workspace/` 必跑 `trace-packet.sh`」在 [#73](https://github.com/jiangxidong/EduApplication/issues/73) 落盘时已是事实惯例（改一行说明文字也会让指纹失效，当场被咬过），本条只是把惯例写进纪律。
@@ -148,7 +148,7 @@ echo "[$h 」]"     → [## 我做了什么 」]  ✅ 中间有空格也对
 
 ## 尚未实现
 
-**`evals/` 已实现 6 条**（1 docs ＋ 5 工作区）：[#75](https://github.com/jiangxidong/EduApplication/issues/75) 落地 `evals/checks/check-docs.sh` 的 `glossary-holds-no-owner`；[#76](https://github.com/jiangxidong/EduApplication/issues/76) 落地 `evals/checks/check-workspace.sh` 的 `pseudo-safer-excludes-safer` / `material-keys-complete` / `material-body-fixed-headings` / `cite-url-has-no-ellipsis` / `essay-cites-no-referee-claim`；`derive-demo.sh` 那两段已随 #76 同刀删除（两个 prototype 分支各一次提交、逐字同步）。其余十二条仍不满足位置 ④ 的第 ① 项——其中 `season-stamp-matches-owners` 的实现体今天在 packet 分支 `trace-packet.sh` [5]，不在 `evals/`，是 #81 留档的第三条，归 #89 落 evals 时同刀迁移。**三个 persona 工作区同样不存在**——`工作区` 那行的三项夹具今天只有 `sample-workspace/` 有货（[#63](https://github.com/jiangxidong/EduApplication/issues/63) 逐 ref 复核，取证见该票）。本表落的是**决策**，脚本是实现。
+**`evals/` 已实现 12 条**（1 docs ＋ 11 工作区）：[#75](https://github.com/jiangxidong/EduApplication/issues/75) 落地 `evals/checks/check-docs.sh` 的 `glossary-holds-no-owner`；[#76](https://github.com/jiangxidong/EduApplication/issues/76) 落地 `evals/checks/check-workspace.sh` 的 `pseudo-safer-excludes-safer` / `material-keys-complete` / `material-body-fixed-headings` / `cite-url-has-no-ellipsis` / `essay-cites-no-referee-claim`；[#89](https://github.com/jiangxidong/EduApplication/issues/89) 落地 `evals/checks/check-workspace.sh` 的 `section-prefix-match` / `overlay-no-bare-lines` / `subsection-under-program` / `no-prebuilt-empty-section` / `drafts-imply-consent` / `season-stamp-matches-owners`——`season-stamp-matches-owners` 的实现体原住 packet 分支 `trace-packet.sh` 第 [5] 项，本票同刀迁移进 `evals/`，`trace-packet.sh` 该段已删除；`derive-demo.sh` 那两段已随 #76 同刀删除（两个 prototype 分支各一次提交、逐字同步）。其余六条仍不满足位置 ④ 的第 ① 项。**三个 persona 工作区同样不存在**——`工作区` 那行的三项夹具今天只有 `sample-workspace/` 有货（[#63](https://github.com/jiangxidong/EduApplication/issues/63) 逐 ref 复核，取证见该票）。本表落的是**决策**，脚本是实现。
 
 ⚠️ **`evals/` 与 `skills/` 的位置本身已不再是 fog**（[ADR 0021](adr/0021-the-repo-root-is-the-plugin-root-for-both-runtimes.md)，[#64](https://github.com/jiangxidong/EduApplication/issues/64)）：仓库根就是两个运行时的 plugin 根，顶层按「谁会读它」切。本表上面写死的 `evals/checks/` 与 `evals/fixtures/violations/{docs,workspace}/` **被该 ADR 照单收下，一个字未改**。仍然缺的只是脚本本身。
 

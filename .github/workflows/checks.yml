@@ -30,10 +30,10 @@ jobs:
         run: git worktree add /tmp/sl origin/prototype/state-layer
       - name: 名单里的工作区检查（真样例全绿）
         run: bash evals/checks/check-workspace.sh /tmp/sl/prototypes/state-workspace-v0 /tmp/sl/prototypes/state-workspace-v0/sample-workspace
-      - name: 五条夹具必须各自翻红（ADR 0017 推论 2）
+      - name: 十一条夹具必须各自翻红（ADR 0017 推论 2）
         run: |
           set -e
-          for c in pseudo-safer-excludes-safer material-keys-complete material-body-fixed-headings cite-url-has-no-ellipsis essay-cites-no-referee-claim; do
+          for c in pseudo-safer-excludes-safer material-keys-complete material-body-fixed-headings cite-url-has-no-ellipsis essay-cites-no-referee-claim section-prefix-match overlay-no-bare-lines subsection-under-program no-prebuilt-empty-section drafts-imply-consent season-stamp-matches-owners; do
             rc=0
             bash evals/checks/check-workspace.sh /tmp/sl/prototypes/state-workspace-v0 "evals/fixtures/violations/workspace/${c}" "${c}" || rc=$?
             if [ "${rc}" -ne 1 ]; then
