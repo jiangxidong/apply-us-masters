@@ -9,6 +9,7 @@
 ## 怎么读这张表
 
 **「被测对象」决定一切**：谁跑它、跑在哪个夹具上、它能宣布**谁**违规。它不是「读了哪些文件」——每条检查都可以把契约当参考数据去查，把它们分开的是**它能判谁违规**。
+🔴 **判不了任何人违规的东西不是检查，不进本表。** 它是**派生视图**（每个取值都合法，只做分类）或**体检**（违规的不是工作区，是外部世界变了）。[#63](https://github.com/jiangxidong/EduApplication/issues/63) 用这条判掉两个候选：**缺口三分类**（`CONTEXT.md`「缺口」词条：现算现打、绝不落盘）与 **`✓` 链接体检**（[#14](https://github.com/jiangxidong/EduApplication/issues/14)：404 不算回归失败）。两者都不是欠账，**都不开票**（[ADR 0019](adr/0019-an-absence-needs-a-consumer-branch-not-a-registry.md) 甲类）。
 
 | 被测对象 | 违规的是 | 谁跑 | 夹具 |
 |---|---|---|---|
@@ -35,8 +36,13 @@
 | `no-prebuilt-empty-section` | 工作区 | [#23](https://github.com/jiangxidong/EduApplication/issues/23) 否掉预建空节 | #14 G3 |
 | `drafts-imply-consent` | 工作区 | [#12](https://github.com/jiangxidong/EduApplication/issues/12) C 档前置（推荐人本人授权起草） | 0008 第 5 条 ／ #14 E1 |
 | `season-stamp-matches-owners` | 工作区 | [ADR 0008](adr/0008-the-owner-binds-to-a-section-not-a-file.md) 限定 4 | 0008 第 8 条（#37） |
+| `pseudo-safer-excludes-safer` | 工作区 | [ADR 0015](adr/0015-pseudo-safer-annotates-the-users-prior-not-the-tier.md) 决定「禁止共存」 |  — |
+| `material-keys-complete` | 工作区 | `CONTRACT.md` §1.1「`materials/*.md` 的字段名单（v1 定稿）」的 frontmatter 三键表 |  — |
+| `material-body-fixed-headings` | 工作区 | `CONTRACT.md` §1.1「正文的形状规则」 |  — |
+| `cite-url-has-no-ellipsis` | 工作区 | [ADR 0007](adr/0007-a-checkmark-is-earned-by-a-fetch-not-by-a-capability.md) 补充（[#63](https://github.com/jiangxidong/EduApplication/issues/63)） |  — |
+| `essay-cites-no-referee-claim` | 工作区 | `CONTRACT.md` §1.1 的 `claims.md` 四列段（[#52](https://github.com/jiangxidong/EduApplication/issues/52) 定禁令，[#63](https://github.com/jiangxidong/EduApplication/issues/63) 定被测对象） | [#52](https://github.com/jiangxidong/EduApplication/issues/52)「第五条」 |
 
-**十三条。** 别按任何一处写下的条数判断读没读全——ADR 0008 的条数在 2026-08-15 一天之内被改过四次（六 → 七 → 六 → 七 → 八），这正是本表存在的理由之一。
+**十八条。** 后五条由 [#63](https://github.com/jiangxidong/EduApplication/issues/63) 一次加入，**全部 `被测对象 = 工作区`**；⚠️ 它们的「曾用号」一律填 `—`，因为那五个序号是 #63 票面**今天新造的**，没有任何存量文档按序号引用过它们——本列只为**迁移**存在（见上）。唯一的例外是 `essay-cites-no-referee-claim`，[#52](https://github.com/jiangxidong/EduApplication/issues/52) 确实按「第五条」引用过它。别按任何一处写下的条数判断读没读全——ADR 0008 的条数在 2026-08-15 一天之内被改过四次（六 → 七 → 六 → 七 → 八），这正是本表存在的理由之一。
 
 ### 三处两份表述不一致，一律取强的那份
 
@@ -56,7 +62,13 @@
 
 ## 触发
 
-**手动，由改动规则的人跑。** 不进 CI——[#9](https://github.com/jiangxidong/EduApplication/issues/9) 定的是「暂不进 CI」，而「哪些检查项进 CI」是地图 **Not yet specified** 里「知识时效性运维」那一片的事，本表不越界。
+**手动，由改动规则的人跑。今天进 CI 的名单是空的。**
+
+🔴 **这不是「暂不进」的又一次续期。** [#9](https://github.com/jiangxidong/EduApplication/issues/9) 定的是「**暂**不进 CI」，而这个「暂」已经被续期过三次且从未写下终止条件。[#63](https://github.com/jiangxidong/EduApplication/issues/63) 把它换成了判据（[ADR 0020](adr/0020-a-check-passes-through-four-places-in-order.md)）：
+
+> 一条检查够格进 CI，当且仅当四条全满足：① **有实现体，且它住在 `evals/`**；② 配了至少一条 `evals/fixtures/violations/` 夹具，且**实测能让它翻红**（[ADR 0017](adr/0017-a-check-that-compares-against-a-forkable-copy-is-vacuous.md) 推论 2：全绿不是证据）；③ **不须联网、不须跑 agent**（[#14](https://github.com/jiangxidong/EduApplication/issues/14) 已判）；④ **说得出参照物在副本之外的什么地方**（ADR 0017 推论 1）。
+
+**十八条没有一条满足 ①**，所以名单为空。**第一条满足四项的检查落地那天，它自己就进 CI，不必再开一张票问「可不可以」。**
 
 🔴 **它会失效，而且已经失效过一次。** #14 G1 与 ADR 0008 第 2 条分叉了 89 分钟没有任何人发现，靠的正是「有人会记得跑」。配一条纪律顶着：
 
@@ -128,7 +140,9 @@ echo "[$h 」]"     → [## 我做了什么 」]  ✅ 中间有空格也对
 
 ## 尚未实现
 
-**一行代码都还没有。** `evals/checks/check-docs.sh` 与 `evals/fixtures/violations/` 都不存在，回归套件的静态检查组也不存在（`evals/` 整个目录尚未建立）。本表落的是**决策**，脚本是实现。
+**`evals/` 整个目录不存在**：`evals/checks/check-docs.sh`、`evals/fixtures/violations/`、回归套件的静态检查组，一个都没有。**三个 persona 工作区同样不存在**——`工作区` 那行的三项夹具今天只有 `sample-workspace/` 有货（[#63](https://github.com/jiangxidong/EduApplication/issues/63) 逐 ref 复核，取证见该票）。本表落的是**决策**，脚本是实现。
+
+⚠️ **十八条里有两条已经有实现体，但它不在 `evals/` 里。** `material-keys-complete` 与 `material-body-fixed-headings` 今天由 `prototypes/state-workspace-v0/derive-demo.sh` 跑——那是**演示脚本**（它自陈「证明派生视图可以机械算出，不必落盘」），是**过渡期的实际 runner**，且在两个 prototype 分支上各有一份逐字副本。🔴 **`evals/` 建起来时，这两段从 `derive-demo.sh` 同刀删除**：[ADR 0016](adr/0016-the-checklist-holds-names-and-pointers.md) 已否掉「允许两份并存」，一条规则只有一处实现。
 
 在 `evals/` 建起来之前，本表的取证形态是[「跑过的命令 ＋ 当时的输出」](https://github.com/jiangxidong/EduApplication/issues/35)贴在票的结案评论里——便宜且已经在用，代价是改了检查不会自动重跑。
 
