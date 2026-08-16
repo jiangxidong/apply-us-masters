@@ -73,7 +73,7 @@ awk -F'|' '/^\|/ {
     if ($2 ~ /^c[0-9]+$/ && $4 == "") print $2
   }' claims.md > /tmp/.edu-empty-claims.$$
 for f in essays/canonical/*.md; do
-  case "$f" in */README.md) continue ;; esac   # README 不是渲染物
+  case "$f" in */README.md) continue ;; esac   # README 不是三个形态之一
   used=$(awk -F'[][]' '/^claims:/ {gsub(/,/, " ", $2); print $2}' "$f")
   [ -z "$used" ] && { echo "  ⚠️ $f 没有 claims: —— 文书是从主张清单里选，不是发明主张"; continue; }
   bad=""
