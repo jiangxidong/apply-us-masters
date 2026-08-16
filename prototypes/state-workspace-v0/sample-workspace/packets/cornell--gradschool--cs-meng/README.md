@@ -5,13 +5,13 @@ season: 2027fall
 generated: 2026-08-15
 source_fingerprint:
   apply.md: 1721676589-2821
-  profile.md: 3301469396-2623
+  profile.md: 2531006322-2654
   programs.md: 3219980832-2660
   claims.md: 2294360780-5454
   recommenders.md: 3627732816-11901
   essays/canonical/long.md: 1603118701-364
   essays/canonical/points.md: 470119277-1264
-  channels/cornell--gradschool.md: 1072558271-8322
+  channels/cornell--gradschool.md: 3355008193-8617
 ---
 
 # 提交动线 — Cornell MEng in Computer Science
@@ -122,14 +122,14 @@ source_fingerprint:
 - 系统 → 推荐人（发含链接的在线表单）
 - ⬜ 触发时点（官方页未写何时发信）→ **按「填入即已发信」的保守假设操作**
 - 需要 **2–3 封**，按 field 定
-- 接受 **Interfolio**（须 field 同意）；部分情况可选 By Mail
+- 接受 **Interfolio**（CS M.Eng. apply 页专属指引）；🔴 不要勾 "Letter will be mailed"——勾了系统就不给推荐人发请求
 
 **🛑 以下字段 agent 一律不填、不代选，本包不给可粘贴的值**：
 
 | portal 字段 | 为什么停手 |
 |---|---|
 | `referee_details` / `referee_1..3_email` | 填入即可能触发发信 |
-| `reference_delivery_method`（Interfolio / 在线 / By Mail） | 🔴 **选错不可逆** ← `channels/cornell--gradschool.md § 推荐信机制` |
+| `reference_delivery_method`（Interfolio / 在线 / By Mail） | 🔴 **AI 不得代选；选错后能否更正官方页未写** ← `channels/cornell--gradschool.md § 推荐信机制` |
 | `ferpa_waiver_checkbox` | 影响推荐人对保密性的预期，不代勾 |
 
 **两个必须容忍的合法例外** ← `channels/cornell--gradschool.md § 推荐信机制`：
@@ -215,9 +215,9 @@ source_fingerprint:
 ⚠️ 上一版第 4 行把送分机构代码的节与 owner **都写错了**（`## 费用与资格` / 选校），#39 已改派；
 本次不是「把那一行划掉」，是整包按现行 `channels/` 重生成。
 
-⚠️ 另有一条**不是缺口而是契约洞**：`documents/` 的路径要 `institution_id`，
-而 `CONTRACT.md` §1.1 说定义权在 `profile.md` 的学历条目——但样例 `profile.md` 的学历表**没有这一列**。
-本包用 `<institution_id>` 占位，不自己发明值。
+⚠️ `documents/` 的路径要 `institution_id`，定义权在 `profile.md` 的学历条目（`CONTRACT.md` §1.1；
+样例学历表已有该列，值 `i1` / `i2`）。本包 `documents/` 表格用 `<institution_id>` 占位——
+逐院校展开发生在真正准备材料时，包不预展开、不自己发明值。
 
 ## 本季待复核（🔴 与上面那张表不是一回事）
 

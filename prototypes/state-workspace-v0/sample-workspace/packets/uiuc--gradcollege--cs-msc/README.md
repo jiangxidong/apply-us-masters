@@ -5,7 +5,7 @@ season: 2027fall
 generated: 2026-08-15
 source_fingerprint:
   apply.md: 1721676589-2821
-  profile.md: 3301469396-2623
+  profile.md: 2531006322-2654
   programs.md: 3219980832-2660
   claims.md: 2294360780-5454
   recommenders.md: 3627732816-11901
@@ -219,7 +219,7 @@ Add-exclude-Reinstate / 需要几封 / 简历条件必填）已由 [#39](https:/
 本次渲染在包外没有再长出任何一条 `channels/` 里没有的约束。
 （这张表每次整包重生成时重算，所以它不会陈旧——规则 ① 是它合法的唯一前提。）
 
-`institution_id` 无定义处的问题同 Cornell 包文末。
+`institution_id` 的占位说明同 Cornell 包文末（定义处在 `profile.md` 学历表，值 `i1` / `i2`）。
 
 ## 本季待复核（🔴 与上面那张表不是一回事）
 
