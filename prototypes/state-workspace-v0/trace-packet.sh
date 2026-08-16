@@ -51,10 +51,10 @@ echo "共 ${total} 条指针"
 while IFS="$(printf '\t')" read -r loc ch sec; do
   cf="${WS}/channels/${ch}"
   if [ ! -f "${cf}" ]; then echo "🔴 ${loc} → 文件不存在：channels/${ch}"; fail=1; continue; fi
-  # 严格前缀匹配（ADR 0008 / CONTRACT.md §1.2 的判据）
-  strict=$(awk -v s="${sec}" '/^#+ /{t=$0; sub(/^#+ +/,"",t); if (index(t,s)==1) c++} END{print c+0}' "${cf}")
+  # 严格前缀匹配（ADR 0008 / CONTRACT.md §1.2 的判据；剥离步骤 + ### 层跳过同 [5]/section-prefix-match，#68）
+  strict=$(awk -v s="${sec}" '/^## / || /^#### /{t=$0; sub(/^#+[ ]*/,"",t); gsub(/^[^一-龥A-Za-z0-9]+/,"",t); if (index(t,s)==1) c++} END{print c+0}' "${cf}")
   # 宽松子串匹配（诊断用，不是契约）
-  loose=$(awk -v s="${sec}" '/^#+ /{t=$0; sub(/^#+ +/,"",t); if (index(t,s)>0) c++} END{print c+0}' "${cf}")
+  loose=$(awk -v s="${sec}" '/^## / || /^#### /{t=$0; sub(/^#+[ ]*/,"",t); gsub(/^[^一-龥A-Za-z0-9]+/,"",t); if (index(t,s)>0) c++} END{print c+0}' "${cf}")
   if [ "${strict}" -gt 0 ]; then
     echo "✅ ${loc} → channels/${ch} § ${sec}"
   elif [ "${loose}" -gt 0 ]; then
