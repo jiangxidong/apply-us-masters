@@ -58,9 +58,9 @@
 |---|---|---|---|---|
 | 1 | `apply.md` | frontmatter + 正文 | **工作区标识 + 申请季** | **冷启动**（创建）；此后**只有换季时**改 `season`。⚠️ 不放完成度、不放待核实计数——那些是派生视图 |
 | 2 | `profile.md` | frontmatter + 正文 | **申请人 canonical 事实**；学历条目是 `institution_id` 的**定义处** | **冷启动 / 画像**；其他阶段只读 |
-| 3 | `programs.md` | Markdown 表，**13 列**（逐列 schema 见 **§4.6**） | **项目池**（选校决策面） | **选校**（**全部 13 列，含 `status`，无例外**——见 §1.5 注 ①） |
+| 3 | `programs.md` | frontmatter（`season_downgraded`，见 §4）＋ Markdown 表，**13 列**（逐列 schema 见 **§4.6**） | **项目池**（选校决策面） | **选校**（**全部 13 列，含 `status`，无例外**——见 §1.5 注 ①） |
 | 4 | `claims.md` | Markdown 表，4 列 | **主张集**（全局唯一，文书与推荐信共用） | 🔴 **按行单向移交**：**冷启动 / 画像**只 append 新行，**文书**此后全权（见下） |
-| 5 | `channels/<channel_key>.md` | Markdown，**分节** | **约束层**（逐申请渠道的 rendering rules） | 🔴 **按节归属，见 §1.2**（5 个阶段 owner） |
+| 5 | `channels/<channel_key>.md` | frontmatter（`season_downgraded`，见 §4）＋ Markdown，**分节** | **约束层**（逐申请渠道的 rendering rules） | 🔴 **按节归属，见 §1.2**（5 个阶段 owner） |
 | 6 | `materials/*.md` | frontmatter **三键** `material_id` / `sensitive` / `verifiable_by` ＋ 正文（形状规则见下，**一律列名不计数**） | **文书素材**（素材门槛在此判定）；推荐信线是第二个消费方，**只读** | **文书**（见 §1.5 注 ②） |
 | 7 | `essays/canonical/*.md` | Markdown + frontmatter **二键**（名单见下） | **文书 canonical 渲染物**（当前版） | **文书** |
 | 8 | `essays/canonical/per-program/<program_key>.md` | frontmatter + 散文 | **逐项目 why-this-program 内容**（不可再生） | **文书**（按 §1.4 前缀继承） |
@@ -582,11 +582,64 @@ Columbia SEAS 那条「AI 政策未查到，暂按 GSAS 从严」就没法被自
 🔴 **执行方式是惰性的，不是一改 `season` 就全表触发**（[#23](https://github.com/jiangxidong/EduApplication/issues/23)）。
 全表触发构成**跨 owner 的写** —— `programs.md` 与 `channels/` 的十个节分属三个阶段，没有任何一个阶段有权改别人的节。
 
-> 换季**只改 `apply.md` 的 `season`**。各阶段**下次进入时**按文件 frontmatter 的 `season` 比对，
-> 就地降级**自己 owner 的节**，并同步该文件的 `season`。派生视图渲染时按 `season` 比对，不等即视为待核实。
+> 换季**只改 `apply.md` 的 `season`**。各阶段**下次进入时**按该文件 frontmatter 的 **`season_downgraded`**
+> 表比对**自己那一行**，落后于当前 `season` 才就地降级**自己 owner 的节**，并把自己那一行重戳成当前 `season`。
+> 派生视图渲染时按**该条事实所属 owner 的那一行**比对，不等即视为待核实。
 
-`channels/*.md` 的 frontmatter **已有 `season` 字段**（样例是 `season: 2027fall`），无需新增。
 未被访问的节保持上季标记 —— **比假装重查过更诚实**。
+
+#### 🔒 季度戳绑 owner，不绑文件（[ADR 0008](../../docs/adr/0008-the-owner-binds-to-a-section-not-a-file.md) 限定 4 / [#37](https://github.com/jiangxidong/EduApplication/issues/37)）
+
+原先的**文件级 `season` 字段已删除**。一个 `channels/*.md` 有五个阶段 owner，选校先进来、降完自己那几节、
+把文件级 `season` 刷成本季之后，**文书再进来就不匹配失败，永远不降自己那两节**——陈旧因此不是一个会关闭的窗口，
+而是被第一个进来的阶段**永久掩盖**。这是本契约把 owner 从「文件」翻到「节」（§1.2）时漏掉的同一个范畴错误。
+
+**形态**（本节是它的唯一权威）：frontmatter 里一张 `season_downgraded` **块表**，键取自
+[`CONTEXT.md`](../../CONTEXT.md)「阶段」的封闭词表，值是该 owner **最后一次完成降级**的申请季：
+
+```yaml
+season_downgraded:
+  选校: 2027fall
+  文书: 2027fall
+  材料: 2027fall
+  推荐信: 2027fall
+  准备包: 2027fall
+```
+
+🔒 **辖区 = 承载证据标记（`✓` / `待核实`）的路径**，当前恰好两类：`channels/<channel_key>.md` 与 `programs.md`。
+`programs.md` 因此**新建 frontmatter**——它此前一行 frontmatter 都没有，惰性降级在它身上**根本无法执行**，
+而 `deadline` 的取证状态恰恰只住在它的 `evidence` 列；表里只有一行（`选校`）。
+**不为单 owner 文件开「用标量」的第二条判据**：检查脚本要为两种形态各写一遍，
+而「今天只有一个 owner」不是可以刻进契约的性质。
+
+🔴 **`apply.md` 的 `season` 不在辖区内，不删。** 它不承载任何证据标记，它是全工作区**唯一的参照点**——
+上面那句「换季只改 `apply.md` 的 `season`」与 §1.1 第 1 行「此后只有换季时改 `season`」都拿它当主语。
+`packets/<program_key>/README.md` 的 `season` 同理保留：包里零证据标记（`packets/README.md` 规则 ②），
+那一格是**标签，不是判据**；判据是 `season_downgraded` 的行与 `apply.md` 的 `season` 之差。
+
+**这张表不是镜像。** 它记的是「某个 owner 在哪一季对自己辖区做完了降级」，是历史观察值，
+同 `log.md` 与 `source_fingerprint` 的豁免（§1.5 / ADR 0008 限定 3 的同一条推理：它从不为了保持为真而被改写）。
+
+🔴 **建节即戳，降级即戳。** 一个 owner 在某文件里**落下第一个节的同时**就戳上当季，此后每次降级重戳。
+选校在 2027fall 新建 `channels/x.md` 并当场取证打 `✓`，若不同时写 `season_downgraded` 的 `选校` 行，
+那批**刚刚取回的**事实会立刻被判成陈旧——最新鲜的证据当成最陈旧的。
+
+🔴 **缺行 = 该 owner 在本文件里没有内容，不是陈旧。** 「建节即戳」使**有内容 ⟺ 有行**，
+所以缺行只能读作「它一个节都没落过」——没有节，就没有要渲染的东西，也就无所谓陈不陈旧。
+⚠️ **这一条曾被写反过一版**（「缺行 = 陈旧」），在**首季工作区**上当场破：首季根本没有上一季，
+那个「上季核过」的链接不存在。作废理由全文见 ADR 0008 限定 4，**本节与它冲突时以 ADR 为准**。
+fail-safe 由下面那条机械检查守，**不由「缺行」的读法守**：漏戳会被判成违规，而不是被静默读成本季。
+
+**机械检查 `season-stamp-matches-owners`**（名与指针见 [`docs/checks.md`](../../docs/checks.md)，规则原文即 ADR 0008 限定 4）：
+`season_downgraded` 的键必须**恰好等于「在该文件里实际有内容的 owner」集合**——该集合由**文件内容 ＋ §1.2 归属表**
+机械推出（逐节剥离前缀匹配到法定节名，再查 owner），**不是照抄契约的 owner 名单**。
+🔒 **不按节切的路径（当前只有 `programs.md`，它的结构单元是列、§1.5 注 ① 判它单 owner），owner 取 §1.1 那一行**；
+按节切的路径（`channels/<channel_key>.md`）走上面那条前缀匹配。两条都活读本文件，检查不为任一形态内嵌常量。
+**有内容而无戳 = 违规**；**有戳而无内容 = 违规**（预建空行，同 §1.2 否掉的预建空节）。
+**文件级 `season` 字段出现在辖区路径上即违规。**
+实现体是 `trace-packet.sh` 的第 [5] 项（只活在 `prototype/application-packet`，不在 CI，同 `packets/README.md` 末节）。
+⚠️ 它**必须活读跑它那棵树自己的本文件 §1.2**，不得内嵌一份归属表副本，也不得跨分支取参照物——
+两者都会把它变成 [ADR 0017](../../docs/adr/0017-a-check-that-compares-against-a-forkable-copy-is-vacuous.md) 意义上的恒真检查。
 
 🔴 **换季只做证据降级与状态回退，不触发任何清理，不提示删除任何文件**（[#17](https://github.com/jiangxidong/EduApplication/issues/17)）。
 换季是**二申路径**，是申请季**初**的动作；清理服务的是申请完就走的人，那个人永远不会换季。
