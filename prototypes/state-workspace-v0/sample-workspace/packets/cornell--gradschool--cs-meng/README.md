@@ -8,7 +8,7 @@ source_fingerprint:
   profile.md: 2730792665-2260
   programs.md: 3219980832-2660
   claims.md: 2294360780-5454
-  recommenders.md: 3627732816-11901
+  recommenders.md: 3607378210-11934
   essays/canonical/long.md: 1603118701-364
   essays/canonical/points.md: 470119277-1264
   channels/cornell--gradschool.md: 3355008193-8617
@@ -129,7 +129,7 @@ source_fingerprint:
 | portal 字段 | 为什么停手 |
 |---|---|
 | `referee_details` / `referee_1..3_email` | 填入即可能触发发信 |
-| `reference_delivery_method`（Interfolio / 在线 / By Mail） | 🔴 **AI 不得代选；选错后能否更正官方页未写** ← `channels/cornell--gradschool.md § 推荐信机制` |
+| `reference_delivery_method`（Interfolio / 在线；🔴 勿勾 "Letter will be mailed"） | 🔴 **AI 不得代选；选错后能否更正官方页未写** ← `channels/cornell--gradschool.md § 推荐信机制` |
 | `ferpa_waiver_checkbox` | 影响推荐人对保密性的预期，不代勾 |
 
 **两个必须容忍的合法例外** ← `channels/cornell--gradschool.md § 推荐信机制`：

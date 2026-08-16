@@ -8,7 +8,7 @@ source_fingerprint:
   profile.md: 2730792665-2260
   programs.md: 3219980832-2660
   claims.md: 2294360780-5454
-  recommenders.md: 3627732816-11901
+  recommenders.md: 3607378210-11934
   essays/canonical/long.md: 1603118701-364
   essays/canonical/points.md: 470119277-1264
   channels/uiuc--gradcollege.md: 2472000618-18098
