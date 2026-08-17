@@ -230,4 +230,4 @@ source_fingerprint:
 
 🔴 **空表是本次重生成的正确结果。** `channels/cornell--gradschool.md` 的五行与 `programs.md` 的一行
 `season_downgraded` **全部是 2027fall**，与 `apply.md` 的 `season` 齐平，没有任何 owner 落后。
-机械凭据：`../../trace-packet.sh` 第 [5] 项对这两个文件都不打 ⏳ 行。
+机械凭据：`season-stamp-matches-owners`（实现体住 `evals/checks/check-workspace.sh`，`main` 分支，CI 在跑）对这两个文件都不打 ⏳ 行。
