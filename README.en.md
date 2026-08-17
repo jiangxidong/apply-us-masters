@@ -52,7 +52,7 @@ codex plugin add edu-application@jiangxidong-edu
 
 ## The Four Skills
 
-Mapped one skill per natural product stage — what each skill actually does lives in its own skill instructions. **Only `apply-us-master` is built in this repo today**; the other three will appear under the same installed entry as their own implementation tickets land, with no reinstall needed.
+Mapped one skill per natural product stage — what each skill actually does lives in its own skill instructions. **`apply-us-master` and `pick-programs` are built in this repo today**; the other two will appear under the same installed entry as their own implementation tickets land, with no reinstall needed.
 
 | Stage | Skill |
 |---|---|
