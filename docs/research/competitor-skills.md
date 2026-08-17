@@ -45,7 +45,7 @@
 2. **句式模板会制造 AI 味**（application-essay-skill `essay_style_patterns.md` 提供完形填空句式，与自身"反 generic"立论直接矛盾，且 revision checklist 里没有一条核验模板痕迹）。
 3. **references 写了但 SKILL.md 不引用 = 死资产**（academic-program-application：5 个 genre guide 共 195 行 + 整个 `examples/` 254 行在 SKILL.md 中零引用）。
 4. **路由表复制两份必然漂移**（taught-master `SKILL.md` 与 `workflow-map.md` 双份路由，后者已出现两个 `## 0.`）。
-5. **"匿名模板"泄露真实个人项目**（taught-master `cv-preview-stem.md` 自称匿名却列出 MyBatis/具体爬虫项目，且被指示当作 preview shape → 会串进别人的 CV）。
+5. **示例简历过于具体，当模板复用会形状污染**（taught-master 的 `cv-preview-stem.md` 自称匿名模板，却含 MyBatis/具体爬虫项目这类高特异性细节，且被指示当作 preview shape → 这种特异性会串进别人的 CV）。
 6. **Checked At 有字段无失效规则**——上一申请季打了"官网已核查"的条目比"待官网确认"更危险。
 7. **强依赖联网却不声明 allowed-tools、无离线降级**（euro-grad-apply、application-essay-skill、taught-master 都中）。
 8. **举例领域高度集中**（application-essay-skill 全是环境/设计/政策；academic-program-application 7 个 example 全是"现代中国基督教史"）——泛化性存疑。
