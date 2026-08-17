@@ -8,18 +8,34 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: 名单里的检查（见 docs/checks.md 触发节）
-        run: bash evals/checks/check-docs.sh .
-      - name: 夹具必须翻红（ADR 0017 推论 2：全绿不是证据）
+        with:
+          fetch-depth: 0
+      - name: 取被测分支
+        run: git worktree add /tmp/sl origin/prototype/state-layer
+      - name: 名单里的检查（见 docs/checks.md 触发节，真样例全绿）
+        run: bash evals/checks/check-docs.sh /tmp/sl/prototypes/state-workspace-v0 .
+      - name: 七条夹具必须各自翻红（ADR 0017 推论 2：全绿不是证据）
         run: |
-          rc=0
-          bash evals/checks/check-docs.sh evals/fixtures/violations/docs/glossary-holds-no-owner || rc=$?
-          if [ "${rc}" -ne 1 ]; then
-            echo "🔴 期望翻红（exit 1），实得 exit ${rc}（exit 2 是检查器硬失败，不是真检出）"
-            exit 1
-          else
-            echo "✅ 夹具翻红（exit 1），检查活着"
-          fi
+          set -e
+          # 契约类三条：CONTRACT_ROOT=夹具（极小形状）、TARGET_ROOT=.（真 repo，
+          # 供 STAGES/DECLARED_CUTS 等部署树字面量与候选扫描落到真实内容）。
+          for c in path-resolves-to-owner vocab-item-one-stage split-is-declared; do
+            rc=0
+            bash evals/checks/check-docs.sh "evals/fixtures/violations/docs/${c}" . "${c}" || rc=$?
+            if [ "${rc}" -ne 1 ]; then
+              echo "🔴 ${c} 期望翻红（exit 1），实得 exit ${rc}（exit 2 是检查器硬失败，不是真检出）"; exit 1
+            fi
+            echo "✅ ${c} 翻红（exit 1）"
+          done
+          # 文档类四条：CONTRACT_ROOT=/tmp/sl/...（真契约，作参照物）、TARGET_ROOT=夹具。
+          for c in glossary-holds-no-owner citation-is-partial no-second-path-literal skills-never-cite-evals; do
+            rc=0
+            bash evals/checks/check-docs.sh /tmp/sl/prototypes/state-workspace-v0 "evals/fixtures/violations/docs/${c}" "${c}" || rc=$?
+            if [ "${rc}" -ne 1 ]; then
+              echo "🔴 ${c} 期望翻红（exit 1），实得 exit ${rc}（exit 2 是检查器硬失败，不是真检出）"; exit 1
+            fi
+            echo "✅ ${c} 翻红（exit 1）"
+          done
   check-workspace:
     runs-on: ubuntu-latest
     steps:
