@@ -100,13 +100,14 @@ extract_fopath() {
   fi
   fo_sep_ln=$((fo_hdr_ln + 1))
   fo_sep="$(sed -n "${fo_sep_ln}p" "${contract}")"
-  case "${fo_sep}" in
-    '|'*'-'*) ;;
-    *)
-      echo "🔴 字面量提取失败：${contract} 第 ${fo_sep_ln} 行不是分隔行——表头锚点可能命中了别处（坑 4）" >&2
-      exit 2
-      ;;
-  esac
+  # 分隔行判据取严：整行只能由 | - : 空格 构成，且至少含一个 -（与 awk 严版
+  # /^\|[ :-]*-/ 同强度）。旧版 '|'*'-'* 只要求行首 | 且任意位置含 -，数据行
+  # 「| 5 | append-only |」这类能穿过、被误判成分隔行。
+  sep_re='^\|[ :|-]*$'
+  if [[ ! "${fo_sep}" =~ ${sep_re} ]] || [[ "${fo_sep}" != *-* ]]; then
+    echo "🔴 字面量提取失败：${contract} 第 ${fo_sep_ln} 行不是分隔行——表头锚点可能命中了别处（坑 4）" >&2
+    exit 2
+  fi
   fo_start=$((fo_hdr_ln + 2))
   fo_pairs="$(awk -v start="${fo_start}" '
     NR>=start {
@@ -332,13 +333,14 @@ check_vocab_item_one_stage() {
   fi
   sec_sep_ln=$((sec_hdr_ln + 1))
   sec_sep="$(sed -n "${sec_sep_ln}p" "${contract}")"
-  case "${sec_sep}" in
-    '|'*'-'*) ;;
-    *)
-      echo "🔴 字面量提取失败：${contract} 第 ${sec_sep_ln} 行不是分隔行——表头锚点可能命中了别处（坑 4）" >&2
-      exit 2
-      ;;
-  esac
+  # 分隔行判据取严：整行只能由 | - : 空格 构成，且至少含一个 -（与 awk 严版
+  # /^\|[ :-]*-/ 同强度）。旧版 '|'*'-'* 只要求行首 | 且任意位置含 -，数据行
+  # 「| 5 | append-only |」这类能穿过、被误判成分隔行。
+  sep_re='^\|[ :|-]*$'
+  if [[ ! "${sec_sep}" =~ ${sep_re} ]] || [[ "${sec_sep}" != *-* ]]; then
+    echo "🔴 字面量提取失败：${contract} 第 ${sec_sep_ln} 行不是分隔行——表头锚点可能命中了别处（坑 4）" >&2
+    exit 2
+  fi
   sec_start=$((sec_hdr_ln + 2))
   rows="$(awk -v start="${sec_start}" '
     NR>=start {

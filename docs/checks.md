@@ -146,7 +146,9 @@ echo "[$h 」]"     → [## 我做了什么 」]  ✅ 中间有空格也对
 
 **规则**：凡在 `sh` 脚本里把中文拼进字符串，**一律写 `${var}`**。中文只经过 `awk` / `grep` 不受影响（它们自己解析 UTF-8），这条只管 shell 自己的字符串拼接。
 
-## 尚未实现
+## 实现体台账（曾名「尚未实现」）
+
+2026-08-17 起，十八条全部有实现体、三 persona 工作区已落地进 CI，本节转为台账；下面留的是各条落地时的取证记录，不再是待办清单。
 
 **十八条全部有实现体**（[#75](https://github.com/jiangxidong/EduApplication/issues/75)／[#76](https://github.com/jiangxidong/EduApplication/issues/76)／[#89](https://github.com/jiangxidong/EduApplication/issues/89)／[#88](https://github.com/jiangxidong/EduApplication/issues/88) 逐票落地，各条参照物与取证见「触发」节与各自结案评论）。**`工作区` 那行的三 persona 夹具已由 [#87](https://github.com/jiangxidong/EduApplication/issues/87) 落地**：`evals/fixtures/personas/`（`_shared/` 共享事实层 + 三个 persona 判断层）经 `evals/fixtures/personas/build.sh` 离线展开到 `evals/fixtures/_built/{p1-linxiaoyu,p2-kuazhuanye,p3-yongjuminshenfen}/`（gitignored，不进仓库），`.github/workflows/checks.yml` 的 `check-workspace` job 每次 push／PR 先跑 build 再对三个工作区各自全量跑十一条工作区检查——**`工作区` 那行现在有四份货**（`sample-workspace/` + 三份 persona）。本表落的是**决策**，脚本是实现。
 
