@@ -16,7 +16,7 @@
 
 > **工作区根 = 用户在会话开始时指定的那一个目录。产品不选路径，用户选。**
 >
-> 识别方式：该目录下存在 `apply.md`，且其 frontmatter 含 `workspace: edu-application`。
+> 识别方式：该目录下存在 `apply.md`，且其 frontmatter 含 `workspace: apply-us-masters`。
 > 有 → 续上；没有 → 问用户「在这里初始化吗？」，同意后创建。
 >
 > **产品的任何文件、任何 SKILL.md、任何 reference 都不得再出现第二个路径字面量。**
