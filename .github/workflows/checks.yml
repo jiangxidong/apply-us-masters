@@ -46,6 +46,13 @@ jobs:
         run: git worktree add /tmp/sl origin/prototype/state-layer
       - name: 名单里的工作区检查（真样例全绿）
         run: bash evals/checks/check-workspace.sh /tmp/sl/prototypes/state-workspace-v0 /tmp/sl/prototypes/state-workspace-v0/sample-workspace
+      - name: 三个 persona 工作区（#87）——离线展开后各自全量跑
+        run: |
+          set -e
+          bash evals/fixtures/personas/build.sh
+          for p in p1-linxiaoyu p2-kuazhuanye p3-yongjuminshenfen; do
+            bash evals/checks/check-workspace.sh /tmp/sl/prototypes/state-workspace-v0 "evals/fixtures/_built/${p}"
+          done
       - name: 十一条夹具必须各自翻红（ADR 0017 推论 2）
         run: |
           set -e

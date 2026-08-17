@@ -148,7 +148,7 @@ echo "[$h 」]"     → [## 我做了什么 」]  ✅ 中间有空格也对
 
 ## 尚未实现
 
-**十八条全部有实现体**（[#75](https://github.com/jiangxidong/EduApplication/issues/75)／[#76](https://github.com/jiangxidong/EduApplication/issues/76)／[#89](https://github.com/jiangxidong/EduApplication/issues/89)／[#88](https://github.com/jiangxidong/EduApplication/issues/88) 逐票落地，各条参照物与取证见「触发」节与各自结案评论）。**尚未实现的只剩三个 persona 工作区**——`工作区` 那行的三项夹具今天只有 `sample-workspace/` 有货（[#63](https://github.com/jiangxidong/EduApplication/issues/63) 逐 ref 复核，取证见该票）。本表落的是**决策**，脚本是实现。
+**十八条全部有实现体**（[#75](https://github.com/jiangxidong/EduApplication/issues/75)／[#76](https://github.com/jiangxidong/EduApplication/issues/76)／[#89](https://github.com/jiangxidong/EduApplication/issues/89)／[#88](https://github.com/jiangxidong/EduApplication/issues/88) 逐票落地，各条参照物与取证见「触发」节与各自结案评论）。**`工作区` 那行的三 persona 夹具已由 [#87](https://github.com/jiangxidong/EduApplication/issues/87) 落地**：`evals/fixtures/personas/`（`_shared/` 共享事实层 + 三个 persona 判断层）经 `evals/fixtures/personas/build.sh` 离线展开到 `evals/fixtures/_built/{p1-linxiaoyu,p2-kuazhuanye,p3-yongjuminshenfen}/`（gitignored，不进仓库），`.github/workflows/checks.yml` 的 `check-workspace` job 每次 push／PR 先跑 build 再对三个工作区各自全量跑十一条工作区检查——**`工作区` 那行现在有四份货**（`sample-workspace/` + 三份 persona）。本表落的是**决策**，脚本是实现。
 
 ⚠️ **`evals/` 与 `skills/` 的位置本身已不再是 fog**（[ADR 0021](adr/0021-the-repo-root-is-the-plugin-root-for-both-runtimes.md)，[#64](https://github.com/jiangxidong/EduApplication/issues/64)）：仓库根就是两个运行时的 plugin 根，顶层按「谁会读它」切。本表上面写死的 `evals/checks/` 与 `evals/fixtures/violations/{docs,workspace}/` **被该 ADR 照单收下，一个字未改**。
 
