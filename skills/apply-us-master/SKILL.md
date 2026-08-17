@@ -25,7 +25,7 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Bash
 
 第一步永远是判断：这是新开还是续上。
 
-**识别方式**：检查目标目录下是否存在工作区根下的 `apply.md`，且其 frontmatter 里 `workspace` 字段的值**逐字等于** `edu-application`——这是本产品跨会话识别自己工作区的唯一依据，新开时必须原样写下这个值，不得改写、不得省略。存在 → 进入「续上」（第 3 节）。不存在 → 进入新开流程。
+**识别方式**：检查目标目录下是否存在工作区根下的 `apply.md`，且其 frontmatter 里 `workspace` 字段的值**逐字等于** `apply-us-masters`——这是本产品跨会话识别自己工作区的唯一依据，新开时必须原样写下这个值，不得改写、不得省略。存在 → 进入「续上」（第 3 节）。不存在 → 进入新开流程。
 
 **首屏位次**：新开流程里，**git 检测必须先于第一次写盘**。在任何文件被创建之前，先确认目标目录是不是一个 git 仓库——工作区一旦已经落了 `apply.md`、`profile.md` 才去检测，这两个文件已经可能被下一次 `git add` 一并捞走，检测就失去了全部价值。
 
@@ -67,7 +67,7 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Bash
 
 ## 7. 落盘契约拆抄
 
-**工作区根下的 `apply.md`**：frontmatter 五个键——`workspace`（**固定值 `edu-application`，逐字不改**，是本产品跨会话识别自己工作区的唯一依据）、`season`（申请季，形如 `2027fall`）、`country`（**固定值 `US`**——v1 只覆盖美国申请）、`degree_type`（**固定值 `coursework-master`**——v1 只覆盖授课型硕士，不区分研究型）、`created`（创建日期，形如 `2026-08-16`）。冷启动时一次写全；此后本技能只在用户换季时改 `season`，不改其余四个键。
+**工作区根下的 `apply.md`**：frontmatter 五个键——`workspace`（**固定值 `apply-us-masters`，逐字不改**，是本产品跨会话识别自己工作区的唯一依据）、`season`（申请季，形如 `2027fall`）、`country`（**固定值 `US`**——v1 只覆盖美国申请）、`degree_type`（**固定值 `coursework-master`**——v1 只覆盖授课型硕士，不区分研究型）、`created`（创建日期，形如 `2026-08-16`）。冷启动时一次写全；此后本技能只在用户换季时改 `season`，不改其余四个键。
 
 **工作区根下的 `profile.md`**：申请人自己的 canonical 事实。「学历」表是 `institution_id` 这个主键唯一的定义处——同一所学校此后被别的文件引用，只能引用这里已经定义过的 id，不在别处重新命名。语言成绩表必须带**考试日期**这一列——一个分数所在的量表由考试日期决定，缺了这一列，这个分数就没法和任何门槛做比较。
 

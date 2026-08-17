@@ -1,5 +1,5 @@
 ---
-workspace: edu-application
+workspace: apply-us-masters
 season: 2027fall
 country: US
 degree_type: coursework-master

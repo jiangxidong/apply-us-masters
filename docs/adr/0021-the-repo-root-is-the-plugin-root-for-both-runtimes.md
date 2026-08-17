@@ -51,7 +51,7 @@
 
 ## Consequences
 
-**四个 skill 的目录名 = frontmatter `name`，在源树里一比一。** 竞品坑：`application-essay-skill` 的 repo 名讲 essay、frontmatter 却是 `graduate-application-research`，直接导致「帮我改 SOP」触发不到最有价值的文件（`docs/research/competitor-skills.md`）。⚠️ 这条**只管源树**——装出来叫什么由运行时的命名空间决定（Claude Code 是 `edu-application:<name>`），不归本条管。
+**四个 skill 的目录名 = frontmatter `name`，在源树里一比一。** 竞品坑：`application-essay-skill` 的 repo 名讲 essay、frontmatter 却是 `graduate-application-research`，直接导致「帮我改 SOP」触发不到最有价值的文件（`docs/research/competitor-skills.md`）。⚠️ 这条**只管源树**——装出来叫什么由运行时的命名空间决定（Claude Code 是 `apply-us-masters:<name>`），不归本条管。
 
 **没有 reference 的 skill 不建 `references/`。** 承 [#23](https://github.com/jiangxidong/EduApplication/issues/23)「预建空节 = 失败」与 `CONTEXT.md` 槽位条「不预建空目录」：空目录把「没写」与「不需要」压成同一形态。
 

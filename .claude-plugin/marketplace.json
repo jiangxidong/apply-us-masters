@@ -1,11 +1,11 @@
 {
-  "name": "jiangxidong-edu",
+  "name": "jiangxidong-skills",
   "owner": {
     "name": "jiangxidong"
   },
   "plugins": [
     {
-      "name": "edu-application",
+      "name": "apply-us-masters",
       "source": "./"
     }
   ]

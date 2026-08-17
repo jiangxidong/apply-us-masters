@@ -1,4 +1,4 @@
-# EduApplication
+# apply-us-masters
 
 ## Agent skills
 
