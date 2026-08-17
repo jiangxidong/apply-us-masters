@@ -38,7 +38,7 @@ flowchart LR
 ```
 
 - **怎么验证装上了**：在 `/plugin` 面板里能看到 `apply-us-masters` 已启用；或者直接用自然语言说"我要开始准备申请了"，看它是否触发 `apply-us-master`。
-- **快照日期**：改名后待按新地址实测回写（见 #103）。
+- **快照日期**：以上命令于 2026-08-17 用 Claude Code 2.1.233 实测跑通（中英触发各一条）。
 
 ### Codex
 
@@ -48,7 +48,7 @@ codex plugin add apply-us-masters@jiangxidong-skills
 ```
 
 - **怎么验证装上了**：`codex plugin list` 能看到 `apply-us-masters@jiangxidong-skills` 状态为 `installed, enabled`；或用自然语言触发同上。
-- **快照日期**：改名后待按新地址实测回写（见 #103）。
+- **快照日期**：以上命令于 2026-08-17 用 codex-cli 0.144.1 实测跑通（中英触发各一条）。
 
 ---
 

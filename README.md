@@ -36,7 +36,7 @@ Both runtimes use the same two-step path: add this repo as a marketplace, then i
 ```
 
 - **How to verify**: the `/plugin` panel shows `apply-us-masters` as enabled; or just say "help me start my US master's application" in natural language and see whether it triggers `apply-us-master`.
-- **Snapshot date**: pending re-verification at the new address (tracked in #103).
+- **Snapshot date**: the commands above were verified working on 2026-08-17 with Claude Code 2.1.233 (one zh + one en trigger tested).
 
 ### Codex
 
@@ -46,7 +46,7 @@ codex plugin add apply-us-masters@jiangxidong-skills
 ```
 
 - **How to verify**: `codex plugin list` shows `apply-us-masters@jiangxidong-skills` as `installed, enabled`; or trigger with natural language as above.
-- **Snapshot date**: pending re-verification at the new address (tracked in #103).
+- **Snapshot date**: the commands above were verified working on 2026-08-17 with codex-cli 0.144.1 (one zh + one en trigger tested).
 
 ---
 
